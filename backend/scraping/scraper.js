@@ -10,10 +10,10 @@ function getUniwirtPlan() {
         .then(parseUniwirt);
 }
 
-function parseUniwirt(body) {
+function parseUniwirt(html) {
     var result = new Menu();
 
-    var $ = cheerio.load(body);
+    var $ = cheerio.load(html);
     var dayInWeek = ((new Date()).getDay() + 6) % 7;
     var $currentDayRows = $("#StandardWrapper").find(".col600 > .col360.noMargin").eq(dayInWeek).find('tr');
 
@@ -32,6 +32,19 @@ function parseUniwirt(body) {
     });
 
     return result;
+}
+
+function getUniPizzeriaPlan(){
+    return request.getAsync('hhttp://www.uni-pizzeria.at/speisen/mittagsteller.html')
+        .then(res => res.body)
+        .then(parseUniPizzeria);
+}
+
+function parseUniPizzeria(html){
+    var result = new Menu();
+    var $ = cheerio.load(html);
+
+    
 }
 
 module.exports = {
