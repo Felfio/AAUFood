@@ -1,3 +1,5 @@
+"use strict";
+
 class Food {
     constructor(name, price) {
         this.name = name;

@@ -1,3 +1,5 @@
+"use strict";
+
 class Menu {
     constructor() {
         this.starters = [];
