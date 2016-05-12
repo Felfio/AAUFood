@@ -2,14 +2,15 @@ const express = require('express');
 const router = express.Router();
 const scraper = require('../scraping/scraper');
 
-router.get('/uniwirt', function(req, res, next) {
-    scraper.downloadUniwirt()
-        .then(body => res.send(body));
+/* GET users listing. */
+router.get('/uniwirt', function (req, res) {
+    scraper.getUniwirtPlan()
+        .then(result => res.json(result));
 });
 
 router.get('/mittagstisch', function(req, res, next) {
-    scraper.downloadMittagstisch()
-        .then(body => res.send(body));
+    scraper.getMittagstischPlan()
+        .then(result => res.json(result));
 });
 
 module.exports = router;
