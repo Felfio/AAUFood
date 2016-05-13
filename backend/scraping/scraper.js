@@ -53,20 +53,11 @@ function parseMensa(html) {
     var currentDay2 = $classic2.find('.menu-item-content').eq(dayInWeek).find('.menu-item-text p');
     var currentDaySpecial = $dailySpecial.find('.menu-item-content').eq(dayInWeek).find('.menu-item-text p');
 
-    currentDay1 = currentDay1.map((index, item) => {
-        return $(item).text();
-    }).toArray();
-
-    currentDay2 = currentDay2.map((index, item) => {
-        return $(item).text();
-    }).toArray();
-
-    currentDaySpecial = currentDaySpecial.map((index, item) => {
-        return $(item).text();
-    }).toArray();
+    currentDay1 = currentDay1.map((index, item) => $(item).text()).toArray();
+    currentDay2 = currentDay2.map((index, item) => $(item).text()).toArray();
+    currentDaySpecial = currentDaySpecial.map((index, item) => $(item).text()).toArray();
 
     result.mains = [new Food(currentDay1), new Food(currentDay2), new Food(currentDaySpecial)];
-
     return result;
 }
 
@@ -79,8 +70,6 @@ function getUniPizzeriaPlan() {
 function parseUniPizzeria(html) {
     var result = new Menu();
     var $ = cheerio.load(html);
-
-
 }
 
 function getMittagstischPlan() {
