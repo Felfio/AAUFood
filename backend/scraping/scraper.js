@@ -83,41 +83,56 @@ function parseMittagstisch(body) {
 
     var $ = cheerio.load(body);
     var dayInWeek = (new Date().getDay() + 6) % 7;
-    dayInWeek = dayInWeek > 4 ? 0 : dayInWeek;
     var plans = $(".resp-tabs-container .daydata");
+
+    //Wochentag nicht verfügbar
+    if (plans.length <= dayInWeek * 2) {
+        return foodMenu;
+    }
 
     //Menü
     var menu = plans.eq(dayInWeek * 2);
     var menuRows = menu.find("tr");
     var first = menuRows.first();
 
-    var soupRows;
-    if (first.hasClass("free")) {
-        soupRows = first.nextUntil('.free', 'tr');
-    } else {
-        soupRows = first.nextUntil('.free', 'tr');
+    var soupRows = first.nextUntil('.free', 'tr');
+    if (!first.hasClass("free")) {
         soupRows.unshift(first);
     }
 
+    soupRows.splice(0, 1);
     soupRows.each((index, item) => {
-        if (index != 0) {
-            var name = $(item).children().first().text();
-            foodMenu.starters.push(new Food(name));
-        }
+        var name = $(item).children().first().text();
+        foodMenu.starters.push(new Food(name));
     });
 
     //Hauptspeisen
     var mainsRows = soupRows.last().next().nextUntil('.free', 'tr');
+    mainsRows.splice(0, 1);
 
     mainsRows.each((index, item) => {
-        if (index != 0) {
-            var name = $(item).children().first().text();
-            foodMenu.mains.push(new Food(name, "7.40 / 7.90"));
-        }
+        var name = $(item).children().first().text();
+        foodMenu.mains.push(new Food(name, "7.40 / 7.90"));
     });
 
     //á la carte
-    //Yet todo :)
+    var aLaCarte = plans.eq(dayInWeek * 2 + 1);
+    var aLaCarteRows = aLaCarte.find("tr");
+    first = aLaCarteRows.first();
+
+    var aLaCartes = first.nextUntil('.free', 'tr');
+    if (!first.hasClass("free")) {
+        aLaCartes.unshift(first);
+    }
+
+    aLaCartes.splice(0, 1);
+    aLaCartes.each((index, item) => {
+        var entries = $(item).children();
+        var name = entries.first().text();
+        var price = +entries.eq(1).text().replace(",", ".");
+        foodMenu.alacarte.push(new Food(name, price));
+    });
+
 
     return foodMenu;
 }
