@@ -8,8 +8,13 @@ router.get('/uniwirt', function (req, res) {
         .then(result => res.json(result));
 });
 
-router.get('/mittagstisch', function(req, res, next) {
+router.get('/mittagstisch', function(req, res) {
     scraper.getMittagstischPlan()
+        .then(result => res.json(result));
+});
+
+router.get('/mensa', function(req, res){
+    scraper.getMensaPlan()
         .then(result => res.json(result));
 });
 

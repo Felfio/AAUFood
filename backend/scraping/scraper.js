@@ -34,13 +34,49 @@ function parseUniwirt(html) {
     return result;
 }
 
-function getUniPizzeriaPlan(){
+function getMensaPlan() {
+    return request.getAsync('http://menu.mensen.at/index/index/locid/45')
+        .then(res => res.body)
+        .then(parseMensa);
+}
+
+function parseMensa(html) {
+    var result = new Menu();
+    var $ = cheerio.load(html);
+    var dayInWeek = ((new Date()).getDay() + 6) % 7;
+
+    var $classic1 = $('.menu-item').eq(2);
+    var $classic2 = $('.menu-item').eq(3);
+    var $dailySpecial = $('.menu-item').eq(4);
+
+    var currentDay1 = $classic1.find('.menu-item-content').eq(dayInWeek).find('.menu-item-text p');
+    var currentDay2 = $classic2.find('.menu-item-content').eq(dayInWeek).find('.menu-item-text p');
+    var currentDaySpecial = $dailySpecial.find('.menu-item-content').eq(dayInWeek).find('.menu-item-text p');
+
+    currentDay1 = currentDay1.map((index, item) => {
+        return $(item).text();
+    }).toArray();
+
+    currentDay2 = currentDay2.map((index, item) => {
+        return $(item).text();
+    }).toArray();
+
+    currentDaySpecial = currentDaySpecial.map((index, item) => {
+        return $(item).text();
+    }).toArray();
+
+    result.mains = [new Food(currentDay1), new Food(currentDay2), new Food(currentDaySpecial)];
+
+    return result;
+}
+
+function getUniPizzeriaPlan() {
     return request.getAsync('hhttp://www.uni-pizzeria.at/speisen/mittagsteller.html')
         .then(res => res.body)
         .then(parseUniPizzeria);
 }
 
-function parseUniPizzeria(html){
+function parseUniPizzeria(html) {
     var result = new Menu();
     var $ = cheerio.load(html);
 
@@ -99,5 +135,6 @@ function parseMittagstisch(body) {
 
 module.exports = {
     getUniwirtPlan: getUniwirtPlan,
-    getMittagstischPlan: getMittagstischPlan
+    getMittagstischPlan: getMittagstischPlan,
+    getMensaPlan: getMensaPlan
 };
