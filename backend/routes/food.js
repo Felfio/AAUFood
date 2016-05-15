@@ -3,18 +3,21 @@ const router = express.Router();
 const scraper = require('../scraping/scraper');
 
 /* GET users listing. */
-router.get('/uniwirt', function (req, res) {
-    scraper.getUniwirtPlan()
+router.get('/uniwirt/:day?', function (req, res) {
+    var day = +req.params.day;
+    scraper.getUniwirtPlan(day)
         .then(result => res.json(result));
 });
 
-router.get('/mittagstisch', function(req, res) {
-    scraper.getMittagstischPlan()
+router.get('/mittagstisch/:day?', function (req, res) {
+    var day = +req.params.day;
+    scraper.getMittagstischPlan(day)
         .then(result => res.json(result));
 });
 
-router.get('/mensa', function(req, res){
-    scraper.getMensaPlan()
+router.get('/mensa/:day?', function (req, res) {
+    var day = +req.params.day;
+    scraper.getMensaPlan(day)
         .then(result => res.json(result));
 });
 

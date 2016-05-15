@@ -4,17 +4,17 @@ const cheerio = require('cheerio');
 const Food = require("../models/food");
 const Menu = require("../models/menu");
 
-function getUniwirtPlan() {
+function getUniwirtPlan(day) {
     return request.getAsync('http://www.uniwirt.at/Default.aspx?SIid=4&LAid=1')
         .then(res => res.body)
-        .then(parseUniwirt);
+        .then(body => parseUniwirt(body, day));
 }
 
-function parseUniwirt(html) {
+function parseUniwirt(html, day) {
     var result = new Menu();
 
     var $ = cheerio.load(html);
-    var dayInWeek = ((new Date()).getDay() + 6) % 7;
+    var dayInWeek = day || ((new Date()).getDay() + 6) % 7;
     var $currentDayRows = $("#StandardWrapper").find(".col600 > .col360.noMargin").eq(dayInWeek).find('tr');
 
     $currentDayRows.each((index, item) => {
@@ -34,16 +34,16 @@ function parseUniwirt(html) {
     return result;
 }
 
-function getMensaPlan() {
+function getMensaPlan(day) {
     return request.getAsync('http://menu.mensen.at/index/index/locid/45')
         .then(res => res.body)
-        .then(parseMensa);
+        .then(body => parseMensa(body, day));
 }
 
-function parseMensa(html) {
+function parseMensa(html, day) {
     var result = new Menu();
     var $ = cheerio.load(html);
-    var dayInWeek = ((new Date()).getDay() + 6) % 7;
+    var dayInWeek = day || ((new Date()).getDay() + 6) % 7;
 
     var $classic1 = $('.menu-item').eq(2);
     var $classic2 = $('.menu-item').eq(3);
@@ -68,29 +68,59 @@ function isNotBlank(index, element) {
     return element.length !== 0 && element.trim();
 }
 
-function getUniPizzeriaPlan() {
+function getUniPizzeriaPlan(day) {
     return request.getAsync('hhttp://www.uni-pizzeria.at/speisen/mittagsteller.html')
         .then(res => res.body)
-        .then(parseUniPizzeria);
+        .then(body => parseUniPizzeria(body, day));
 }
 
-function parseUniPizzeria(html) {
+function parseUniPizzeria(html, day) {
     var result = new Menu();
     var $ = cheerio.load(html);
 }
 
-function getMittagstischPlan() {
+function getMittagstischPlan(day) {
     return request.getAsync('http://www.lakeside-scitec.com/services/gastronomie/mittagstisch/')
         .then(res => res.body)
-        .then(parseMittagstisch);
+        .then(body => parseMittagstisch(body, day));
 }
 
-function parseMittagstisch(body) {
+function parseMittagstisch(body, day) {
     var foodMenu = new Menu();
 
+    var dayInWeek = day || (new Date().getDay() + 6) % 7;
+
+    if (dayInWeek > 4) {
+        foodMenu.closed = true;
+        return foodMenu;
+    }
+
     var $ = cheerio.load(body);
-    var dayInWeek = (new Date().getDay() + 6) % 7;
-    var closedDays = $(".closed").length;
+
+    var dayStates = $(".resp-tabs-list").children();
+    var currentDayClosed = false;
+    var closedDaysMap = {};
+    var closedCnt = 0;
+
+    //Count number of closed days before each day (so we can adjust indices by this amount
+    dayStates.each((index, item) => {
+        closedDaysMap["" + index] = closedCnt;
+
+        if (item.attribs.class.indexOf("closed") > -1) {
+            closedCnt++;
+
+            if (index === dayInWeek) {
+                currentDayClosed = true;
+            }
+        }
+    });
+
+    if (currentDayClosed) {
+        foodMenu.closed = true;
+        return foodMenu;
+    }
+
+    var closedDays = closedDaysMap["" + dayInWeek];
 
     var plans = $(".resp-tabs-container .daydata");
 
