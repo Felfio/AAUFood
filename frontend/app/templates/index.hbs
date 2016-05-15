@@ -1,2 +1,16 @@
-<h1>Index</h1>
+<h1>Mensa</h1>
+{{#if mensa.mains.length}}
+    <ul>
+      {{#each mensa.mains as |menu index|}}
+          <li>{{format-mensa-menu index}}</li>
+          <ul>
+            {{#each menu.name as |menuItem|}}
+                <li>{{menuItem}}</li>
+            {{/each}}
+          </ul>
+      {{/each}}
+    </ul>
+{{else}}
+    false
+{{/if}}
 {{outlet}}
