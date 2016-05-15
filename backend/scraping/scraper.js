@@ -57,7 +57,10 @@ function parseMensa(html) {
     currentDay2 = currentDay2.map((index, item) => $(item).text()).filter(isNotBlank).toArray();
     currentDaySpecial = currentDaySpecial.map((index, item) => $(item).text()).filter(isNotBlank).toArray();
 
-    result.mains = [new Food(currentDay1), new Food(currentDay2), new Food(currentDaySpecial)];
+    result.mains = [];
+    if (currentDay1.length) result.mains.push(new Food(currentDay1));
+    if (currentDay2.length) result.mains.push(new Food(currentDay2));
+    if (currentDaySpecial.length) result.mains.push(new Food(currentDaySpecial));
     return result;
 }
 
@@ -87,15 +90,17 @@ function parseMittagstisch(body) {
 
     var $ = cheerio.load(body);
     var dayInWeek = (new Date().getDay() + 6) % 7;
+    var closedDays = $(".closed").length;
+
     var plans = $(".resp-tabs-container .daydata");
 
     //Wochentag nicht verfügbar
-    if (plans.length <= dayInWeek * 2) {
+    if (plans.length <= dayInWeek * 2 - closedDays) {
         return foodMenu;
     }
 
     //Menü
-    var menu = plans.eq(dayInWeek * 2);
+    var menu = plans.eq(dayInWeek * 2 - closedDays);
     var menuRows = menu.find("tr");
     var first = menuRows.first();
 
@@ -120,12 +125,12 @@ function parseMittagstisch(body) {
     });
 
     //á la carte
-    var aLaCarte = plans.eq(dayInWeek * 2 + 1);
+    var aLaCarte = plans.eq(dayInWeek * 2 + 1 - closedDays);
     var aLaCarteRows = aLaCarte.find("tr");
     first = aLaCarteRows.first();
 
     var aLaCartes = first.nextUntil('.free', 'tr');
-    if (!first.hasClass("free")) {
+    if (!first.hasClass("free") && aLaCartes.unshift) {
         aLaCartes.unshift(first);
     }
 
