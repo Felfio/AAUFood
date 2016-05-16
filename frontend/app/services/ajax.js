@@ -6,5 +6,5 @@ export default AjaxService.extend({
    ],
    host: 'http://localhost:3000/food'*/
 
-  //For development: Use ember server --proxy http://localhost:3000/food
+  //For development: Use ember s --proxy http://localhost:3000
 });

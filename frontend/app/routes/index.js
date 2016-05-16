@@ -5,9 +5,9 @@ export default Ember.Route.extend({
 
   model() {
     return Ember.RSVP.hash({
-      mensa: this.get('ajax').request('/mensa'),
-      uniwirt: this.get('ajax').request('/uniwirt'),
-      mittagstisch: this.get('ajax').request('/mittagstisch'),
+      mensa: this.get('ajax').request('/food/mensa'),
+      uniwirt: this.get('ajax').request('/food/uniwirt'),
+      mittagstisch: this.get('ajax').request('/food/mittagstisch'),
     });
   },
 
