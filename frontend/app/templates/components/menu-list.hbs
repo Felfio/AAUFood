@@ -1,0 +1,21 @@
+<h1 class="text-center">{{restaurantName}}</h1>
+{{#unless dataLoaded}}
+    <div class="text-center"><img src="/hourglass.gif"></div>
+{{/unless}}
+{{#if dataLoaded}}
+  {{#if menu.mains.length}}
+      <ul>
+        {{#each menu.starters as |starter|}}
+            <li>{{starter.name}}</li>
+        {{/each}}
+      </ul>
+
+      <ul>
+        {{#each menu.mains as |main|}}
+            <li>{{main.name}} : {{main.price}}</li>
+        {{/each}}
+      </ul>
+  {{else}}
+      <div class="text-center">Heute leider geschlossen.</div>
+  {{/if}}
+{{/if}}
