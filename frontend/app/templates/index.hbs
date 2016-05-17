@@ -1,49 +1,19 @@
-<h1>Mensa</h1>
-{{#if mensa.mains.length}}
-  {{#each mensa.mains as |menu index|}}
-      <h3>{{format-mensa-menu index}}</h3>
-      <ul>
-        {{#each menu.name as |menuItem|}}
-            <li>{{menuItem}}</li>
-        {{/each}}
-      </ul>
-  {{/each}}
-{{else}}
-    Nix Mensa heute, sorry
-{{/if}}
+<div class="row">
+    <div class="col-md-4">
+      {{#menu-list "uniwirt"}}
+          <h1 class="text-center">Uniwirt</h1>
+      {{/menu-list}}
+    </div>
+    <div class="col-md-4">
+      {{#menu-list "mittagstisch"}}
+          <h1 class="text-center">Mittagstisch</h1>
+      {{/menu-list}}
+    </div>
 
-<h1>Uniwirt</h1>
-{{#if uniwirt.mains.length}}
-    <ul>
-      {{#each uniwirt.starters as |starter|}}
-          <li>{{starter.name}}</li>
-      {{/each}}
-    </ul>
-
-    <ul>
-      {{#each uniwirt.mains as |main|}}
-          <li>{{main.name}} : {{main.price}}</li>
-      {{/each}}
-    </ul>
-{{else}}
-    Nix Uniwirt heute, sorry
-{{/if}}
-
-<h1>Mittagstisch</h1>
-{{#if mittagstisch.mains.length}}
-    <ul>
-      {{#each mittagstisch.starters as |starter|}}
-          <li>{{starter.name}}</li>
-      {{/each}}
-    </ul>
-
-    <ul>
-      {{#each mittagstisch.mains as |main|}}
-          <li>{{main.name}} : {{main.price}}</li>
-      {{/each}}
-    </ul>
-{{else}}
-    Nix Mittagstisch heute, sorry
-{{/if}}
-
+    <div class="col-md-4">
+      {{#combined-menu-list "mensa"}}
+          <h1 class="text-center">Mensa</h1>
+      {{/combined-menu-list}}
+    </div>
+</div>
 {{outlet}}

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const MenuList = Ember.Component.extend({
+const CombinedMenuList = Ember.Component.extend({
   menus: Ember.inject.service(),
   dataLoaded: false,
   menu: null,
@@ -26,8 +26,8 @@ const MenuList = Ember.Component.extend({
   }
 });
 
-MenuList.reopenClass({
+CombinedMenuList.reopenClass({
   positionalParams: ['restaurant']
 });
 
-export default MenuList;
+export default CombinedMenuList;

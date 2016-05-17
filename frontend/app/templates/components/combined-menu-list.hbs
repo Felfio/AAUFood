@@ -1,0 +1,19 @@
+<div class="{{restaurant}}">
+  {{yield}}
+  {{#if dataLoaded}}
+    {{#if menu.mains.length}}
+      {{#each menu.mains as |singleMenu index|}}
+          <h3>{{format-mensa-menu index}}</h3>
+          <ul>
+            {{#each singleMenu.name as |menuItem|}}
+                <li>{{menuItem}}</li>
+            {{/each}}
+          </ul>
+      {{/each}}
+    {{else}}
+        Heute leider geschlossen.
+    {{/if}}
+  {{else}}
+      <div class="text-center"><img src="/hourglass.gif"></div>
+  {{/if}}
+</div>

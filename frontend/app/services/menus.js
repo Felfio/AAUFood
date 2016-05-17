@@ -3,15 +3,15 @@ import Ember from 'ember';
 export default Ember.Service.extend({
   ajax: Ember.inject.service(),
 
-  getUniwirt(){
+  uniwirt(){
     return this.get('ajax').request('/food/uniwirt');
   },
 
-  getMittagstisch(){
+  mittagstisch(){
     return this.get('ajax').request('/food/mittagstisch');
   },
 
-  getMensa(){
+  mensa(){
     return this.get('ajax').request('/food/mensa');
   }
 });
