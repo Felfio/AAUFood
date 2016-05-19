@@ -1,29 +1,10 @@
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <!--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>-->
-          {{#bs-button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-          aria-expanded="false" aria-controls="navbar"}}
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-          {{/bs-button}}
-          {{#link-to "index" class="navbar-brand"}}AAU-Food{{/link-to}}
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-              {{#link-to "index" tagName="li"}}{{#link-to "index"}}Home{{/link-to}}{{/link-to}}
-              {{#link-to "about" tagName="li"}}{{#link-to "about"}}About{{/link-to}}{{/link-to}}
-            </ul>
-        </div>
-    </div>
+<nav class="navbar navbar-dark bg-inverse navbar-full">
+  {{#link-to "index" class="navbar-brand"}}AAU-Food{{/link-to}}
+
+    <ul class="nav navbar-nav">
+      {{#link-to "index" tagName="li" class="nav-item"}}{{#link-to "index" class="nav-link"}}Home{{/link-to}}{{/link-to}}
+      {{#link-to "about" tagName="li" class="nav-item"}}{{#link-to "about" class="nav-link"}}About{{/link-to}}{{/link-to}}
+    </ul>
 </nav>
 
 <div class="container">
