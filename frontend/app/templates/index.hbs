@@ -1,19 +1,19 @@
 <div class="row">
     <div class="col-md-4">
+      {{#combined-menu-list "mensa"}}
+          <h3 class="card-header">Mensa</h3>
+      {{/combined-menu-list}}
+    </div>
+  
+    <div class="col-md-4">
       {{#menu-list "uniwirt"}}
-          <h1 class="text-center">Uniwirt</h1>
+          <h3 class="card-header">Uniwirt</h3>
       {{/menu-list}}
     </div>
     <div class="col-md-4">
       {{#menu-list "mittagstisch"}}
-          <h1 class="text-center">Mittagstisch</h1>
+          <h3 class="card-header">Mittagstisch</h3>
       {{/menu-list}}
-    </div>
-
-    <div class="col-md-4">
-      {{#combined-menu-list "mensa"}}
-          <h1 class="text-center">Mensa</h1>
-      {{/combined-menu-list}}
     </div>
 </div>
 {{outlet}}

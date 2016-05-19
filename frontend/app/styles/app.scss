@@ -1,5 +1,46 @@
 @import 'bootstrap';
 
+/*Colors and definitions*/
+$mittagstischGreen: #5fb127;
+$mensaOrange: #f49900;
+$uniwirtPurple: #800768;
+
+body {
+  background-image: url("/tileable_wood_texture.png");
+}
+
 .container {
   padding-top: 1em;
 }
+
+#navbar.bg-inverse {
+  background: hsla(204, 4%, 13%, 1);
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border: none;
+}
+
+/*Restaurant-specific*/
+.mittagstisch {
+  .card-header {
+    background: $mittagstischGreen;
+    color: white;
+  }
+}
+
+.mensa {
+  .card-header {
+    background: $mensaOrange;
+    color: white;
+  }
+}
+
+.uniwirt {
+  .card-header {
+    background: $uniwirtPurple;
+    color: white;
+  }
+}
+
