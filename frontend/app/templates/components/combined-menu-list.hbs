@@ -6,7 +6,7 @@
         {{#if menu.mains.length}}
           {{#each menu.mains as |singleMenu index|}}
             {{#if singleMenu}}
-                <span class="label label-default label-pill price-pill pull-xs-right">{{singleMenu.price}}5 €</span>
+                <span class="label label-default label-pill price-pill pull-xs-right">{{format-euro singleMenu.price}}</span>
             {{/if}}
               <h5>{{format-mensa-menu index}}</h5>
               <ul class="list-group menu-list-group">

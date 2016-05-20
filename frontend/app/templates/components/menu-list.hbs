@@ -12,7 +12,7 @@
               {{#each menu.mains as |main|}}
                   <li class="list-group-item">
                     {{#if main.price}}
-                        <span class="label label-default label-pill price-pill pull-xs-right">{{main.price}} €</span>
+                        <span class="label label-default label-pill price-pill pull-xs-right">{{format-euro main.price}}</span>
                     {{/if}}
                       <span class="menu-name">
                         {{main.name}}
