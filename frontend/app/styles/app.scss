@@ -1,10 +1,12 @@
 @import 'bootstrap';
+@import 'spinner';
 
 /*Colors and definitions*/
 $mittagstischGreen: #5fb127;
 $mensaOrange: #f49900;
 $uniwirtPurple: #800768;
 
+/*General definitions*/
 body {
   background-image: url("/tileable_wood_texture.png");
 }
@@ -20,27 +22,61 @@ body {
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border: none;
+
+  .card-header {
+    margin-bottom: 0;
+  }
+}
+
+.menu-list, .combined-menu-list {
+  .menu-list-group {
+    &:not(:last-child) {
+      margin-bottom: 0.75rem;
+    }
+
+    .list-group-item {
+      background: none;
+      padding-top: 0;
+      padding-bottom: 0.25rem;
+      border: none;
+    }
+
+    .price-pill {
+      margin-right: -20px;
+      margin-top: 0.25rem;
+    }
+  }
+}
+
+.combined-menu-list {
+  .price-pill {
+    margin-top: 0.125rem;
+  }
 }
 
 /*Restaurant-specific*/
-.mittagstisch {
-  .card-header {
-    background: $mittagstischGreen;
-    color: white;
+@mixin restaurantColors($bgColor, $fontColor) {
+  .card-header, .price-pill {
+    background: $bgColor;
+    color: $fontColor;
   }
+
+  .sk-folding-cube .sk-cube:before {
+    background-color: $bgColor;
+  }
+}
+
+.mittagstisch {
+  @include restaurantColors($mittagstischGreen, white);
 }
 
 .mensa {
-  .card-header {
-    background: $mensaOrange;
-    color: white;
-  }
+  @include restaurantColors($mensaOrange, white);
+
 }
 
 .uniwirt {
-  .card-header {
-    background: $uniwirtPurple;
-    color: white;
-  }
+  @include restaurantColors($uniwirtPurple, white);
+
 }
 

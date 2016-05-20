@@ -151,7 +151,7 @@ function parseMittagstisch(body, day) {
 
     mainsRows.each((index, item) => {
         var name = $(item).children().first().text();
-        foodMenu.mains.push(new Food(name, "7.40 / 7.90"));
+        foodMenu.mains.push(new Food(name, 7.4));
     });
 
     //á la carte

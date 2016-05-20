@@ -1,14 +1,17 @@
-<div class="card {{restaurant}}">
+<div class="card {{restaurant}} combined-menu-list">
   {{yield}}
     <div class="card-block">
 
       {{#if dataLoaded}}
         {{#if menu.mains.length}}
           {{#each menu.mains as |singleMenu index|}}
-              <h3>{{format-mensa-menu index}}</h3>
-              <ul>
+            {{#if singleMenu}}
+                <span class="label label-default label-pill price-pill pull-xs-right">{{singleMenu.price}}5 €</span>
+            {{/if}}
+              <h5>{{format-mensa-menu index}}</h5>
+              <ul class="list-group menu-list-group">
                 {{#each singleMenu.name as |menuItem|}}
-                    <li>{{menuItem}}</li>
+                    <li class="list-group-item">{{menuItem}}</li>
                 {{/each}}
               </ul>
           {{/each}}
@@ -16,7 +19,7 @@
             Heute leider geschlossen.
         {{/if}}
       {{else}}
-          <div class="text-center"><img src="/hourglass.gif"></div>
+        {{spinner-cube}}
       {{/if}}
     </div>
 </div>

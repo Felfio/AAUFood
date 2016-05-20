@@ -1,23 +1,30 @@
-<div class="card {{restaurant}}">
+<div class="card {{restaurant}} menu-list">
   {{yield}}
     <div class="card-block">
       {{#if dataLoaded}}
         {{#if menu.mains.length}}
-            <ul>
+            <ul class="list-group menu-list-group">
               {{#each menu.starters as |starter|}}
-                  <li>{{starter.name}}</li>
+                  <li class="list-group-item">{{starter.name}}</li>
               {{/each}}
             </ul>
-            <ul>
+            <ul class="list-group menu-list-group">
               {{#each menu.mains as |main|}}
-                  <li>{{main.name}} : {{main.price}}</li>
+                  <li class="list-group-item">
+                    {{#if main.price}}
+                        <span class="label label-default label-pill price-pill pull-xs-right">{{main.price}} €</span>
+                    {{/if}}
+                      <span class="menu-name">
+                        {{main.name}}
+                      </span>
+                  </li>
               {{/each}}
             </ul>
         {{else}}
             Heute leider geschlossen.
         {{/if}}
       {{else}}
-          <div class="text-center"><img src="/hourglass.gif"></div>
+        {{spinner-cube}}
       {{/if}}
     </div>
 </div>
