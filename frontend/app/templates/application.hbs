@@ -1,12 +1,7 @@
-<nav id="navbar" class="navbar navbar-dark bg-inverse navbar-full">
-  {{#link-to "index" class="navbar-brand"}}AAU-Food{{/link-to}}
-
-    <ul class="nav navbar-nav">
-      {{#link-to "index" tagName="li" class="nav-item"}}{{#link-to "index" class="nav-link"}}Home{{/link-to}}{{/link-to}}
-      {{#link-to "about" tagName="li" class="nav-item"}}{{#link-to "about" class="nav-link"}}About{{/link-to}}{{/link-to}}
-    </ul>
-</nav>
-
 <div class="container">
   {{outlet}}
 </div>
+
+<footer class="footer">
+  {{#link-to "about" class="footer-link"}}Crafted with <i class="fa heart fa-heart" aria-hidden="true"></i>{{/link-to}}
+</footer>

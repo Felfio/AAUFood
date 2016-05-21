@@ -1,0 +1,15 @@
+.about {
+  .back-icon-container {
+    text-align: center;
+
+    .card {
+      border-radius: 50%;
+      width: 5.2rem;
+      height: 5.2rem;
+      color: #373a3c;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}

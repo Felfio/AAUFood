@@ -1,5 +1,6 @@
 @import 'bootstrap';
 @import 'spinner';
+@import 'about';
 
 /*Colors and definitions*/
 $mittagstischGreen: #5fb127;
@@ -9,6 +10,11 @@ $uniwirtPurple: #800768;
 /*General definitions*/
 body {
   background-image: url("/tileable_wood_texture.png");
+}
+
+.center-block {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .container {
@@ -21,14 +27,17 @@ body {
 
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border: none;
-
-  .card-header {
-    margin-bottom: 0;
-  }
 }
 
 .menu-list, .combined-menu-list {
+  &.card {
+    border: none;
+
+    .card-header {
+      margin-bottom: 0;
+    }
+  }
+
   .menu-list-group {
     &:not(:last-child) {
       margin-bottom: 0.75rem;
@@ -72,11 +81,35 @@ body {
 
 .mensa {
   @include restaurantColors($mensaOrange, white);
-
 }
 
 .uniwirt {
   @include restaurantColors($uniwirtPurple, white);
-
 }
 
+/*Footer*/
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 2rem;
+  line-height: 2rem; /* Vertically center the text there */
+  background-color: #202122;
+  color: #eceeef;
+  text-align: center;
+
+  .footer-link {
+    color: #eceeef;
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    .heart {
+      vertical-align: middle;
+      font-size: 1.25em;
+      color: #DF0101;
+    }
+  }
+}
