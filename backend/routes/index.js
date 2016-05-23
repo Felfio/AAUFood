@@ -7,7 +7,7 @@ const Promise = require("bluebird");
 router.get('/', function (req, res, next) {
     var uniwirtPlan = scraper.getUniwirtPlan();
     var mensaPlan = scraper.getMensaPlan();
-    var mittagstischPlan = scraper.getMensaPlan();
+    var mittagstischPlan = scraper.getMittagstischPlan();
 
     Promise.all([uniwirtPlan, mensaPlan, mittagstischPlan])
         .then(results => {
