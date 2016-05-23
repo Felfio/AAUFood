@@ -194,7 +194,7 @@ body {
 
 /*Footer*/
 .footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
     /* Set the fixed height of the footer here */
@@ -220,16 +220,6 @@ body {
     color: #DF0101;
 }
 
-body {
-    overflow: hidden;
-}
-
-.container {
-    max-height: calc(100% - 2rem);
-    overflow-y: scroll;
-}
-
-html, body {
-    height: 100%;
-    width: 100%;
+body{
+    padding-bottom: 2.2rem;
 }
