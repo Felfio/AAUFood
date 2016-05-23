@@ -219,3 +219,17 @@ body {
     font-size: 1.25em;
     color: #DF0101;
 }
+
+body {
+    overflow: hidden;
+}
+
+.container {
+    max-height: calc(100% - 2rem);
+    overflow-y: scroll;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
