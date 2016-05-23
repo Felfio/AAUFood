@@ -1,0 +1,24 @@
+<div class="card <%= restaurantName.toLowerCase() %> menu-list">
+    <h3 class="card-header"><%= restaurantName %></h3>
+    <div class="card-block">
+        <% if(menu.mains.length){ %>
+        <ul class="list-group menu-list-group">
+            <% menu.starters.forEach(function (starter) { %>
+            <li class="list-group-item"><%= starter.name %></li>
+            <% }); %>
+        </ul>
+        <ul class="list-group menu-list-group">
+            <% menu.mains.forEach(function (main) { %>
+            <li class="list-group-item">
+                <span class="label label-default label-pill price-pill pull-xs-right"><%= main.price + " €" %></span>
+                      <span class="menu-name">
+                        <%= main.name %>
+                      </span>
+            </li>
+            <% }); %>
+        </ul>
+        <% } else{ %>
+        Heute leider geschlossen.
+        <% } %>
+    </div>
+</div>
