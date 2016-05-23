@@ -223,3 +223,7 @@ body {
 body{
     padding-bottom: 2.2rem;
 }
+
+.back-icon-container .card-block {
+    padding-top: 1.1rem;
+}
