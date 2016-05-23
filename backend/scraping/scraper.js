@@ -69,7 +69,7 @@ function parseMensa(html, day) {
         result.mains.push(new Food(currentDay2, currentDay2Price));
     }
     if (currentDaySpecial.length) {
-        var currentDaySpecialPrice = $classic2.find('.menu-item-content').eq(dayInWeek).find('.menu-item-price').text().match(/€ (\S*)/)[1];
+        var currentDaySpecialPrice = currentDaySpecial.find('.menu-item-content').eq(dayInWeek).find('.menu-item-price').text().match(/€ (\S*)/)[1];
         currentDaySpecialPrice = +currentDaySpecialPrice.replace(',', '.');
         result.mains.push(new Food(currentDaySpecial, currentDaySpecialPrice));
     }
