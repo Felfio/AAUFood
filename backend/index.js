@@ -1,9 +1,15 @@
 const express = require('express');
+const path = require('path');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const logger = require('morgan');
-const food = require('./routes/food');
+const indexRoutes = require('./routes/index');
+const foodRoutes = require('./routes/food');
 const app = express();
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
 app.use(compression());
 app.use(express.static(__dirname + '/public'));
@@ -11,7 +17,8 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use('/food', food);
+app.use('/', indexRoutes);
+app.use('/food', foodRoutes);
 
 app.use(function (err, req, res, next) {
     console.log("Im finalen Error Handler!");
