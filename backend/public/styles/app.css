@@ -124,10 +124,6 @@ body {
     margin-right: auto;
 }
 
-.container {
-    padding-top: 1em;
-}
-
 #navbar.bg-inverse {
     background: #202122;
 }
@@ -194,7 +190,7 @@ body {
 
 /*Footer*/
 .footer {
-    position: fixed;
+    position: relative;
     bottom: 0;
     width: 100%;
     /* Set the fixed height of the footer here */
@@ -220,10 +216,16 @@ body {
     color: #DF0101;
 }
 
-body{
-    padding-bottom: 2.2rem;
-}
-
 .back-icon-container .card-block {
     padding-top: 1.1rem;
+}
+
+html, body {
+    height: calc(100% - 2rem);
+}
+
+.container {
+    min-height: 100%;
+    padding-top: 1em;
+    margin-bottom: 2rem;
 }
