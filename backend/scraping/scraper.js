@@ -58,9 +58,21 @@ function parseMensa(html, day) {
     currentDaySpecial = currentDaySpecial.map((index, item) => $(item).text()).filter(isNotBlank).toArray();
 
     result.mains = [];
-    if (currentDay1.length) result.mains.push(new Food(currentDay1));
-    if (currentDay2.length) result.mains.push(new Food(currentDay2));
-    if (currentDaySpecial.length) result.mains.push(new Food(currentDaySpecial));
+    if (currentDay1.length) {
+        var currentDay1Price = $classic1.find('.menu-item-content').eq(dayInWeek).find('.menu-item-price').text().match(/€ (\S*)/)[1];
+        currentDay1Price = +currentDay1Price.replace(',', '.');
+        result.mains.push(new Food(currentDay1, currentDay1Price));
+    }
+    if (currentDay2.length) {
+        var currentDay2Price = $classic2.find('.menu-item-content').eq(dayInWeek).find('.menu-item-price').text().match(/€ (\S*)/)[1];
+        currentDay2Price = +currentDay2Price.replace(',', '.');
+        result.mains.push(new Food(currentDay2, currentDay2Price));
+    }
+    if (currentDaySpecial.length) {
+        var currentDaySpecialPrice = $classic2.find('.menu-item-content').eq(dayInWeek).find('.menu-item-price').text().match(/€ (\S*)/)[1];
+        currentDaySpecialPrice = +currentDaySpecialPrice.replace(',', '.');
+        result.mains.push(new Food(currentDaySpecial, currentDaySpecialPrice));
+    }
     return result;
 }
 

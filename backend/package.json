@@ -12,6 +12,7 @@
     "bluebird": "^3.3.5",
     "body-parser": "^1.15.1",
     "cheerio": "^0.20.0",
+    "compression": "^1.6.2",
     "express": "^4.13.4",
     "morgan": "^1.7.0",
     "request": "^2.72.0"

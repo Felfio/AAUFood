@@ -1,9 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const compression = require('compression');
 const logger = require('morgan');
 const food = require('./routes/food');
 const app = express();
 
+app.use(compression());
+app.use(express.static(__dirname + '/public'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
