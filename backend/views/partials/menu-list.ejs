@@ -1,12 +1,23 @@
 <div class="card <%= restaurantName.toLowerCase() %> menu-list">
     <h3 class="card-header"><%= restaurantName %></h3>
     <div class="card-block">
-        <% if(menu.mains.length){ %>
+        <% if (menu.closed){ %>
+        <div class="text-xs-center">
+            <i class="fa fa-bed fa-2x" aria-hidden="true"></i><br>
+            Heute leider geschlossen.
+        </div>
+        <% } else if (menu.error) { %>
+        <div class="text-xs-center">
+            <i class="fa fa-frown-o fa-2x fa-fw" aria-hidden="true"></i><br>
+            Leider konnten wir die Daten nicht abrufen.
+        </div>
+        <% } else { %>
         <ul class="list-group menu-list-group">
             <% menu.starters.forEach(function (starter) { %>
             <li class="list-group-item"><%= starter.name %></li>
             <% }); %>
         </ul>
+        <% if(menu.mains.length) { %>
         <ul class="list-group menu-list-group">
             <% menu.mains.forEach(function (main) { %>
             <li class="list-group-item">
@@ -17,8 +28,7 @@
             </li>
             <% }); %>
         </ul>
-        <% } else{ %>
-        Heute leider geschlossen.
+        <% } %>
         <% } %>
     </div>
 </div>

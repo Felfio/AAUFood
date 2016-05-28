@@ -1,7 +1,17 @@
 <div class="card <%= restaurantName.toLowerCase() %> combined-menu-list">
     <h3 class="card-header"><%= restaurantName %></h3>
     <div class="card-block">
-        <% if (menu.mains.length){ %>
+        <% if (menu.closed){ %>
+        <div class="text-xs-center">
+            <i class="fa fa-bed fa-2x" aria-hidden="true"></i><br>
+            Heute leider geschlossen.
+        </div>
+        <% } else if (menu.error) { %>
+        <div class="text-xs-center">
+            <i class="fa fa-frown-o fa-2x fa-fw" aria-hidden="true"></i><br>
+            Leider konnten wir die Daten nicht abrufen.
+        </div>
+        <% } else { %>
         <% menu.mains.forEach(function(singleMenu, index){ %>
         <span class="label label-default label-pill price-pill pull-xs-right"><%= singleMenu.price + " €" %></span>
         <h5><%= (index < 2) ? "Menü Classic " + (index + 1) : "Tagesteller" %></h5>
@@ -10,9 +20,7 @@
             <li class="list-group-item"><%= menuItem %></li>
             <% }); %>
         </ul>
-        <% });
-        } else{ %>
-        Heute leider geschlossen.
+        <% }); %>
         <% } %>
     </div>
 </div>
