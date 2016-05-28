@@ -28,8 +28,7 @@ function parseUniwirt(html, day) {
         var name = $tds.eq(0).text();
         var price = $tds.eq(2).text();
 
-        var nameLower = name.toLowerCase();
-        if (nameLower.includes("feiertag") || nameLower.includes("ruhetag")) {
+        if (contains(name, true, ["feiertag", "ruhetag"])) {
             result.closed = true;
         } else if (!price) {
             result.starters.push(new Food(name));
@@ -57,6 +56,12 @@ function parseMensa(html, day) {
     } else {
         dayInWeek = day;
     }
+
+    if (dayInWeek > 4) {
+        result.closed = true;
+        return result;
+    }
+
     var $classic1 = $('.menu-item').eq(2);
     var $classic2 = $('.menu-item').eq(3);
     var $dailySpecial = $('.menu-item').eq(4);
@@ -64,6 +69,13 @@ function parseMensa(html, day) {
     var currentDay1 = $classic1.find('.menu-item-content').eq(dayInWeek).find('.menu-item-text p');
     var currentDay2 = $classic2.find('.menu-item-content').eq(dayInWeek).find('.menu-item-text p');
     var currentDaySpecial = $dailySpecial.find('.menu-item-content').eq(dayInWeek).find('.menu-item-text p');
+
+    if (contains(currentDay1.text(), true, ["feiertag", "ruhetag"]) ||
+        contains(currentDay2.text(), true, ["feiertag", "ruhetag"]) ||
+        contains(currentDaySpecial.text(), true, ["feiertag", "ruhetag"])) {
+        result.closed = true;
+        return result;
+    }
 
     currentDay1 = currentDay1.map((index, item) => $(item).text()).filter(isNotBlank).toArray();
     currentDay2 = currentDay2.map((index, item) => $(item).text()).filter(isNotBlank).toArray();
@@ -203,6 +215,22 @@ function parseMittagstisch(body, day) {
 
 
     return foodMenu;
+}
+
+function contains(str, ignoreCase, searches) {
+    if (!str)
+        return false;
+    if (ignoreCase) {
+        str = str.toLowerCase();
+    }
+
+    for (var i = 0; i < searches.length; i++) {
+        var search = ignoreCase ? searches[i].toLowerCase() : searches[i];
+        if (str.includes(search)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 module.exports = {
