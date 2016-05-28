@@ -14,7 +14,13 @@ function parseUniwirt(html, day) {
     var result = new Menu();
 
     var $ = cheerio.load(html);
-    var dayInWeek = day || ((new Date()).getDay() + 6) % 7;
+    var dayInWeek;
+    if (day === null || day === undefined) {
+        dayInWeek = ((new Date()).getDay() + 6) % 7;
+    } else {
+        dayInWeek = day;
+    }
+
     var $currentDayRows = $("#StandardWrapper").find(".col600 > .col360.noMargin").eq(dayInWeek).find('tr');
 
     $currentDayRows.each((index, item) => {
@@ -22,10 +28,12 @@ function parseUniwirt(html, day) {
         var name = $tds.eq(0).text();
         var price = $tds.eq(2).text();
 
-        if (price === '') {
+        var nameLower = name.toLowerCase();
+        if (nameLower.includes("feiertag") || nameLower.includes("ruhetag")) {
+            result.closed = true;
+        } else if (!price) {
             result.starters.push(new Food(name));
-        }
-        else {
+        } else {
             price = +price.substring(2).replace(',', '.');
             result.mains.push(new Food(name, price));
         }
@@ -43,8 +51,12 @@ function getMensaPlan(day) {
 function parseMensa(html, day) {
     var result = new Menu();
     var $ = cheerio.load(html);
-    var dayInWeek = day || ((new Date()).getDay() + 6) % 7;
-
+    var dayInWeek;
+    if (day === null || day === undefined) {
+        dayInWeek = ((new Date()).getDay() + 6) % 7;
+    } else {
+        dayInWeek = day;
+    }
     var $classic1 = $('.menu-item').eq(2);
     var $classic2 = $('.menu-item').eq(3);
     var $dailySpecial = $('.menu-item').eq(4);
@@ -100,7 +112,12 @@ function getMittagstischPlan(day) {
 function parseMittagstisch(body, day) {
     var foodMenu = new Menu();
 
-    var dayInWeek = day || (new Date().getDay() + 6) % 7;
+    var dayInWeek;
+    if (day === null || day === undefined) {
+        dayInWeek = ((new Date()).getDay() + 6) % 7;
+    } else {
+        dayInWeek = day;
+    }
 
     if (dayInWeek > 4) {
         foodMenu.closed = true;
