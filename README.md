@@ -1,5 +1,5 @@
 # AAU Food
-Eine Webseite zum Crawlen und Darstellen der Mittagsmenüs von Lokalen nahe der Alpen-Adria Universität Klagenfurt.
+Eine Webseite zum Crawlen und Darstellen der Mittagsmenüs von Lokalen nahe der Alpen-Adria Universität Klagenfurt. Verfügbar unter [food.felf.ga](http://food.felf.ga/)
 
 ## Aktuell unterstützte Restaurants
 * Mensa Klagenfurt
