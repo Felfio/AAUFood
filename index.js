@@ -3,6 +3,8 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const logger = require('morgan');
+const cache = require('./caching/menuCache');
+const config = require('./config');
 const indexRoutes = require('./routes/index');
 const foodRoutes = require('./routes/food');
 const app = express();
@@ -29,3 +31,7 @@ app.use(function (err, req, res, next) {
 app.listen(3000, function () {
     console.log('Example app listening on port 3000!');
 });
+
+cache.init();
+
+setInterval(() => cache.update(), 10000);
