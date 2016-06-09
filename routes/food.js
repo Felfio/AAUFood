@@ -31,4 +31,8 @@ router.get('/mensa/:day?', function (req, res) {
         .then(menu => res.json(menu));
 });
 
+router.get('/logs', function (req, res) {
+    res.download('logfile.log');
+});
+
 module.exports = router;

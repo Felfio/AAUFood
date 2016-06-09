@@ -3,7 +3,6 @@ const router = express.Router();
 const Promise = require("bluebird");
 const cache = require('../caching/menuCache');
 
-
 router.get('/', function (req, res, next) {
     var uniwirtPlan = cache.getMenu('uniwirt');
     var mensaPlan = cache.getMenu('mensa');

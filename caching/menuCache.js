@@ -9,6 +9,7 @@ const bluebird = require('bluebird');
 const EventEmitter = require('events');
 const config = require('../config');
 const scraper = require('../scraping/scraper');
+const winston = require('winston');
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
@@ -17,6 +18,7 @@ class MenuCache extends EventEmitter {
     init() {
         this.client = redis.createClient(config.cache.redisUrl);
         this.update();
+        winston.info('Initialized Logger.');
     }
 
     update() {
@@ -28,6 +30,8 @@ class MenuCache extends EventEmitter {
 
         scraper.getUniwirtPlan()
             .then(menu => this._updateIfInvalid('uniwirt', menu));
+
+        winston.info('Updating caches.');
     }
 
     _updateIfInvalid(menuName, newMenu) {
@@ -37,6 +41,7 @@ class MenuCache extends EventEmitter {
             if (cachedMenu !== newMenuJson) {
                 this._cacheMenu(menuName, newMenuJson);
                 this.emit(`menu:${menuName}`, newMenuJson);
+                winston.info(`${menuName} has changed the menu. -> Cache updated.`)
             }
         });
     }

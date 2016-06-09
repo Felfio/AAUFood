@@ -7,7 +7,10 @@ const cache = require('./caching/menuCache');
 const config = require('./config');
 const indexRoutes = require('./routes/index');
 const foodRoutes = require('./routes/food');
+const winston = require('winston');
 const app = express();
+
+winston.add(winston.transports.File, {filename: 'logfile.log'});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -34,4 +37,4 @@ app.listen(3000, function () {
 
 cache.init();
 
-setInterval(() => cache.update(), 10000);
+setInterval(() => cache.update(), config.cache.intervall);
