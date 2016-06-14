@@ -2,7 +2,7 @@
  * Created by Markus on 08.06.2016.
  */
 
-'use srtrict';
+'use strict';
 
 const redis = require('redis');
 const bluebird = require('bluebird');
@@ -22,36 +22,46 @@ class MenuCache extends EventEmitter {
     }
 
     update() {
-        scraper.getMensaPlan()
-            .then(menu => this._updateIfInvalid('mensa', menu));
+        scraper.getMensaWeekPlan()
+            .then(weekPlan => this._updateIfInvalid('mensa', weekPlan));
 
-        scraper.getMittagstischPlan()
-            .then(menu => this._updateIfInvalid('mittagstisch', menu));
+        scraper.getMittagstischWeekPlan()
+            .then(weekPlan => this._updateIfInvalid('mittagstisch', weekPlan));
 
-        scraper.getUniwirtPlan()
-            .then(menu => this._updateIfInvalid('uniwirt', menu));
+        scraper.getUniwirtWeekPlan()
+            .then(weekPlan => this._updateIfInvalid('uniwirt', weekPlan));
 
         winston.info('Updating caches.');
     }
 
-    _updateIfInvalid(menuName, newMenu) {
-        var newMenuJson = JSON.stringify(newMenu);
+    _updateIfInvalid(restaurantName, newWeekPlan) {
+        var newWeekPlanJson = JSON.stringify(newWeekPlan);
 
-        this.getMenu(menuName).then(cachedMenu => {
-            if (cachedMenu !== newMenuJson) {
-                this._cacheMenu(menuName, newMenuJson);
-                this.emit(`menu:${menuName}`, newMenuJson);
-                winston.info(`${menuName} has changed the menu. -> Cache updated.`)
+        this.getMenu(restaurantName).then(cachedMenu => {
+            if (cachedMenu !== newWeekPlanJson) {
+                this._cacheMenu(restaurantName, newWeekPlan, newWeekPlanJson);
+                this.emit(`menu:${restaurantName}`, newWeekPlanJson); //Should we emit all single menus?
+                winston.info(`${restaurantName} has changed the menu. -> Cache updated.`)
             }
         });
     }
 
-    _cacheMenu(menuName, menuJson) {
-        return this.client.setAsync(`menu:${menuName}`, menuJson);
+    _cacheMenu(restaurantName, weekPlan, weekPlanJson) {
+        var promises = [];
+        promises.push(this.client.setAsync(`menu:${restaurantName}`, weekPlanJson)); //Store whole weekPlan
+
+        for (let day = 0; day < weekPlan.length; day++) {
+            let key = `menu:${restaurantName}:${day}`;
+            let menuJson = JSON.stringify(weekPlan[day]);
+            promises.push(this.client.setAsync(key, menuJson));
+        }
+
+        return Promise.all(promises);
     }
 
-    getMenu(menuName) {
-        return this.client.getAsync(`menu:${menuName}`);
+    getMenu(menuName, day) {
+        var key = day != null ? `menu:${menuName}:${day}` : `menu:${menuName}`;
+        return this.client.getAsync(key);
     }
 }
 

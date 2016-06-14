@@ -1,11 +1,33 @@
+"use strict";
+
 const Promise = require('bluebird');
 const request = Promise.promisifyAll(require("request"));
 const cheerio = require('cheerio');
 const Food = require("../models/food");
 const Menu = require("../models/menu");
+const config = require('../config');
+
+var MensaUrl = config.scraper.mensaUrl;
+var UniwirtUrl = config.scraper.uniwirtUrl;
+var MittagstischUrl = config.scraper.mittagstischUrl;
+
+function parseWeek(html, parseFunction) {
+    var menus = [];
+    for (let day = 0; day < 7; day++) {
+        menus[day] = parseFunction(html, day);
+    }
+
+    return menus;
+}
+
+function getUniwirtWeekPlan() {
+    return request.getAsync(UniwirtUrl)
+        .then(res => res.body)
+        .then(body => parseWeek(body, parseUniwirt));
+}
 
 function getUniwirtPlan(day) {
-    return request.getAsync('http://www.uniwirt.at/Default.aspx?SIid=4&LAid=1')
+    return request.getAsync(UniwirtUrl)
         .then(res => res.body)
         .then(body => parseUniwirt(body, day));
 }
@@ -41,8 +63,14 @@ function parseUniwirt(html, day) {
     return result;
 }
 
+function getMensaWeekPlan() {
+    return request.getAsync(MensaUrl)
+        .then(res => res.body)
+        .then(body => parseWeek(body, parseMensa));
+}
+
 function getMensaPlan(day) {
-    return request.getAsync('http://menu.mensen.at/index/index/locid/45')
+    return request.getAsync(MensaUrl)
         .then(res => res.body)
         .then(body => parseMensa(body, day));
 }
@@ -100,12 +128,8 @@ function parseMensa(html, day) {
     return result;
 }
 
-function isNotBlank(index, element) {
-    return element.length !== 0 && element.trim();
-}
-
 function getUniPizzeriaPlan(day) {
-    return request.getAsync('hhttp://www.uni-pizzeria.at/speisen/mittagsteller.html')
+    return request.getAsync('http://www.uni-pizzeria.at/speisen/mittagsteller.html')
         .then(res => res.body)
         .then(body => parseUniPizzeria(body, day));
 }
@@ -115,8 +139,14 @@ function parseUniPizzeria(html, day) {
     var $ = cheerio.load(html);
 }
 
+function getMittagstischWeekPlan() {
+    return request.getAsync(MittagstischUrl)
+        .then(res => res.body)
+        .then(body => parseWeek(body, parseMittagstisch));
+}
+
 function getMittagstischPlan(day) {
-    return request.getAsync('http://www.lakeside-scitec.com/services/gastronomie/mittagstisch/')
+    return request.getAsync(MittagstischUrl)
         .then(res => res.body)
         .then(body => parseMittagstisch(body, day));
 }
@@ -217,6 +247,11 @@ function parseMittagstisch(body, day) {
     return foodMenu;
 }
 
+
+function isNotBlank(index, element) {
+    return element.length !== 0 && element.trim();
+}
+
 function contains(str, ignoreCase, searches) {
     if (!str)
         return false;
@@ -235,6 +270,9 @@ function contains(str, ignoreCase, searches) {
 
 module.exports = {
     getUniwirtPlan: getUniwirtPlan,
+    getUniwirtWeekPlan: getUniwirtWeekPlan,
     getMittagstischPlan: getMittagstischPlan,
-    getMensaPlan: getMensaPlan
+    getMittagstischWeekPlan: getMittagstischWeekPlan,
+    getMensaPlan: getMensaPlan,
+    getMensaWeekPlan: getMensaWeekPlan
 };

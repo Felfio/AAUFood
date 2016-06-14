@@ -3,10 +3,17 @@ const router = express.Router();
 const Promise = require("bluebird");
 const cache = require('../caching/menuCache');
 
-router.get('/', function (req, res, next) {
-    var uniwirtPlan = cache.getMenu('uniwirt');
-    var mensaPlan = cache.getMenu('mensa');
-    var mittagstischPlan = cache.getMenu('mittagstisch');
+router.get('/:day(\\d*)?', function (req, res, next) {
+    var day = req.params.day;
+    if (!day || isNaN(day)) {
+        day = ((new Date()).getDay() + 6) % 7;
+    } else {
+        day = Number(day) % 7;
+    }
+
+    var uniwirtPlan = cache.getMenu('uniwirt', day);
+    var mensaPlan = cache.getMenu('mensa', day);
+    var mittagstischPlan = cache.getMenu('mittagstisch', day);
 
     Promise.all([uniwirtPlan, mensaPlan, mittagstischPlan])
         .then(results => {
