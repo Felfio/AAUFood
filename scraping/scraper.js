@@ -6,6 +6,7 @@ const cheerio = require('cheerio');
 const Food = require("../models/food");
 const Menu = require("../models/menu");
 const config = require('../config');
+const timeHelper = require('../helpers/timeHelper');
 
 var MensaUrl = config.scraper.mensaUrl;
 var UniwirtUrl = config.scraper.uniwirtUrl;

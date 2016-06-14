@@ -2,14 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Promise = require("bluebird");
 const cache = require('../caching/menuCache');
+const timeHelper = require('../helpers/timeHelper');
 
 router.get('/:day(\\d*)?', function (req, res, next) {
-    var day = req.params.day;
-    if (!day || isNaN(day)) {
-        day = ((new Date()).getDay() + 6) % 7;
-    } else {
-        day = Number(day) % 7;
-    }
+    var day = timeHelper.sanitizeDay(req.params.day);
 
     var uniwirtPlan = cache.getMenu('uniwirt', day);
     var mensaPlan = cache.getMenu('mensa', day);
