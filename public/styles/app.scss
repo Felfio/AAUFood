@@ -5,6 +5,9 @@
 $mittagstischGreen: #5fb127;
 $mensaOrange: #f49900;
 $uniwirtPurple: #800768;
+$navIconMargin: 3rem;
+$navIconMarginInwards: 1rem;
+$headerPadding: 0.9375rem;
 
 /*General definitions*/
 body {
@@ -115,7 +118,6 @@ html, body {
 
 .container {
   min-height: 100%;
-  padding-top: 1em;
   margin-bottom: 2rem;
   padding-left: 0;
   padding-right: 0;
@@ -140,11 +142,70 @@ html, body {
 }
 
 /* Weekday and Navigation*/
-.weekday {
-  text-align: center;
-}
-
 .weekday-container {
   padding-left: .9375rem;
   padding-right: .9375rem;
+
+  .weekday-header {
+    text-align: center;
+
+    .weekday {
+      font-weight: 500;
+      font-size: 2.5rem;
+    }
+  }
+}
+
+.nav-icon {
+  font-weight: bold;
+  cursor: pointer;
+
+  // Small devices (landscape phones, less than 48em)
+  @media (max-width: 47.9em) {
+    &.center {
+      display: none;
+    }
+
+    &.right {
+      margin-right: -$headerPadding;
+      padding-right: $headerPadding;
+      margin-left: -$navIconMarginInwards;
+      padding-left: $navIconMarginInwards;
+    }
+
+    &.left {
+      margin-left: -$headerPadding;
+      padding-left: $headerPadding;
+      margin-right: -$navIconMarginInwards;
+      padding-right: $navIconMarginInwards;
+    }
+  }
+
+  // Medium devices (tablets, 48em and up)
+  @media (min-width: 48em) {
+    z-index: 5000;
+    position: fixed;
+    top: 40vh;
+    font-size: 5rem;
+
+    &.top {
+      display: none;
+    }
+
+    &.right {
+      right: $navIconMargin;
+      margin-right: -$navIconMargin;
+      padding-right: $navIconMargin;
+      margin-left: -$navIconMarginInwards;
+      padding-left: $navIconMarginInwards;
+    }
+
+    &.left {
+      left: $navIconMargin;
+      margin-left: -$navIconMargin;
+      padding-left: $navIconMargin;
+      margin-right: -$navIconMarginInwards;
+      padding-right: $navIconMarginInwards;
+    }
+  }
 }

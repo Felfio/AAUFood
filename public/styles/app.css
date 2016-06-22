@@ -171,7 +171,6 @@ html, body {
 
 .container {
   min-height: 100%;
-  padding-top: 1em;
   margin-bottom: 2rem;
   padding-left: 0;
   padding-right: 0; }
@@ -192,11 +191,50 @@ html, body {
   position: relative; }
 
 /* Weekday and Navigation*/
-.weekday {
-  text-align: center; }
-
 .weekday-container {
   padding-left: .9375rem;
   padding-right: .9375rem; }
+  .weekday-container .weekday-header {
+    text-align: center; }
+    .weekday-container .weekday-header .weekday {
+      font-weight: 500;
+      font-size: 2.5rem; }
+
+.nav-icon {
+  font-weight: bold;
+  cursor: pointer; }
+  @media (max-width: 47.9em) {
+    .nav-icon.center {
+      display: none; }
+    .nav-icon.right {
+      margin-right: -0.9375rem;
+      padding-right: 0.9375rem;
+      margin-left: -1rem;
+      padding-left: 1rem; }
+    .nav-icon.left {
+      margin-left: -0.9375rem;
+      padding-left: 0.9375rem;
+      margin-right: -1rem;
+      padding-right: 1rem; } }
+  @media (min-width: 48em) {
+    .nav-icon {
+      z-index: 5000;
+      position: fixed;
+      top: 40vh;
+      font-size: 5rem; }
+      .nav-icon.top {
+        display: none; }
+      .nav-icon.right {
+        right: 3rem;
+        margin-right: -3rem;
+        padding-right: 3rem;
+        margin-left: -1rem;
+        padding-left: 1rem; }
+      .nav-icon.left {
+        left: 3rem;
+        margin-left: -3rem;
+        padding-left: 3rem;
+        margin-right: -1rem;
+        padding-right: 1rem; } }
 
 /*# sourceMappingURL=app.css.map */
