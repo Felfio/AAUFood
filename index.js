@@ -3,7 +3,8 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const logger = require('morgan');
-const cache = require('./caching/menuCache');
+const menuCache = require('./caching/menuCache');
+const visitorCache = require('./caching/visitorCache');
 const config = require('./config');
 const indexRoutes = require('./routes/index');
 const foodRoutes = require('./routes/food');
@@ -39,6 +40,7 @@ app.listen(3000, function () {
     console.log('Example app listening on port 3000!');
 });
 
-cache.init();
+menuCache.init();
+visitorCache.init();
 
-setInterval(() => cache.update(), config.cache.intervall);
+setInterval(() => menuCache.update(), config.cache.intervall);
