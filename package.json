@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.3.5",
     "body-parser": "^1.15.1",
+    "chai": "^3.5.0",
     "cheerio": "^0.20.0",
     "compression": "^1.6.2",
     "ejs": "^2.4.1",
@@ -19,5 +20,8 @@
     "redis": "^2.6.1",
     "request": "^2.72.0",
     "winston": "^2.2.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.5.3"
   }
 }
