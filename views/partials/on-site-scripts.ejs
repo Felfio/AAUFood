@@ -1,6 +1,6 @@
 <script type="application/javascript">
     var dayStr = location.href.substring(location.href.lastIndexOf("/") + 1)
-    var day = +dayStr;
+    var day = dayStr.length ? +dayStr : null;
 
     window.mySwipe = new Swipe(document.getElementById('slider'), {
         startSlide: sanitizeDay(day),
