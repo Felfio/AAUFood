@@ -5,8 +5,6 @@ const cache = require('../caching/menuCache');
 const timeHelper = require('../helpers/timeHelper');
 
 router.get('/:day(-?\\d*)?', function (req, res, next) {
-    var day = timeHelper.sanitizeDay(req.params.day);
-
     var uniwirtPlan = cache.getMenu('uniwirt');
     var mensaPlan = cache.getMenu('mensa');
     var mittagstischPlan = cache.getMenu('mittagstisch');
@@ -14,7 +12,6 @@ router.get('/:day(-?\\d*)?', function (req, res, next) {
     Promise.all([uniwirtPlan, mensaPlan, mittagstischPlan])
         .then(results => {
             res.render('index', {
-                day: day,
                 uniwirt: JSON.parse(results[0]),
                 mensa: JSON.parse(results[1]),
                 mittagstisch: JSON.parse(results[2])

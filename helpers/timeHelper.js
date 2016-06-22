@@ -3,7 +3,7 @@
 const weekdays = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
 
 function sanitizeDay(incDay) {
-    if (!incDay || isNaN(incDay)) {
+    if (incDay == null || isNaN(incDay)) {
         return ((new Date()).getDay() + 6) % 7;
     } else {
         if (incDay < 0) {

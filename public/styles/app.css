@@ -172,7 +172,9 @@ html, body {
 .container {
   min-height: 100%;
   padding-top: 1em;
-  margin-bottom: 2rem; }
+  margin-bottom: 2rem;
+  padding-left: 0;
+  padding-right: 0; }
 
 /* Swipe */
 .swipe {
@@ -192,5 +194,9 @@ html, body {
 /* Weekday and Navigation*/
 .weekday {
   text-align: center; }
+
+.weekday-container {
+  padding-left: .9375rem;
+  padding-right: .9375rem; }
 
 /*# sourceMappingURL=app.css.map */
