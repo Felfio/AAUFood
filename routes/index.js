@@ -6,16 +6,15 @@ const timeHelper = require('../helpers/timeHelper');
 
 router.get('/:day(-?\\d*)?', function (req, res, next) {
     var day = timeHelper.sanitizeDay(req.params.day);
-    var weekDay = timeHelper.weekDayName(day);
 
-    var uniwirtPlan = cache.getMenu('uniwirt', day);
-    var mensaPlan = cache.getMenu('mensa', day);
-    var mittagstischPlan = cache.getMenu('mittagstisch', day);
+    var uniwirtPlan = cache.getMenu('uniwirt');
+    var mensaPlan = cache.getMenu('mensa');
+    var mittagstischPlan = cache.getMenu('mittagstisch');
 
     Promise.all([uniwirtPlan, mensaPlan, mittagstischPlan])
         .then(results => {
             res.render('index', {
-                weekDay: weekDay,
+                day: day,
                 uniwirt: JSON.parse(results[0]),
                 mensa: JSON.parse(results[1]),
                 mittagstisch: JSON.parse(results[2])

@@ -8,6 +8,7 @@ const config = require('./config');
 const indexRoutes = require('./routes/index');
 const foodRoutes = require('./routes/food');
 const winston = require('winston');
+const timeHelper = require('./helpers/timeHelper');
 const app = express();
 
 winston.add(winston.transports.File, {filename: 'logfile.log'});
@@ -31,6 +32,8 @@ app.use(function (err, req, res, next) {
     res.status(500);
     res.json({error: err.message});
 });
+
+app.locals.weekDayName = timeHelper.weekDayName;
 
 app.listen(3000, function () {
     console.log('Example app listening on port 3000!');
