@@ -174,4 +174,23 @@ html, body {
   padding-top: 1em;
   margin-bottom: 2rem; }
 
+/* Swipe */
+.swipe {
+  overflow: hidden;
+  visibility: hidden;
+  position: relative; }
+
+.swipe-wrap {
+  overflow: hidden;
+  position: relative; }
+
+.swipe-wrap > div {
+  float: left;
+  width: 100%;
+  position: relative; }
+
+/* Weekday and Navigation*/
+.weekday {
+  text-align: center; }
+
 /*# sourceMappingURL=app.css.map */
