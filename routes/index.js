@@ -14,17 +14,13 @@ router.use(function (req, res, next) {
 });
 
 router.get('/:day(-?\\d*)?', function (req, res, next) {
-    var day = timeHelper.sanitizeDay(req.params.day);
-    var weekDay = timeHelper.weekDayName(day);
-
-    var uniwirtPlan = menuCache.getMenu('uniwirt', day);
-    var mensaPlan = menuCache.getMenu('mensa', day);
-    var mittagstischPlan = menuCache.getMenu('mittagstisch', day);
+    var uniwirtPlan = menuCache.getMenu('uniwirt');
+    var mensaPlan = menuCache.getMenu('mensa');
+    var mittagstischPlan = menuCache.getMenu('mittagstisch');
 
     Promise.all([uniwirtPlan, mensaPlan, mittagstischPlan])
         .then(results => {
             res.render('index', {
-                weekDay: weekDay,
                 uniwirt: JSON.parse(results[0]),
                 mensa: JSON.parse(results[1]),
                 mittagstisch: JSON.parse(results[2]),

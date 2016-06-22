@@ -172,6 +172,31 @@ html, body {
 .container {
   min-height: 100%;
   padding-top: 1em;
-  margin-bottom: 2rem; }
+  margin-bottom: 2rem;
+  padding-left: 0;
+  padding-right: 0; }
+
+/* Swipe */
+.swipe {
+  overflow: hidden;
+  visibility: hidden;
+  position: relative; }
+
+.swipe-wrap {
+  overflow: hidden;
+  position: relative; }
+
+.swipe-wrap > div {
+  float: left;
+  width: 100%;
+  position: relative; }
+
+/* Weekday and Navigation*/
+.weekday {
+  text-align: center; }
+
+.weekday-container {
+  padding-left: .9375rem;
+  padding-right: .9375rem; }
 
 /*# sourceMappingURL=app.css.map */
