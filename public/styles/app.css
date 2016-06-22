@@ -165,6 +165,12 @@ body {
       vertical-align: middle;
       font-size: 1.25em;
       color: #DF0101; }
+  .footer .daily-counter {
+    float: left;
+    margin-left: 0.9375rem; }
+  .footer .overall-counter {
+    float: right;
+    margin-right: 0.9375rem; }
 
 html, body {
   height: calc(100% - 2rem); }

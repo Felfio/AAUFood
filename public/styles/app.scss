@@ -7,7 +7,7 @@ $mensaOrange: #f49900;
 $uniwirtPurple: #800768;
 $navIconMargin: 3rem;
 $navIconMarginInwards: 1rem;
-$headerPadding: 0.9375rem;
+$outerPadding: 0.9375rem;
 
 /*General definitions*/
 body {
@@ -110,6 +110,16 @@ body {
       color: #DF0101;
     }
   }
+
+  .daily-counter {
+    float: left;
+    margin-left: $outerPadding;
+  }
+
+  .overall-counter {
+    float: right;
+    margin-right: $outerPadding;
+  }
 }
 
 html, body {
@@ -167,15 +177,15 @@ html, body {
     }
 
     &.right {
-      margin-right: -$headerPadding;
-      padding-right: $headerPadding;
+      margin-right: -$outerPadding;
+      padding-right: $outerPadding;
       margin-left: -$navIconMarginInwards;
       padding-left: $navIconMarginInwards;
     }
 
     &.left {
-      margin-left: -$headerPadding;
-      padding-left: $headerPadding;
+      margin-left: -$outerPadding;
+      padding-left: $outerPadding;
       margin-right: -$navIconMarginInwards;
       padding-right: $navIconMarginInwards;
     }
