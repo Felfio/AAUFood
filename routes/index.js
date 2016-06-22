@@ -30,7 +30,7 @@ router.get('/:day(-?\\d*)?', function (req, res, next) {
 });
 
 router.get('/about', function (req, res, next) {
-    res.render('about');
+    res.render('about', {visitorStats: req.visitorStats});
 });
 
 module.exports = router;
