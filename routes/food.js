@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const scraper = require('../scraping/scraper');
 const cache = require('../caching/menuCache');
 const timeHelper = require('../helpers/timeHelper');
 

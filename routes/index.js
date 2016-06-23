@@ -3,17 +3,10 @@ const router = express.Router();
 const Promise = require("bluebird");
 const menuCache = require('../caching/menuCache');
 const visitorCache = require('../caching/visitorCache');
-timeHelper = require('../helpers/timeHelper');
+const timeHelper = require('../helpers/timeHelper');
+const counter = require('../middleware/visitorCounter')
 
-router.use(function (req, res, next) {
-    visitorCache.incrementCounters()
-        .then(visitorStats => {
-            req.visitorStats = visitorStats;
-            next();
-        });
-});
-
-router.get('/:day(-?\\d*)?', function (req, res, next) {
+router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
     var uniwirtPlan = menuCache.getMenu('uniwirt');
     var mensaPlan = menuCache.getMenu('mensa');
     var mittagstischPlan = menuCache.getMenu('mittagstisch');
@@ -29,7 +22,7 @@ router.get('/:day(-?\\d*)?', function (req, res, next) {
         });
 });
 
-router.get('/about', function (req, res, next) {
+router.get('/about', counter.countVisitors, function (req, res, next) {
     res.render('about');
 });
 
