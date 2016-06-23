@@ -1,13 +1,17 @@
 <script type="application/javascript">
     var dayStr = location.href.substring(location.href.lastIndexOf("/") + 1)
-    var day = +dayStr;
+    var day = dayStr.length ? +dayStr : null;
 
-    window.mySwipe = new Swipe(document.getElementById('slider'), {
+    var swipe = new Swipe(document.getElementById('slider'), {
         startSlide: sanitizeDay(day),
         speed: 400,
         continuous: false,
         disableScroll: false,
     });
+    window.swipe = swipe;
+
+    $(".nav-icon.left").click(swipe.prev);
+    $(".nav-icon.right").click(swipe.next);
 
     function sanitizeDay(incDay) {
         if (incDay == null || isNaN(incDay)) {

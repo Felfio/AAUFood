@@ -1,5 +1,13 @@
 <footer class="footer">
+    <span class="daily-counter">
+        <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
+        <%= visitorStats.dailyVisitors %>
+    </span>
     <a href="/about" class="footer-link">Crafted with <i class="fa heart fa-heart" aria-hidden="true"></i></a>
+    <span class="overall-counter">
+         <%= visitorStats.overallVisitors %>
+        <i class="fa fa-fw fa-calendar-o" aria-hidden="true"></i>
+    </span>
 </footer>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>

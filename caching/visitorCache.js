@@ -20,6 +20,19 @@ class VisitorCache extends EventEmitter {
         this.client.setnxAsync(dailyVisitorKey, 0)
     }
 
+    getCounters() {
+        var dailyVisitors = this.client.getAsync(config.cache.dailyVisitorKey);
+        var overallVisitors = this.client.getAsync(config.cache.overallVisitorKey);
+
+        return Promise.all([dailyVisitors, overallVisitors])
+            .then(results => {
+                return {
+                    dailyVisitors: results[0],
+                    overallVisitors: results[1]
+                };
+            });
+    }
+
     incrementCounters() {
         return Promise.all([this._incrementDailyVisitors(), this._incrementOverallVisitors()])
             .then(results => {
