@@ -4,19 +4,14 @@
 
 'use strict';
 
-const redis = require('redis');
-const bluebird = require('bluebird');
 const EventEmitter = require('events');
 const config = require('../config');
 const overallVisitorKey = config.cache.overallVisitorKey;
 const dailyVisitorKey = config.cache.dailyVisitorKey;
 
-bluebird.promisifyAll(redis.RedisClient.prototype);
-bluebird.promisifyAll(redis.Multi.prototype);
-
 class VisitorCache extends EventEmitter {
-    init() {
-        this.client = redis.createClient(config.cache.redisUrl);
+    init(redisClient) {
+        this.client = redisClient;
         this.client.setnxAsync(dailyVisitorKey, 0)
     }
 
@@ -33,7 +28,22 @@ class VisitorCache extends EventEmitter {
             });
     }
 
-    incrementCounters() {
+    increment(session) {
+        var lastCountedVisit = session.lastCountedVisit;
+        var currentDayMidnight = this._getCurrentDayMidnight();
+
+        // If no visit is registered, or user has not visited today.
+        if (!lastCountedVisit || (lastCountedVisit && (new Date(lastCountedVisit) < currentDayMidnight))) {
+            session.lastCountedVisit = currentDayMidnight;
+            return this._incrementCounters();
+        }
+        // User already visited today.
+        else {
+            return this.getCounters();
+        }
+    }
+
+    _incrementCounters() {
         return Promise.all([this._incrementDailyVisitors(), this._incrementOverallVisitors()])
             .then(results => {
                 return {
@@ -41,6 +51,16 @@ class VisitorCache extends EventEmitter {
                     overallVisitors: results[1]
                 };
             });
+    }
+
+    _getCurrentDayMidnight() {
+        var date = new Date();
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        date.setMilliseconds(0);
+
+        return date;
     }
 
     _incrementDailyVisitors() {

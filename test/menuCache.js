@@ -4,11 +4,17 @@ const chai = require('chai');
 const expect = chai.expect;
 const Menu = require('../models/menu');
 const Food = require('../models/food');
+const config = require('../config');
+const redis = require('redis');
+const bluebird = require('bluebird');
+bluebird.promisifyAll(redis.RedisClient.prototype);
+bluebird.promisifyAll(redis.Multi.prototype);
+const redisClient = redis.createClient(config.cache.redisUrl);
 const cache = require('../caching/menuCache');
 
 describe('MenuCache', function () {
     before('Initialze Cache', function () {
-        cache.init();
+        cache.init(redisClient);
     });
 
     describe('#getMenu()', function () {

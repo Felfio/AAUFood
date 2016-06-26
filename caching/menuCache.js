@@ -4,19 +4,14 @@
 
 'use strict';
 
-const redis = require('redis');
-const bluebird = require('bluebird');
 const EventEmitter = require('events');
 const config = require('../config');
 const scraper = require('../scraping/scraper');
 const winston = require('winston');
 
-bluebird.promisifyAll(redis.RedisClient.prototype);
-bluebird.promisifyAll(redis.Multi.prototype);
-
 class MenuCache extends EventEmitter {
-    init() {
-        this.client = redis.createClient(config.cache.redisUrl);
+    init(redisClient) {
+        this.client = redisClient;
         this.update();
         winston.info('Initialized Logger.');
     }
