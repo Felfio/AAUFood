@@ -12,13 +12,13 @@
             Leider konnten wir die Daten nicht abrufen.
         </div>
         <% } else { %>
-        <ul class="list-group menu-list-group">
+        <ul class="list-group menu-list-group starters">
             <% menu.starters.forEach(function (starter) { %>
             <li class="list-group-item"><%= starter.name %></li>
             <% }); %>
         </ul>
         <% if(menu.mains.length) { %>
-        <ul class="list-group menu-list-group">
+        <ul class="list-group menu-list-group mains">
             <% menu.mains.forEach(function (main) { %>
             <li class="list-group-item">
                 <span class="label label-default label-pill price-pill pull-xs-right"><%= main.price + " €" %></span>

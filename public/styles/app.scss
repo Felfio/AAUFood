@@ -44,7 +44,7 @@ body {
     .list-group-item {
       background: none;
       padding-top: 0;
-      padding-bottom: 0.25rem;
+      padding-bottom: 0rem;
       border: none;
     }
 
@@ -56,8 +56,27 @@ body {
 }
 
 .combined-menu-list {
+  .menu-list-group {
+    .list-group-item:not(:last-child) {
+      padding-bottom: 0.25rem;
+    }
+  }
   .price-pill {
     margin-top: 0.125rem;
+  }
+}
+
+.menu-list {
+  .menu-list-group.starters {
+    .list-group-item:not(:last-child) {
+      padding-bottom: 0.25rem;
+    }
+  }
+
+  .menu-list-group.mains {
+    .list-group-item:not(:last-child) {
+      padding-bottom: 0.5rem;
+    }
   }
 }
 

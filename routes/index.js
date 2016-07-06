@@ -22,7 +22,7 @@ router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
         });
 });
 
-router.get('/about', function (req, res, next) {
+router.get('/about', counter.countVisitors, function (req, res, next) {
     res.render('about', {visitorStats: req.visitorStats});
 });
 
