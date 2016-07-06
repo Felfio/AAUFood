@@ -151,6 +151,10 @@ body {
   .fa-rebel {
     @include footerIcon(#F1592A);
   }
+
+  .fa-star {
+    @include footerIcon(gold);
+  }
 }
 
 html, body {

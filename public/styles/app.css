@@ -186,6 +186,10 @@ body {
     vertical-align: middle;
     font-size: 1.25em;
     color: #F1592A; }
+  .footer .fa-star {
+    vertical-align: middle;
+    font-size: 1.25em;
+    color: gold; }
 
 html, body {
   height: calc(100% - 2rem); }
