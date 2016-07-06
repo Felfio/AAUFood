@@ -1,10 +1,12 @@
 <footer class="footer">
-    <span class="daily-counter" title="Tägliche Besucher">
+    <span class="daily-counter" title="Besucher heute">
         <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
         <%= visitorStats.dailyVisitors %>
     </span>
-    <a href="/about" class="footer-link">Crafted with <i class="fa heart fa-heart" aria-hidden="true"></i></a>
-    <span class="overall-counter" title="Gesamt Besucher">
+
+    <%- footerPun %>
+
+    <span class="overall-counter" title="Besucher gesamt">
          <%= visitorStats.overallVisitors %>
         <i class="fa fa-fw fa-calendar-o" aria-hidden="true"></i>
     </span>

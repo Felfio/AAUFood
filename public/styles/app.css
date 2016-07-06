@@ -164,20 +164,28 @@ body {
   background-color: #202122;
   color: #eceeef;
   text-align: center; }
-  .footer .footer-link {
+  .footer a {
     color: #eceeef; }
-    .footer .footer-link:hover {
+    .footer a:hover {
       text-decoration: none; }
-    .footer .footer-link .heart {
-      vertical-align: middle;
-      font-size: 1.25em;
-      color: #DF0101; }
   .footer .daily-counter {
     float: left;
     margin-left: 0.9375rem; }
   .footer .overall-counter {
     float: right;
     margin-right: 0.9375rem; }
+  .footer .fa-heart {
+    vertical-align: middle;
+    font-size: 1.25em;
+    color: #DF0101; }
+  .footer .fa-empire {
+    vertical-align: middle;
+    font-size: 1.25em;
+    color: #A00000; }
+  .footer .fa-rebel {
+    vertical-align: middle;
+    font-size: 1.25em;
+    color: #F1592A; }
 
 html, body {
   height: calc(100% - 2rem); }

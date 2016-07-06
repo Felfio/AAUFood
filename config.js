@@ -1,3 +1,5 @@
+const FooterPun = require("./models/footerPun");
+
 module.exports = {
     cache: {
         redisUrl: "//localhost:6379",
@@ -20,5 +22,10 @@ module.exports = {
         paramKey: "${param}",
         numbersApi: "http://numbersapi.com/${param}",
         catFactsApi: `http://catfacts-api.appspot.com/api/facts?number=1` //We want to work with single facts, so number is not a param here
-    }
+    },
+    footerPuns: [
+        new FooterPun("heart", "Crafted with", "fa-heart"),
+        new FooterPun("empire", "Constructed for the", "fa-empire", "http://starwars.wikia.com/wiki/Galactic_Empire"),
+        new FooterPun("rebellion", "Join the", "fa-rebel", "http://starwars.wikia.com/wiki/Alliance_to_Restore_the_Republic")
+    ]
 };

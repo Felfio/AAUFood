@@ -104,6 +104,12 @@ body {
   @include restaurantColors($uniwirtPurple, white);
 }
 
+@mixin footerIcon($color) {
+  vertical-align: middle;
+  font-size: 1.25em;
+  color: $color;
+}
+
 /*Footer*/
 .footer {
   position: relative;
@@ -116,17 +122,11 @@ body {
   color: #eceeef;
   text-align: center;
 
-  .footer-link {
+  a {
     color: #eceeef;
 
     &:hover {
       text-decoration: none;
-    }
-
-    .heart {
-      vertical-align: middle;
-      font-size: 1.25em;
-      color: #DF0101;
     }
   }
 
@@ -138,6 +138,18 @@ body {
   .overall-counter {
     float: right;
     margin-right: $outerPadding;
+  }
+
+  .fa-heart {
+    @include footerIcon(#DF0101);
+  }
+
+  .fa-empire {
+    @include footerIcon(#A00000);
+  }
+
+  .fa-rebel {
+    @include footerIcon(#F1592A);
   }
 }
 
