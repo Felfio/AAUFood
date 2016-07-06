@@ -15,5 +15,10 @@ module.exports = {
     cookie: {
         // 30 days in milliseconds
         maxAge: 2592000000
+    },
+    externalApis: {
+        paramKey: "${param}",
+        numbersApi: "http://numbersapi.com/${param}",
+        catFactsApi: `http://catfacts-api.appspot.com/api/facts?number=1` //We want to work with single facts, so number is not a param here
     }
 };
