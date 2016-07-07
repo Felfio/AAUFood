@@ -35,4 +35,9 @@ router.get('/logs', function (req, res) {
     res.download('logfile.log');
 });
 
+router.get('/sync', function (req, res) {
+    cache.update();
+    res.send("Ok")
+});
+
 module.exports = router;

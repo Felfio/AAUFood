@@ -124,14 +124,17 @@ function parseMensa(html, day) {
 }
 
 function createFoodFromMenuSection(section, menu, dayInWeek) {
-    let price = null;
-    let priceArray = section.find('.menu-item-content').eq(dayInWeek).find('.menu-item-price').text().match(/€ (\S*)/);
-    if(priceArray && priceArray.length) {
+    var price = null;
+    var priceArray = section.find('.menu-item-content').eq(dayInWeek).find('.menu-item-price').text().match(/€ (\S*)/);
+    if (priceArray && priceArray.length) {
         price = priceArray[1];
         price = +price.replace(',', '.');
     }
 
-    return new Food(menu, price);
+    //isInfo <=> price could not get parsed (or is empty --> 0) and there is only one line of text
+    var isInfo = (price == null || isNaN(price) || price === 0) && menu.length === 1;
+
+    return new Food(menu, price, isInfo);
 }
 
 function getUniPizzeriaPlan(day) {

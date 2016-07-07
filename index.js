@@ -12,6 +12,7 @@ const indexRoutes = require('./routes/index');
 const foodRoutes = require('./routes/food');
 const winston = require('winston');
 const timeHelper = require('./helpers/timeHelper');
+const mensaMenuNameHelper = require('./helpers/mensaMenuNameHelper');
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
@@ -52,6 +53,7 @@ app.use(function (err, req, res, next) {
 });
 
 app.locals.weekDayName = timeHelper.weekDayName;
+app.locals.getMensaMenuName = mensaMenuNameHelper.getMenuName;
 
 app.listen(3000, function () {
     console.log('Example app listening on port 3000!');

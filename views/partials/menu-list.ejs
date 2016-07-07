@@ -21,7 +21,9 @@
         <ul class="list-group menu-list-group mains">
             <% menu.mains.forEach(function (main) { %>
             <li class="list-group-item">
-                <span class="label label-default label-pill price-pill pull-xs-right"><%= main.price + " €" %></span>
+                <% if(main.price != null) { %>
+                    <span class="label label-default label-pill price-pill pull-xs-right"><%= main.price + " €" %></span>
+                <% }%>
                       <span class="menu-name">
                         <%= main.name %>
                       </span>
