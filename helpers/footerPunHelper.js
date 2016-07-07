@@ -17,7 +17,7 @@ function formatFooterPun(footerPun) {
     //We keep the template here, as template strings cannot be stored (in config e.g.) for later interpolation
     var html = `<a href="/about">${footerPun.preText}</a>
      <a href="${iconLink}">
-        <i class="fa ${footerPun.icon}" aria-hidden="true"></i>`;
+        <i class="fa ${footerPun.icon}" aria-hidden="true"></i></a>`;
     if (footerPun.postText) {
         html += `<a href="/about">${footerPun.postText}</a>`;
     }

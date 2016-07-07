@@ -59,11 +59,13 @@ app.locals.getMensaMenuName = mensaMenuNameHelper.getMenuName;
 app.locals.getFooterPun = footerPunHelper.getFooterPun;
 app.locals.userFriendlyUrl = restaurant => config.userFriendlyUrls[restaurant];
 
-app.listen(3000, function () {
+var server = app.listen(3000, function () {
     console.log('Example app listening on port 3000!');
 });
 
+const io = require('socket.io')(server);
+
 menuCache.init(redisClient);
-visitorCache.init(redisClient);
+visitorCache.init(redisClient, io);
 
 setInterval(() => menuCache.update(), config.cache.intervall);
