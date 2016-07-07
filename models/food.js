@@ -3,7 +3,8 @@
 class Food {
     constructor(name, price) {
         this.name = name;
-        this.price = price;
+        if(price != null && !isNaN(price))
+            this.price = price;
     }
 }
 

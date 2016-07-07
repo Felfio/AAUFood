@@ -112,21 +112,26 @@ function parseMensa(html, day) {
 
     result.mains = [];
     if (currentDay1.length) {
-        var currentDay1Price = $classic1.find('.menu-item-content').eq(dayInWeek).find('.menu-item-price').text().match(/€ (\S*)/)[1];
-        currentDay1Price = +currentDay1Price.replace(',', '.');
-        result.mains.push(new Food(currentDay1, currentDay1Price));
+        result.mains.push(createFoodFromMenuSection($classic1, currentDay1, dayInWeek));
     }
     if (currentDay2.length) {
-        var currentDay2Price = $classic2.find('.menu-item-content').eq(dayInWeek).find('.menu-item-price').text().match(/€ (\S*)/)[1];
-        currentDay2Price = +currentDay2Price.replace(',', '.');
-        result.mains.push(new Food(currentDay2, currentDay2Price));
+        result.mains.push(createFoodFromMenuSection($classic2, currentDay2, dayInWeek));
     }
     if (currentDaySpecial.length) {
-        var currentDaySpecialPrice = $dailySpecial.find('.menu-item-content').eq(dayInWeek).find('.menu-item-price').text().match(/€ (\S*)/)[1];
-        currentDaySpecialPrice = +currentDaySpecialPrice.replace(',', '.');
-        result.mains.push(new Food(currentDaySpecial, currentDaySpecialPrice));
+        result.mains.push(createFoodFromMenuSection($dailySpecial, currentDaySpecial, dayInWeek));
     }
     return result;
+}
+
+function createFoodFromMenuSection(section, menu, dayInWeek) {
+    let price = null;
+    let priceArray = section.find('.menu-item-content').eq(dayInWeek).find('.menu-item-price').text().match(/€ (\S*)/);
+    if(priceArray && priceArray.length) {
+        price = priceArray[1];
+        price = +price.replace(',', '.');
+    }
+
+    return new Food(menu, price);
 }
 
 function getUniPizzeriaPlan(day) {
