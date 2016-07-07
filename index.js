@@ -57,6 +57,7 @@ app.use(function (err, req, res, next) {
 app.locals.weekDayName = timeHelper.weekDayName;
 app.locals.getMensaMenuName = mensaMenuNameHelper.getMenuName;
 app.locals.getFooterPun = footerPunHelper.getFooterPun;
+app.locals.userFriendlyUrl = restaurant => config.userFriendlyUrls[restaurant];
 
 app.listen(3000, function () {
     console.log('Example app listening on port 3000!');

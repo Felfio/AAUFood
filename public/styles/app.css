@@ -107,6 +107,10 @@ body {
 
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }
+  .card .card-block .error p {
+    margin-bottom: 0.25rem; }
+    .card .card-block .error p:last-child {
+      margin-bottom: 0; }
 
 .menu-list.card, .combined-menu-list.card {
   border: none; }

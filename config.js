@@ -18,6 +18,12 @@ module.exports = {
         uniwirtUrl: "http://www.uniwirt.at/Default.aspx?SIid=4&LAid=1",
         mittagstischUrl: "http://www.lakeside-scitec.com/services/gastronomie/mittagstisch/"
     },
+    userFriendlyUrls: {
+        //Usually the same as the scraper ones
+        mensa: "http://menu.mensen.at/index/index/locid/45",
+        uniwirt: "http://www.uniwirt.at/Default.aspx?SIid=4&LAid=1",
+        mittagstisch: "http://www.lakeside-scitec.com/services/gastronomie/mittagstisch/"
+    },
     cookie: {
         // 30 days in milliseconds
         maxAge: 2592000000
