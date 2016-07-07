@@ -5,7 +5,6 @@ const menuCache = require('../caching/menuCache');
 const externalApis = require('../externals/externalApis');
 const visitorCache = require('../caching/visitorCache');
 const timeHelper = require('../helpers/timeHelper');
-const footerPunHelper = require('../helpers/footerPunHelper');
 const counter = require('../middleware/visitorCounter');
 
 router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
@@ -20,7 +19,6 @@ router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
                 mensa: JSON.parse(results[1]),
                 mittagstisch: JSON.parse(results[2]),
                 visitorStats: req.visitorStats,
-                footerPun: footerPunHelper.getRandomFooterPun()
             });
         });
 });
@@ -40,7 +38,6 @@ router.get('/about', counter.countVisitors, function (req, res, next) {
                 overallVisitiorsFact: facts[1],
                 catFact: facts[2],
                 visitorStats: req.visitorStats,
-                footerPun: footerPunHelper.getRandomFooterPun()
             });
         });
 });

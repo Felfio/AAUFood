@@ -2,12 +2,14 @@
 const config = require('../config');
 
 var footerPuns = config.footerPuns;
-var defaultPun = config.footerPuns[0];
 
 var footerPunsMap = {};
 for (let footerPun of footerPuns) {
     footerPunsMap[footerPun.name] = footerPun;
 }
+
+var defaultPun = getFooterPunByName(config.settings.defaultFooterPun);
+
 
 function formatFooterPun(footerPun) {
     var iconLink = footerPun.iconLink || "/about";
@@ -27,12 +29,20 @@ function getRandomFooterPun() {
     return formatFooterPun(rand);
 }
 
-function getFooterPun(name) {
+function getFooterPunByName(name) {
     var pun = footerPunsMap[name] || defaultPun;
     return formatFooterPun(pun);
 }
 
+function getFooterPun() {
+    if (config.settings.useRandomFooterPuns)
+        return getRandomFooterPun();
+    else
+        return defaultPun;
+}
+
 module.exports = {
     getRandomFooterPun: getRandomFooterPun,
+    getFooterPunByName: getFooterPunByName,
     getFooterPun: getFooterPun
 };

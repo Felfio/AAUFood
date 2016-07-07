@@ -1,6 +1,10 @@
 const FooterPun = require("./models/footerPun");
 
 module.exports = {
+    settings: {
+        useRandomFooterPuns: false,
+        defaultFooterPun: "heart"
+    },
     cache: {
         redisUrl: "//localhost:6379",
         // Time in miliseconds -> 20 min.
