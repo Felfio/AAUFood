@@ -17,7 +17,8 @@ module.exports = {
                 loader: "url-loader?limit=10000&mimetype=application/font-woff"
             },
             {test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader"},
-            {test: /\.png$/, loader: "url?limit=10000"}
+            {test: /\.png$/, loader: "url?limit=10000"},
+            {test: /\.jpg$/, loader: "url?limit=10000"}
         ]
     },
     plugins: [
