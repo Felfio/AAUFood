@@ -1,20 +1,16 @@
 <footer class="footer">
     <span class="daily-counter" title="Tägliche Besucher">
         <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
-        <%= visitorStats.dailyVisitors %>
+        <span id="dailyVisitors"><%= visitorStats.dailyVisitors %></span>
     </span>
     <a href="/about" class="footer-link">Crafted with <i class="fa heart fa-heart" aria-hidden="true"></i></a>
     <span class="overall-counter" title="Gesamt Besucher">
-         <%= visitorStats.overallVisitors %>
+          <span id="overallVisitors"><%= visitorStats.overallVisitors %></span>
         <i class="fa fa-fw fa-calendar-o" aria-hidden="true"></i>
     </span>
 </footer>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="https://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
-<script src="/modules/swipejs/build/swipe.min.js"></script>
-
-<%- include('partials/on-site-scripts') %>
+<script src="/dist/bundle.js"></script>
 
 </body>
 </html>

@@ -10,9 +10,10 @@ const overallVisitorKey = config.cache.overallVisitorKey;
 const dailyVisitorKey = config.cache.dailyVisitorKey;
 
 class VisitorCache extends EventEmitter {
-    init(redisClient) {
+    init(redisClient, io) {
         this.client = redisClient;
-        this.client.setnxAsync(dailyVisitorKey, 0)
+        this.client.setnxAsync(dailyVisitorKey, 0);
+        this.io = io;
     }
 
     getCounters() {
@@ -35,7 +36,10 @@ class VisitorCache extends EventEmitter {
         // If no visit is registered, or user has not visited today.
         if (!lastCountedVisit || (lastCountedVisit && (new Date(lastCountedVisit) < currentDayMidnight))) {
             session.lastCountedVisit = currentDayMidnight;
-            return this._incrementCounters();
+            return this._incrementCounters().then(stats => {
+                this.io.emit('newVisitor', stats);
+                return stats;
+            });
         }
         // User already visited today.
         else {
