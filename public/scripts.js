@@ -36,3 +36,13 @@ function sanitizeDay(incDay) {
         return incDay % 7;
     }
 }
+
+window.onkeyup = function (e) {
+    var key = e.keyCode ? e.keyCode : e.which;
+
+    if (key == 37) {
+        swipe.prev();
+    } else if (key == 39) {
+        swipe.next();
+    }
+};
