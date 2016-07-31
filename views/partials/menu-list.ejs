@@ -1,39 +1,52 @@
-<div class="card <%= restaurantName.toLowerCase() %> menu-list">
+<% var restaurantNameLower = restaurantName.toLowerCase();%>
+<div class="card <%= restaurantNameLower %> menu-list">
     <h3 class="card-header"><%= restaurantName %></h3>
     <div class="card-block">
-        <% if (menu != null && menu.closed){ %>
-        <div class="text-xs-center">
-            <i class="fa fa-bed fa-2x" aria-hidden="true"></i><br>
-            Heute leider geschlossen.
-        </div>
-        <% } else if (menu == null || menu.error) { %>
-        <div class="text-xs-center error">
-            <i class="fa fa-frown-o fa-2x fa-fw" aria-hidden="true"></i><br>
-            <p>Leider konnten wir die Daten nicht abrufen.</p>
-            <p>Sie sollten aber auf der <a href="<%= userFriendlyUrl(restaurantName.toLowerCase()) %>" target="_blank">Homepage
-                    des Restaurants</a> stehen.<br></p>
-            <p>Wir kümmern uns bald darum! <i class="fa fa-smile-o fa-fw" aria-hidden="true"></i></p>
-        </div>
+        <% var breakInfo = getBreakInfo(restaurantNameLower)%>
+        <% if(isOnBreak(breakInfo)) {%>
+            <div class="on-break">
+                <h5><%= breakInfo.title %></h5>
+                <p class="break-text"><%= breakInfo.text %></p>
+                <p class="break-date">
+                    <%= breakInfo.from %> - <%= breakInfo.to %>
+                </p>
+                <i class="fa <%= breakInfo.icon %> fa-2x" aria-hidden="true"></i>
+            </div>
         <% } else { %>
-        <ul class="list-group menu-list-group starters">
-            <% menu.starters.forEach(function (starter) { %>
-            <li class="list-group-item"><%= starter.name %></li>
-            <% }); %>
-        </ul>
-        <% if(menu.mains.length) { %>
-        <ul class="list-group menu-list-group mains">
-            <% menu.mains.forEach(function (main) { %>
-            <li class="list-group-item">
-                <% if(main.price != null) { %>
-                    <span class="label label-default label-pill price-pill pull-xs-right"><%= main.price + " €" %></span>
-                <% }%>
-                      <span class="menu-name">
-                        <%= main.name %>
-                      </span>
-            </li>
-            <% }); %>
-        </ul>
-        <% } %>
+            <% if (menu != null && menu.closed){ %>
+            <div class="text-xs-center">
+                <i class="fa fa-bed fa-2x" aria-hidden="true"></i><br>
+                Heute leider geschlossen.
+            </div>
+            <% } else if (menu == null || menu.error) { %>
+            <div class="text-xs-center error">
+                <i class="fa fa-frown-o fa-2x fa-fw" aria-hidden="true"></i><br>
+                <p>Leider konnten wir die Daten nicht abrufen.</p>
+                <p>Sie sollten aber auf der <a href="<%= userFriendlyUrl(restaurantNameLower) %>" target="_blank">Homepage
+                        des Restaurants</a> stehen.<br></p>
+                <p>Wir kümmern uns bald darum! <i class="fa fa-smile-o fa-fw" aria-hidden="true"></i></p>
+            </div>
+            <% } else { %>
+            <ul class="list-group menu-list-group starters">
+                <% menu.starters.forEach(function (starter) { %>
+                <li class="list-group-item"><%= starter.name %></li>
+                <% }); %>
+            </ul>
+            <% if(menu.mains.length) { %>
+            <ul class="list-group menu-list-group mains">
+                <% menu.mains.forEach(function (main) { %>
+                <li class="list-group-item">
+                    <% if(main.price != null) { %>
+                        <span class="label label-default label-pill price-pill pull-xs-right"><%= main.price + " €" %></span>
+                    <% }%>
+                          <span class="menu-name">
+                            <%= main.name %>
+                          </span>
+                </li>
+                <% }); %>
+            </ul>
+            <% } %>
+            <% } %>
         <% } %>
     </div>
 </div>

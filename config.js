@@ -1,9 +1,14 @@
 const FooterPun = require("./models/footerPun");
+const BreakInfo = require("./models/breakInfo");
 
 module.exports = {
     settings: {
         useRandomFooterPuns: false,
         defaultFooterPun: "heart"
+    },
+    onBreak: {
+        //The dates are only rendered, never used for checking if closed!
+        mensa: new BreakInfo("Sommerpause", "Das Mensa-Team macht Pause.", "1.8 ", "31.8", "fa-sun-o")
     },
     cache: {
         redisUrl: "//localhost:6379",
@@ -12,7 +17,6 @@ module.exports = {
         overallVisitorKey: "overallVisitors",
         dailyVisitorKey: "dailyVisitors"
     },
-
     scraper: {
         mensaUrl: "http://menu.mensen.at/index/index/locid/45",
         uniwirtUrl: "http://www.uniwirt.at/Default.aspx?SIid=4&LAid=1",

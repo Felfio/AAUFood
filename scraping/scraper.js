@@ -278,7 +278,7 @@ function contains(str, ignoreCase, searches) {
 }
 
 function setErrorOnEmpty(menu) {
-    if(!menu.starters.length || menu.mains.length || menu.alacarte.length) {
+    if (!(menu.starters.length || menu.mains.length || menu.alacarte.length)) {
         menu.error = true;
     }
     return menu;

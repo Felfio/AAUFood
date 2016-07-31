@@ -14,6 +14,7 @@ const winston = require('winston');
 const timeHelper = require('./helpers/timeHelper');
 const mensaMenuNameHelper = require('./helpers/mensaMenuNameHelper');
 const footerPunHelper = require('./helpers/footerPunHelper');
+const breakHelper = require('./helpers/breakHelper');
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
@@ -58,6 +59,8 @@ app.locals.weekDayName = timeHelper.weekDayName;
 app.locals.getMensaMenuName = mensaMenuNameHelper.getMenuName;
 app.locals.getFooterPun = footerPunHelper.getFooterPun;
 app.locals.userFriendlyUrl = restaurant => config.userFriendlyUrls[restaurant];
+app.locals.isOnBreak = breakHelper.isOnBreak;
+app.locals.getBreakInfo = breakHelper.getBreakInfo;
 
 var server = app.listen(3000, function () {
     console.log('Example app listening on port 3000!');
