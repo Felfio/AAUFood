@@ -61,7 +61,7 @@ function parseUniwirt(html, day) {
         }
     });
 
-    return result;
+    return setErrorOnEmpty(result);
 }
 
 function getMensaWeekPlan() {
@@ -120,7 +120,7 @@ function parseMensa(html, day) {
     if (currentDaySpecial.length) {
         result.mains.push(createFoodFromMenuSection($dailySpecial, currentDaySpecial, dayInWeek));
     }
-    return result;
+    return setErrorOnEmpty(result);
 }
 
 function createFoodFromMenuSection(section, menu, dayInWeek) {
@@ -253,7 +253,7 @@ function parseMittagstisch(body, day) {
     });
 
 
-    return foodMenu;
+    return setErrorOnEmpty(foodMenu);
 }
 
 
@@ -275,6 +275,13 @@ function contains(str, ignoreCase, searches) {
         }
     }
     return false;
+}
+
+function setErrorOnEmpty(menu) {
+    if(!menu.starters.length || menu.mains.length || menu.alacarte.length) {
+        menu.error = true;
+    }
+    return menu;
 }
 
 module.exports = {
