@@ -24,4 +24,10 @@ Aktuell:
 * EJS
 * Bootstrap 4 Alpha
 * SASS
+* Redis für das Cachen der Menüs
+* Socket.IO für Live-Updates der Besucherzahlen
 
+## Externe Dienste
+* [placekitten](placekitten.com) für zufällige Katzenbilder
+* [CatFacts API](http://catfacts-api.appspot.com/) für zufällige Fakten über Katzen
+* [NumbersAPI](http://numbersapi.com/#42) für zufällige Fakten zu den Besucherzahlen
