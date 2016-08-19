@@ -15,6 +15,7 @@ const timeHelper = require('./helpers/timeHelper');
 const mensaMenuNameHelper = require('./helpers/mensaMenuNameHelper');
 const footerPunHelper = require('./helpers/footerPunHelper');
 const breakHelper = require('./helpers/breakHelper');
+const placeKittenHelper = require('./helpers/placeKittenHelper');
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
@@ -61,9 +62,10 @@ app.locals.getFooterPun = footerPunHelper.getFooterPun;
 app.locals.userFriendlyUrl = restaurant => config.userFriendlyUrls[restaurant];
 app.locals.isOnBreak = breakHelper.isOnBreak;
 app.locals.getBreakInfo = breakHelper.getBreakInfo;
+app.locals.catFactHeaderUrl = placeKittenHelper.catFactHeaderUrl;
 
 var server = app.listen(3000, function () {
-    console.log('Example app listening on port 3000!');
+    console.log('AAU Food listening on port 3000!');
 });
 
 const io = require('socket.io')(server);

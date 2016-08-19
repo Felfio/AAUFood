@@ -14,23 +14,72 @@
                 </a>
             </div>
         </div>
+
         <div class="row">
-            <div class="col-xs-4 col-xs-offset-4 back-icon-container">
-                <div class="card center-block">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="card about-us">
+                    <h3 class="card-header">Über uns</h3>
                     <div class="card-block">
-                        <i class="fa fa-cog fa-3x fa-spin" aria-hidden="true"></i>
+                        <p class="card-text">
+                            Diese Homepage ist ein Hobbyprojekt und steht in keinerlei Verbindung mit den angeführten
+                            Restaurants.
+                        </p>
+                        <p class="card-text">Allerlei Infos zum technischen Krimskrams findet ihr auf unserer
+                            <a
+                                    href="https://github.com/Knechtcraft/AAUFood"
+                                    style="white-space: nowrap;">
+                                <i class="fa fa-github" aria-hidden="true"></i>
+                                GitHub Projektseite
+                            </a>.
+                        </p>
                     </div>
                 </div>
             </div>
-            <br>
-
         </div>
-        <div class="row">
-            <div class="col-xs-12 text-xs-center">
-                <h3>Under Construction</h3>
+
+        <div class="row number-facts">
+            <div class="col-sm-4 col-sm-offset-2">
+                <div class="card">
+                    <div class="card-block">
+                        <h4 class="card-title">
+                            <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
+                            Besucher heute: <%= visitorStats.dailyVisitors %></h4>
+                        <p class="card-text">
+                            <%= dailyVisitorsFact %></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-block">
+                        <h4 class="card-title">
+                            <i class="fa fa-fw fa-calendar-o" aria-hidden="true"></i>
+                            Insgesamt: <%= visitorStats.overallVisitors %></h4>
+                        <p class="card-text">
+                            <%= overallVisitiorsFact %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row cat-fact">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="card">
+                    <div class="card-img-top cat-fact-header">
+                        <img src="<%= catFactHeaderUrl() %>" alt="Random Kitten Image"/>
+                    </div>
+                    <div class="card-block">
+                        <h4 class="card-title">Random Cat Fact</h4>
+                        <p class="card-text">
+                            <%= catFact %></p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+
+</script>
 
 <% include partials/footer.ejs %>
