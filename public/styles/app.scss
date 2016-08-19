@@ -183,6 +183,9 @@ body {
   .fa-star {
     @include footerIcon(gold);
   }
+  .fa-space-shuttle {
+    @include footerIcon(#0093ff);
+  }
 }
 
 html, body {

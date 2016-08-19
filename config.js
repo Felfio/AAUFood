@@ -3,7 +3,7 @@ const BreakInfo = require("./models/breakInfo");
 
 module.exports = {
     settings: {
-        useRandomFooterPuns: false,
+        useRandomFooterPuns: true,
         defaultFooterPun: "heart"
     },
     onBreak: {
@@ -45,6 +45,7 @@ module.exports = {
         new FooterPun("empire", "Constructed for the", "fa-empire", "http://starwars.wikia.com/wiki/Galactic_Empire"),
         new FooterPun("rebellion", "Join the", "fa-rebel", "http://starwars.wikia.com/wiki/Alliance_to_Restore_the_Republic"),
         new FooterPun("star", "Hey look!", "fa-star fa-spin", null, " It's spinning!"),
-        new FooterPun("keyboard", "Have you tried using your ", "fa-keyboard", null, " arrows on desktop?")
+        new FooterPun("keyboard", "Have you tried using your ", "fa-keyboard-o", null, " arrows on desktop?"),
+        new FooterPun("infinity", "To infinity ", "fa-space-shuttle", null, " and beyond!")
     ]
 };
