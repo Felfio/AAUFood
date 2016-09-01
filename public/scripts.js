@@ -19,6 +19,15 @@ var swipe = new Swipe(document.getElementById('slider'), {
 $(".nav-icon.left").click(swipe.prev);
 $(".nav-icon.right").click(swipe.next);
 
+var names = ["<span id='kristina'>Kristina</span>", "<span id='markus'>Markus</span>", "<span id='fabian'>Fabian</span>"];
+swapNames();
+if(window.location.pathname.indexOf("/about") === 0) {
+    setInterval(swapNames, 5000);
+}
+
+var mailPre = "knechtcraft", mailDomain = "gmail.com";
+$("#mail").text(mailPre + "@" + mailDomain);
+
 var socket = io('/');
 socket.on('newVisitor', function (data) {
     console.log(data);
@@ -46,3 +55,24 @@ window.onkeyup = function (e) {
         swipe.next();
     }
 };
+
+function swapNames() {
+    shuffle(names);
+    $("#name0").html(names[0]);
+    $("#name1").html(names[1]);
+    $("#name2").html(names[2]);
+}
+
+/**
+ * Shuffles array in place.
+ * @param {Array} a items The array containing the items.
+ */
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length; i; i--) {
+        j = Math.floor(Math.random() * i);
+        x = a[i - 1];
+        a[i - 1] = a[j];
+        a[j] = x;
+    }
+}

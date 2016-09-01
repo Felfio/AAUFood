@@ -63,3 +63,28 @@ $card-header-bg: rgba(0, 0, 0, 0.7);
   width: 100%;
   height: auto;
 }
+
+@mixin name($color) {
+  color: $color ;
+  font-weight: bold;
+}
+
+#kristina {
+  @include name(darkorange);
+}
+
+#fabian {
+  @include name(#09B22E);
+}
+
+#markus {
+  @include name(#4B09B2);
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+#mail {
+  font-style: italic;
+}

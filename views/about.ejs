@@ -1,4 +1,4 @@
-<% var title = 'AAU Food: About'; %>
+<% var title='AAU Food: About' ; %>
 <% include partials/header.ejs %>
 
 <div class="container">
@@ -16,40 +16,24 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-lg-6 col-lg-offset-3">
                 <div class="card about-us">
                     <h3 class="card-header">Über uns</h3>
                     <div class="card-block">
-                        <p class="card-text">Diese Homepage ist ein Hobbyprojekt und steht in
-                        keinerlei Verbindung mit den angeführten Restaurants. Damit sind die
-                        Formalitäten erledigt.</p>
-                        <p class="card-text">So ein Mittagessen kann schon was und man sollte
-                        nie auf eine anständige Mahlzeit zu Mittag verzichten. Die Studenten an
-                        der Alpen-Adria-Universität Klagenfurt haben es aber auch ziemlich gut
-                        mit dem Angebot rund um den Campus erwischt. Zahlreiche Mittagsmenüs
-                        werden tagtäglich angeboten, doch fehlt einem oft der Überblick. Wann
-                        gibt es wo was? Da muss man dann schon jede Website abklappern und sich
-                        dann auch noch irgendwie das Angebot merken und wie viel es kostet. Zum
-                        Glück war ein paar Informatikern recht langweilig und sie haben dieses
-                        Problem ganz einfach, still und leise gelöst. Auf [[food.felf.ga]]
-                        findet man die aktuellen Mittagsmenüs von Lokalen am Campus und das
-                        Vergleichen fällt ganz leicht. So kommt man noch schneller und leichter
-                        zu einem wohlverdienten Mittagessen. Es wird noch fleißig an der
-                        Ergänzung der Lokale gearbeitet – wenn ihr allerdings etwas ganz fest
-                        vermisst, schreibt einfach eine Nachricht an knechtcraft@gmail.com und
-                        wir tun unser bestes eure Wünsche zu erfüllen. Also Mahlzeit und lasst
-                        es euch schmecken!</p>
-                        <p class="card-text">Hinter dem Projekt stehen Fabian, Markus und
-                        Kristina. Auf Kristinas Jammern hin, dass es so umständlich ist das
-                        beste Mittagessen zu finden, war die Grundidee geboren. Fabian und
-                        Markus, die besagten Informatiker, haben nicht lange gebraucht und
-                        schon kommt die ganze AAU in den Genuss von [[food.felf.ga]].</p>
-                        <p class="card-text">Allerlei Infos zum technischen Krimskrams findet
-                        ihr auf unserer 
-                        <a href="https://github.com/Knechtcraft/AAUFood" style=
-                        "white-space: nowrap;">
-                            <i aria-hidden="true" class="fa fa-github"></i>
-                        GitHub Projektseite</a>.
+                        <p class="card-text">Diese Homepage ist ein Hobbyprojekt und steht in keinerlei Verbindung mit den angeführten Restaurants. Damit sind die Formalitäten erledigt.</p>
+                        <p class="card-text">So ein Mittagessen kann schon was und man sollte nie auf eine anständige Mahlzeit verzichten. Die Studenten an der Alpen-Adria-Universität Klagenfurt haben es aber auch ziemlich gut mit dem Angebot rund um den Campus erwischt. Zahlreiche Mittagsmenüs werden tagtäglich angeboten, doch fehlt einem oft der Überblick. Wann gibt es wo was? Da muss man dann schon jede Website abklappern und sich dann auch noch irgendwie das Angebot merken und wie viel es kostet. Zum Glück war ein paar Informatikern recht langweilig und sie haben dieses Problem ganz einfach, still und leise gelöst. Auf
+                            <a class="nowrap" href="/">
+                                <i class="fa fa-cutlery" aria-hidden="true"></i> AAU Food
+                            </a>
+                            findet man die aktuellen Mittagsmenüs von Lokalen am Campus und das Vergleichen fällt ganz leicht. So kommt man noch schneller und leichter zu einem wohlverdienten Mittagessen. Es wird noch fleißig an der Ergänzung der Lokale gearbeitet – wenn ihr allerdings etwas ganz fest vermisst, schreibt einfach eine Nachricht an <span id="mail">uns</span> und wir tun unser Bestes, eure Wünsche zu erfüllen. Also Mahlzeit und lasst es euch schmecken!</p>
+                        <p class="card-text">
+                            Hinter dem Projekt stehen <span id="name0"><span id="fabian">Fabian</span></span>, <span id="name1"><span id="markus">Markus</span></span> und <span id="name2"><span id="kristina">Kristina</span></span>. Auf Kristinas Jammern hin, dass es so umständlich ist, das beste Mittagessen zu finden, war die Grundidee geboren. Fabian und Markus, die besagten Informatiker, haben nicht lange gebraucht und schon kommt die ganze AAU in den Genuss von
+                            <a class="nowrap" href="/">
+                                <i class="fa fa-cutlery" aria-hidden="true"></i> AAU Food</a>.
+                        </p>
+                        <p class="card-text">Allerlei Infos zum technischen Krimskrams findet ihr auf unserer
+                            <a class="nowrap" href="https://github.com/Knechtcraft/AAUFood">
+                                <i aria-hidden="true" class="fa fa-github"></i> GitHub Projektseite</a>.
                         </p>
                     </div>
                 </div>
@@ -57,39 +41,42 @@
         </div>
 
         <div class="row number-facts">
-            <div class="col-sm-4 col-sm-offset-2">
+            <div class="col-lg-4 col-lg-offset-2">
                 <div class="card">
                     <div class="card-block">
                         <h4 class="card-title">
                             <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
                             Besucher heute: <%= visitorStats.dailyVisitors %></h4>
                         <p class="card-text">
-                            <%= dailyVisitorsFact %></p>
+                            <%= dailyVisitorsFact %>
+                        </p>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-lg-4">
                 <div class="card">
                     <div class="card-block">
                         <h4 class="card-title">
                             <i class="fa fa-fw fa-calendar-o" aria-hidden="true"></i>
                             Insgesamt: <%= visitorStats.overallVisitors %></h4>
                         <p class="card-text">
-                            <%= overallVisitiorsFact %></p>
+                            <%= overallVisitiorsFact %>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row cat-fact">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-lg-6 col-lg-offset-3">
                 <div class="card">
                     <div class="card-img-top cat-fact-header">
-                        <img src="<%= catFactHeaderUrl() %>" alt="Random Kitten Image"/>
+                        <img src="<%= catFactHeaderUrl() %>" alt="Random Kitten Image" />
                     </div>
                     <div class="card-block">
                         <h4 class="card-title">Random Cat Fact</h4>
                         <p class="card-text">
-                            <%= catFact %></p>
+                            <%= catFact %>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -98,7 +85,6 @@
 </div>
 
 <script>
-
 </script>
 
 <% include partials/footer.ejs %>

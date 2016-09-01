@@ -8,7 +8,7 @@ module.exports = {
     },
     onBreak: {
         //The dates are only rendered, never used for checking if closed!
-        mensa: new BreakInfo("Sommerpause", "Das Mensa-Team macht Pause.", "1.8 ", "31.8", "fa-sun-o")
+        //mensa: new BreakInfo("Sommerpause", "Das Mensa-Team macht Pause.", "1.8 ", "31.8", "fa-sun-o")
     },
     cache: {
         redisUrl: "//localhost:6379",
@@ -45,7 +45,7 @@ module.exports = {
         new FooterPun("empire", "Constructed for the", "fa-empire", "http://starwars.wikia.com/wiki/Galactic_Empire"),
         new FooterPun("rebellion", "Join the", "fa-rebel", "http://starwars.wikia.com/wiki/Alliance_to_Restore_the_Republic"),
         new FooterPun("star", "Hey look!", "fa-star fa-spin", null, " It's spinning!"),
-        new FooterPun("keyboard", "Have you tried using your ", "fa-keyboard-o", null, " arrows on desktop?"),
+        new FooterPun("keyboard", "Use your ", "fa-keyboard-o", null, " arrows on desktop!"),
         new FooterPun("infinity", "To infinity ", "fa-space-shuttle", null, " and beyond!")
     ]
 };
