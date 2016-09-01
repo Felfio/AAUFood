@@ -2,6 +2,7 @@
 @import '~font-awesome/css/font-awesome.css';
 @import 'spinner.scss';
 @import 'about.scss';
+/*@import 'ribbons.scss';*/
 
 /*Colors and definitions*/
 $mittagstischGreen: #5fb127;
@@ -237,7 +238,7 @@ html, body {
   cursor: pointer;
 
   // Small devices (landscape phones, less than 48em)
-  @media (max-width: 47.9em) {
+  @media (max-width: 61.9em) {
     &.center {
       display: none;
     }
@@ -258,7 +259,7 @@ html, body {
   }
 
   // Medium devices (tablets, 48em and up)
-  @media (min-width: 48em) {
+  @media (min-width: 62em) {
     z-index: 5000;
     position: fixed;
     top: 40vh;
