@@ -11,6 +11,7 @@ const timeHelper = require('../helpers/timeHelper');
 var MensaUrl = config.scraper.mensaUrl;
 var UniwirtUrl = config.scraper.uniwirtUrl;
 var MittagstischUrl = config.scraper.mittagstischUrl;
+var PizzeriaUrl = config.scraper.unipizzeriaUrl;
 
 function parseWeek(html, parseFunction) {
     var menus = [];
@@ -123,6 +124,77 @@ function parseMensa(html, day) {
     return setErrorOnEmpty(result);
 }
 
+function getUniPizzeriaWeekPlan() {
+    return request.getAsync(PizzeriaUrl)
+        .then(res => res.body)
+        .then(body => parseWeek(body, parseUniPizzeria));
+}
+
+function getUniPizzeriaPlan(day) {
+    return request.getAsync(PizzeriaUrl)
+        .then(res => res.body)
+        .then(body => parseUniPizzeria(body, day));
+}
+
+function parseUniPizzeria(html, day) {
+
+  var result = new Menu();
+
+  var $ = cheerio.load(html);
+  var _days = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'je Mittagsteller € 7,80'];
+  var _uniPizzeriaPrice = 7.80;
+
+  var $menuContent = $('[itemprop="articleBody"]');
+
+  var dayInWeek;
+  if (day === null || day === undefined) {
+      dayInWeek = ((new Date()).getDay() + 6) % 7;
+  } else {
+      dayInWeek = day;
+  }
+
+  var currentFood = null;
+  $menuContent.find('p').each((index, item) => {
+
+    var content = $(item).text().trim();
+
+    // When the content of <p> is a weekday, start new food
+    if (_checkWeekday(content)) {
+      if (currentFood != null) {
+        result.mains.push(currentFood);
+      }
+      currentFood = new Food("", _uniPizzeriaPrice);
+    }
+    if (currentFood != null) {
+      currentFood.name += _replaceWeekday(content);
+    }
+
+  });
+
+  if (currentFood != null && currentFood.name.length > 0) {
+    result.mains.push(currentFood);
+  }
+  return setErrorOnEmpty(result);
+
+  function _replaceWeekday(str) {
+    for (var index in _days) {
+      str = str.replace(_days[index], "");
+    }
+    return str;
+  }
+
+  function _checkWeekday(str) {
+    var weekday = false;
+    for (var index in _days) {
+      if (str.indexOf(_days[index]) >= 0) {
+        weekday = true;
+      }
+    }
+    return weekday;
+  }
+
+}
+
 function createFoodFromMenuSection(section, menu, dayInWeek) {
     var price = null;
     var priceArray = section.find('.menu-item-content').eq(dayInWeek).find('.menu-item-price').text().match(/€ (\S*)/);
@@ -135,17 +207,6 @@ function createFoodFromMenuSection(section, menu, dayInWeek) {
     var isInfo = (price == null || isNaN(price) || price === 0) && menu.length === 1;
 
     return new Food(menu, price, isInfo);
-}
-
-function getUniPizzeriaPlan(day) {
-    return request.getAsync('http://www.uni-pizzeria.at/speisen/mittagsteller.html')
-        .then(res => res.body)
-        .then(body => parseUniPizzeria(body, day));
-}
-
-function parseUniPizzeria(html, day) {
-    var result = new Menu();
-    var $ = cheerio.load(html);
 }
 
 function getMittagstischWeekPlan() {
@@ -290,5 +351,7 @@ module.exports = {
     getMittagstischPlan: getMittagstischPlan,
     getMittagstischWeekPlan: getMittagstischWeekPlan,
     getMensaPlan: getMensaPlan,
-    getMensaWeekPlan: getMensaWeekPlan
+    getMensaWeekPlan: getMensaWeekPlan,
+    getUniPizzeriaPlan: getUniPizzeriaPlan,
+    getUniPizzeriaWeekPlan: getUniPizzeriaWeekPlan
 };
