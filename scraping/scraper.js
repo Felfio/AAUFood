@@ -166,7 +166,7 @@ function parseUniPizzeria(html, day) {
       currentFood = new Food("", _uniPizzeriaPrice);
     }
     if (currentFood != null) {
-      currentFood.name += _replaceWeekday(content);
+      currentFood.name += _normalizeFood(content);
     }
 
   });
