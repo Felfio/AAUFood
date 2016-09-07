@@ -193,6 +193,14 @@ function parseUniPizzeria(html, day) {
     return weekday;
   }
 
+  function _normalizeFood(str) {
+
+    str = _replaceWeekday(str);
+    str = str.replace('**', '<br>');
+
+    return str;
+  }
+
 }
 
 function createFoodFromMenuSection(section, menu, dayInWeek) {
