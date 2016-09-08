@@ -28,7 +28,7 @@ if(window.location.pathname.indexOf("/about") === 0) {
 var mailPre = "knechtcraft", mailDomain = "gmail.com";
 $("#mail").text(mailPre + "@" + mailDomain);
 
-var socket = io('/');
+var socket = io();
 socket.on('newVisitor', function (data) {
     console.log(data);
     dailyVisitors.text(data.dailyVisitors);
