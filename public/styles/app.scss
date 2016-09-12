@@ -8,13 +8,26 @@
 $mittagstischGreen: #5fb127;
 $mensaOrange: #f49900;
 $uniwirtPurple: #800768;
+$uniPizzeriaBg: #FFEFB9;
+$uniPizzeriaFont: #5B5650;
 $navIconMargin: 3rem;
 $navIconMarginInwards: 1rem;
 $outerPadding: 0.9375rem;
+$footerHeight: 2rem;
 
 /*General definitions*/
 body {
   background-image: url("tileable_wood_texture.jpg");
+}
+
+.container-fluid.menu-container {
+  @media (min-width: 62em) {
+    max-width: 85vw;
+    margin-left: 7vw;
+    margin-right: 7vw;
+    min-height: 100%;
+    margin-bottom: $footerHeight;
+  }
 }
 
 .center-block {
@@ -62,6 +75,7 @@ body {
 
     .card-header {
       margin-bottom: 0;
+      border-bottom: 0;
     }
   }
 
@@ -97,6 +111,10 @@ body {
 
 .menu-list {
   .menu-list-group.starters {
+    &:empty {
+      display: none;
+    }
+
     .list-group-item:not(:last-child) {
       padding-bottom: 0.25rem;
     }
@@ -133,6 +151,10 @@ body {
   @include restaurantColors($uniwirtPurple, white);
 }
 
+.uni-pizzeria {
+  @include restaurantColors($uniPizzeriaBg, $uniPizzeriaFont);
+}
+
 @mixin footerIcon($color) {
   vertical-align: middle;
   font-size: 1.25em;
@@ -145,8 +167,8 @@ body {
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
-  height: 2rem;
-  line-height: 2rem; /* Vertically center the text there */
+  height: $footerHeight;
+  line-height: $footerHeight; /* Vertically center the text there */
   background-color: #202122;
   color: #eceeef;
   text-align: center;
@@ -195,7 +217,7 @@ html, body {
 
 .container {
   min-height: 100%;
-  margin-bottom: 2rem;
+  margin-bottom: $footerHeight;
   padding-left: 0;
   padding-right: 0;
 }

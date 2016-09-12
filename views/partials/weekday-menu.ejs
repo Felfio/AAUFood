@@ -14,14 +14,17 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <%- include('combined-menu-list', {restaurantName: 'Mensa', menu: mensa ? mensa[day] : null}) %>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <%- include('menu-list', {restaurantName: 'Uniwirt', menu: uniwirt ? uniwirt[day] : null}) %>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <%- include('menu-list', {restaurantName: 'Mittagstisch', menu: mittagstisch ? mittagstisch[day] : null}) %>
+        </div>
+        <div class="col-lg-3">
+            <%- include('menu-list', {restaurantName: 'Uni Pizzeria', menu: uniPizzeria ? uniPizzeria[day] : null}) %>
         </div>
     </div>
 </div>

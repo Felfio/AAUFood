@@ -150,14 +150,14 @@ function getUniPizzeriaDayPlan(weekMenu, day) {
     var menu = new Menu();
 
     if (dayInWeek > 4) {
-        let info = new Food("Kein Mittagsmenü", null, true);
+        let info = new Food("Kein Mittagsmenü.", null, true);
         menu.mains.push(info);
     } else if (dayInWeek < weekMenu.mains.length) {
         let combinedFood = weekMenu.mains[dayInWeek];
 
         //Handle holidays (no menu)
         if (contains(combinedFood.name, true, ["feiertag"])) {
-            let info = new Food("Kein Mittagsmenü", null, true);
+            let info = new Food("Kein Mittagsmenü.", null, true);
             menu.mains.push(info);
         } else {
 

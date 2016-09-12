@@ -11,13 +11,15 @@ router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
     var uniwirtPlan = menuCache.getMenu('uniwirt');
     var mensaPlan = menuCache.getMenu('mensa');
     var mittagstischPlan = menuCache.getMenu('mittagstisch');
+    var unipizzeriaPlan = menuCache.getMenu('uniPizzeria');
 
-    Promise.all([uniwirtPlan, mensaPlan, mittagstischPlan])
+    Promise.all([uniwirtPlan, mensaPlan, mittagstischPlan, unipizzeriaPlan])
         .then(results => {
             res.render('index', {
                 uniwirt: JSON.parse(results[0]),
                 mensa: JSON.parse(results[1]),
                 mittagstisch: JSON.parse(results[2]),
+                uniPizzeria: JSON.parse(results[3]),
                 visitorStats: req.visitorStats,
             });
         });

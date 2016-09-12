@@ -1,4 +1,4 @@
-<% var restaurantNameLower = restaurantName.toLowerCase();%>
+<% var restaurantNameLower = restaurantName.replace(" ", "-").toLowerCase(); %>
 <div class="card <%= restaurantNameLower %> menu-list">
     <h3 class="card-header"><%= restaurantName %></h3>
     <div class="card-block">
@@ -27,11 +27,13 @@
                 <p>Wir kümmern uns bald darum! <i class="fa fa-smile-o fa-fw" aria-hidden="true"></i></p>
             </div>
             <% } else { %>
-            <ul class="list-group menu-list-group starters">
-                <% menu.starters.forEach(function (starter) { %>
-                <li class="list-group-item"><%= starter.name %></li>
-                <% }); %>
-            </ul>
+            <% if(menu.starters.length) { %>
+                <ul class="list-group menu-list-group starters">
+                    <% menu.starters.forEach(function (starter) { %>
+                    <li class="list-group-item"><%= starter.name %></li>
+                    <% }); %>
+                </ul>
+            <% } %>
             <% if(menu.mains.length) { %>
             <ul class="list-group menu-list-group mains">
                 <% menu.mains.forEach(function (main) { %>
