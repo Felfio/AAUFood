@@ -20,13 +20,15 @@ module.exports = {
     scraper: {
         mensaUrl: "http://menu.mensen.at/index/index/locid/45",
         uniwirtUrl: "http://www.uniwirt.at/Default.aspx?SIid=4&LAid=1",
-        mittagstischUrl: "http://www.lakeside-scitec.com/services/gastronomie/mittagstisch/"
+        mittagstischUrl: "http://www.lakeside-scitec.com/services/gastronomie/mittagstisch/",
+        unipizzeriaUrl: "http://www.uni-pizzeria.at/speisen/mittagsteller.html"
     },
     userFriendlyUrls: {
         //Usually the same as the scraper ones
         mensa: "http://menu.mensen.at/index/index/locid/45",
         uniwirt: "http://www.uniwirt.at/Default.aspx?SIid=4&LAid=1",
-        mittagstisch: "http://www.lakeside-scitec.com/services/gastronomie/mittagstisch/"
+        mittagstisch: "http://www.lakeside-scitec.com/services/gastronomie/mittagstisch/",
+        unipizzeria: "http://www.uni-pizzeria.at/speisen/mittagsteller.html"
     },
     cookie: {
         // 30 days in milliseconds
