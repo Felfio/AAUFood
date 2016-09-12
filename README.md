@@ -32,6 +32,6 @@ Aktuell:
 Für die Weiterentwicklung von AAU Food muss `NodeJS` und `Redis` installiert sein. NodeJS Dependencies werden wie gewohnt mit `$ npm install` installiert, Web-Resources werden mit `$ npm run build` compiliert und der Server mit `$ node .` gestartet.
 
 ## Externe Dienste
-* [placekitten](placekitten.com) für zufällige Katzenbilder
+* [placekitten](http://placekitten.com) für zufällige Katzenbilder
 * [CatFacts API](http://catfacts-api.appspot.com/) für zufällige Fakten über Katzen
 * [NumbersAPI](http://numbersapi.com/#42) für zufällige Fakten zu den Besucherzahlen
