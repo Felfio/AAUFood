@@ -13,10 +13,10 @@ var UniwirtUrl = config.scraper.uniwirtUrl;
 var MittagstischUrl = config.scraper.mittagstischUrl;
 var PizzeriaUrl = config.scraper.unipizzeriaUrl;
 
-function parseWeek(html, parseFunction) {
+function parseWeek(input, parseFunction) {
     var menus = [];
     for (let day = 0; day < 7; day++) {
-        menus[day] = parseFunction(html, day);
+        menus[day] = parseFunction(input, day);
     }
 
     return menus;
@@ -127,79 +127,117 @@ function parseMensa(html, day) {
 function getUniPizzeriaWeekPlan() {
     return request.getAsync(PizzeriaUrl)
         .then(res => res.body)
-        .then(body => parseWeek(body, parseUniPizzeria));
+        .then(body => parseWeek(parseUniPizzeria(body), getUniPizzeriaDayPlan));
 }
 
 function getUniPizzeriaPlan(day) {
     return request.getAsync(PizzeriaUrl)
         .then(res => res.body)
-        .then(body => parseUniPizzeria(body, day));
+        .then(body => {
+            var weekMenu = parseUniPizzeria(body);
+            return getUniPizzeriaDayPlan(weekMenu, day);
+        });
 }
 
-function parseUniPizzeria(html, day) {
+function getUniPizzeriaDayPlan(weekMenu, day) {
+    var dayInWeek;
+    if (day === null || day === undefined) {
+        dayInWeek = ((new Date()).getDay() + 6) % 7;
+    } else {
+        dayInWeek = day;
+    }
 
-  var result = new Menu();
+    var menu = new Menu();
 
-  var $ = cheerio.load(html);
-  var _days = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'je Mittagsteller € 7,80'];
-  var _uniPizzeriaPrice = 7.80;
+    if (dayInWeek > 4) {
+        let info = new Food("Kein Mittagsmenü", null, true);
+        menu.mains.push(info);
+    } else if (dayInWeek < weekMenu.mains.length) {
+        let combinedFood = weekMenu.mains[dayInWeek];
 
-  var $menuContent = $('[itemprop="articleBody"]');
+        //Handle holidays (no menu)
+        if (contains(combinedFood.name, true, ["feiertag"])) {
+            let info = new Food("Kein Mittagsmenü", null, true);
+            menu.mains.push(info);
+        } else {
 
-  var dayInWeek;
-  if (day === null || day === undefined) {
-      dayInWeek = ((new Date()).getDay() + 6) % 7;
-  } else {
-      dayInWeek = day;
-  }
+            let splitted = combinedFood.name.split("<br>");
+            let starterExists = splitted.length > 1;
 
-  var currentFood = null;
-  $menuContent.find('p').each((index, item) => {
+            if (starterExists) {
+                //There is a starter
+                let starter = new Food(splitted[0]);
+                menu.starters.push(starter);
+            }
 
-    var content = $(item).text().trim();
+            let i = starterExists ? 1 : 0;
+            for (; i < splitted.length; i++) {
+                let main = new Food(splitted[i], combinedFood.price);
+                menu.mains.push(main);
+            }
+        }
+    }
 
-    // When the content of <p> is a weekday, start new food
-    if (_checkWeekday(content)) {
-      if (currentFood != null) {
+    return setErrorOnEmpty(menu);
+}
+
+function parseUniPizzeria(html) {
+
+    var result = new Menu();
+
+    var $ = cheerio.load(html);
+    var _days = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'je Mittagsteller € 7,80'];
+    var _uniPizzeriaPrice = 7.80;
+
+    var $menuContent = $('[itemprop="articleBody"]');
+
+    var currentFood = null;
+    $menuContent.find('p').each((index, item) => {
+
+        var content = $(item).text().trim();
+
+        // When the content of <p> is a weekday, start new food
+        if (_checkWeekday(content)) {
+            if (currentFood != null) {
+                result.mains.push(currentFood);
+            }
+            currentFood = new Food("", _uniPizzeriaPrice);
+        }
+        if (currentFood != null) {
+            currentFood.name += _normalizeFood(content);
+        }
+
+    });
+
+    if (currentFood != null && currentFood.name.length > 0) {
         result.mains.push(currentFood);
-      }
-      currentFood = new Food("", _uniPizzeriaPrice);
     }
-    if (currentFood != null) {
-      currentFood.name += _normalizeFood(content);
+    return setErrorOnEmpty(result);
+
+    function _replaceWeekday(str) {
+        for (var index in _days) {
+            str = str.replace(_days[index], "");
+        }
+        return str;
     }
 
-  });
-
-  if (currentFood != null && currentFood.name.length > 0) {
-    result.mains.push(currentFood);
-  }
-  return setErrorOnEmpty(result);
-
-  function _replaceWeekday(str) {
-    for (var index in _days) {
-      str = str.replace(_days[index], "");
+    function _checkWeekday(str) {
+        var weekday = false;
+        for (var index in _days) {
+            if (str.indexOf(_days[index]) >= 0) {
+                weekday = true;
+            }
+        }
+        return weekday;
     }
-    return str;
-  }
 
-  function _checkWeekday(str) {
-    var weekday = false;
-    for (var index in _days) {
-      if (str.indexOf(_days[index]) >= 0) {
-        weekday = true;
-      }
+    function _normalizeFood(str) {
+
+        str = _replaceWeekday(str);
+        str = str.replace(/\*+/, '<br>');
+
+        return str;
     }
-    return weekday;
-  }
-
-  function _normalizeFood(str) {
-
-    str = _replaceWeekday(str);
-    str = str.replace('**', '<br>');
-
-    return str;
-  }
 
 }
 
