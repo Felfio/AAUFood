@@ -8,8 +8,7 @@
 $mittagstischGreen: #5fb127;
 $mensaOrange: #f49900;
 $uniwirtPurple: #800768;
-$uniPizzeriaBg: #FFEFB9;
-$uniPizzeriaFont: #5B5650;
+$uniPizzeriaBg: #2336B1;
 $navIconMargin: 3rem;
 $navIconMarginInwards: 1rem;
 $outerPadding: 0.9375rem;
@@ -152,7 +151,7 @@ body {
 }
 
 .uni-pizzeria {
-  @include restaurantColors($uniPizzeriaBg, $uniPizzeriaFont);
+  @include restaurantColors($uniPizzeriaBg, white);
 }
 
 @mixin footerIcon($color) {
