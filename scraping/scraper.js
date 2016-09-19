@@ -96,9 +96,9 @@ function parseMensa(html, day) {
     var $classic2 = $('.day-content #category134');
     var $dailySpecial = $('.day-content #category135');
 
-    var currentDay1 = $classic1.find('.category-content').eq(dayInWeek);
-    var currentDay2 = $classic2.find('.category-content').eq(dayInWeek);
-    var currentDaySpecial = $dailySpecial.find('.category-content').eq(dayInWeek);
+    var currentDay1 = $classic1.find('.category-content').eq(dayInWeek).find('p');
+    var currentDay2 = $classic2.find('.category-content').eq(dayInWeek).find('p');
+    var currentDaySpecial = $dailySpecial.find('.category-content').eq(dayInWeek).find('p');
 
     if (contains(currentDay1.text(), true, ["feiertag", "ruhetag"]) ||
         contains(currentDay2.text(), true, ["feiertag", "ruhetag"]) ||
