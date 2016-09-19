@@ -1,10 +1,11 @@
 # AAU Food
-Eine Webseite zum Crawlen und Darstellen der Mittagsmenüs von Lokalen nahe der Alpen-Adria Universität Klagenfurt. Verfügbar unter [food.felf.ga](http://food.felf.ga/)
+Eine Webseite zum Crawlen und Darstellen der Mittagsmenüs von Lokalen nahe der Alpen-Adria Universität Klagenfurt. Verfügbar unter [food.felf.io](https://food.felf.io/)
 
 ## Aktuell unterstützte Restaurants
 * Mensa Klagenfurt
 * Uniwirt
 * Mittagstisch
+* Uni-Pizzeria
 
 ## Info
 Die Menüs werden aus dem HTML der Webseiten der Restaurants geparst. Bei Anpassung der Struktur der Webseiten kann es dadurch zu Fehlern beim Parsen und in Folge zu Ausfällen bei der Anzeige von Menüs kommen.
@@ -16,6 +17,7 @@ Aktuell:
 * ```/food/mittagstisch```
 * ```/food/uniwirt```
 * ```/food/mensa```
+* ```/food/unipizzeria```
 
 ## Technologien
 * ~~Frontend: EmberJS~~ (Wechsel zu Server-Side Rendering aufgrund von Performanceproblemen auf mobilen Geräten)
