@@ -45,6 +45,10 @@ $card-header-bg: rgba(0, 0, 0, 0.7);
   }
 }
 
+.about-name a {
+  color: inherit;
+}
+
 .cat-fact-header {
   position: relative;
   width: 100%;

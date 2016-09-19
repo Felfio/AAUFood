@@ -38,7 +38,9 @@ function toggleSlideButtons(day) {
 $(".nav-icon.left").click(swipe.prev);
 $(".nav-icon.right").click(swipe.next);
 
-var names = ["<span id='kristina'>Kristina</span>", "<span id='markus'>Markus</span>", "<span id='fabian'>Fabian</span>"];
+var names = ["<span class='about-name' id='kristina'>Kristina</span>",
+  "<span class='about-name' id='markus'><a href='https://github.com/mrukas'>Markus</a></span>",
+  "<span class='about-name' id='fabian'><a href='https://github.com/Kruemelkatze'>Fabian</a></span>"];
 swapNames();
 if(window.location.pathname.indexOf("/about") === 0) {
     setInterval(swapNames, 5000);
