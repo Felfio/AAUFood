@@ -92,13 +92,13 @@ function parseMensa(html, day) {
         return result;
     }
 
-    var $classic1 = $('.menu-item').eq(2);
-    var $classic2 = $('.menu-item').eq(3);
-    var $dailySpecial = $('.menu-item').eq(4);
+    var $classic1 = $('.day-content #category133');
+    var $classic2 = $('.day-content #category134');
+    var $dailySpecial = $('.day-content #category135');
 
-    var currentDay1 = $classic1.find('.menu-item-content').eq(dayInWeek).find('.menu-item-text p');
-    var currentDay2 = $classic2.find('.menu-item-content').eq(dayInWeek).find('.menu-item-text p');
-    var currentDaySpecial = $dailySpecial.find('.menu-item-content').eq(dayInWeek).find('.menu-item-text p');
+    var currentDay1 = $classic1.find('.category-content').eq(dayInWeek);
+    var currentDay2 = $classic2.find('.category-content').eq(dayInWeek);
+    var currentDaySpecial = $dailySpecial.find('.category-content').eq(dayInWeek);
 
     if (contains(currentDay1.text(), true, ["feiertag", "ruhetag"]) ||
         contains(currentDay2.text(), true, ["feiertag", "ruhetag"]) ||
