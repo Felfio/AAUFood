@@ -243,7 +243,7 @@ function parseUniPizzeria(html) {
 
 function createFoodFromMenuSection(section, menu, dayInWeek) {
     var price = null;
-    var priceArray = section.find('.menu-item-content').eq(dayInWeek).find('.menu-item-price').text().match(/€ (\S*)/);
+    var priceArray = section.eq(dayInWeek).find('.category-price').text().match(/€ (\S*)/);
     if (priceArray && priceArray.length) {
         price = priceArray[1];
         price = +price.replace(',', '.');
