@@ -13,13 +13,34 @@ var swipe = new Swipe(document.getElementById('slider'), {
     startSlide: sanitizeDay(day),
     speed: 400,
     continuous: false,
-    disableScroll: false
+    disableScroll: false,
+    transitionEnd: toggleSlideButtons,
 });
+
+toggleSlideButtons(sanitizeDay(day));
+
+/**
+ * Slide buttons should look disabled when no button-press is possible
+ */
+function toggleSlideButtons(day) {
+  if (day == 0) {
+    $('.nav-icon.left').addClass('disabled');
+  } else {
+    $('.nav-icon.left').removeClass('disabled');
+  }
+  if (day == 6) {
+    $('.nav-icon.right').addClass('disabled');
+  } else {
+    $('.nav-icon.right').removeClass('disabled');
+  }
+}
 
 $(".nav-icon.left").click(swipe.prev);
 $(".nav-icon.right").click(swipe.next);
 
-var names = ["<span id='kristina'>Kristina</span>", "<span id='markus'>Markus</span>", "<span id='fabian'>Fabian</span>"];
+var names = ["<span class='about-name' id='kristina'>Kristina</span>",
+  "<span class='about-name' id='markus'><a href='https://github.com/mrukas'>Markus</a></span>",
+  "<span class='about-name' id='fabian'><a href='https://github.com/Kruemelkatze'>Fabian</a></span>"];
 swapNames();
 if(window.location.pathname.indexOf("/about") === 0) {
     setInterval(swapNames, 5000);

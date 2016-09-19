@@ -258,6 +258,11 @@ html, body {
   font-weight: bold;
   cursor: pointer;
 
+  &.disabled {
+    cursor: default;
+    color: rgba(0, 0, 0, 0.1);
+  }
+
   // Small devices (landscape phones, less than 48em)
   @media (max-width: 61.9em) {
     &.center {
