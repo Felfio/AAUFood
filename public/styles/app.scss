@@ -312,3 +312,8 @@ html, body {
     }
   }
 }
+
+.cc_banner.cc_container.cc_container--open {
+  bottom: $footerHeight;
+  background-color: rgba(0,0,0,0.7);
+}
