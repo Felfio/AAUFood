@@ -93,6 +93,7 @@ body {
     .price-pill {
       margin-right: -20px;
       margin-top: 0.125rem;
+      margin-left: 0.5rem;
     }
   }
 }
@@ -105,10 +106,14 @@ body {
   }
   .price-pill {
     margin-top: 0.125rem;
+    margin-left: 0.5rem;
   }
 }
 
 .menu-list {
+  .list-group-item {
+    padding-left: 0;
+  }
   .menu-list-group.starters {
     &:empty {
       display: none;
@@ -162,6 +167,7 @@ body {
 
 /*Footer*/
 .footer {
+  z-index: 9500;
   position: relative;
   bottom: 0;
   width: 100%;

@@ -50,6 +50,7 @@ function parseUniwirt(html, day) {
     $currentDayRows.each((index, item) => {
         var $tds = $(item).children();
         var name = $tds.eq(0).text();
+        name = sanitizeName(name);
         var price = $tds.eq(2).text();
 
         if (contains(name, true, ["feiertag", "ruhetag", "wir machen pause"])) {
@@ -166,13 +167,15 @@ function getUniPizzeriaDayPlan(weekMenu, day) {
 
             if (starterExists) {
                 //There is a starter
-                let starter = new Food(splitted[0]);
+                let name = sanitizeName(splitted[0]);
+                let starter = new Food(name);
                 menu.starters.push(starter);
             }
 
             let i = starterExists ? 1 : 0;
             for (; i < splitted.length; i++) {
-                let main = new Food(splitted[i], combinedFood.price);
+                let name = sanitizeName(splitted[i]);
+                let main = new Food(name, combinedFood.price);
                 menu.mains.push(main);
             }
         }
@@ -252,7 +255,8 @@ function createFoodFromMenuSection(section, menu, dayInWeek) {
     //isInfo <=> price could not get parsed (or is empty --> 0) and there is only one line of text
     var isInfo = (price == null || isNaN(price) || price === 0) && menu.length === 1;
 
-    return new Food(menu, price, isInfo);
+    let name = sanitizeName(menu);
+    return new Food(name, price, isInfo);
 }
 
 function getMittagstischWeekPlan() {
@@ -329,6 +333,7 @@ function parseMittagstisch(body, day) {
     soupRows.splice(0, 1);
     soupRows.each((index, item) => {
         var name = $(item).children().first().text();
+        name = sanitizeName(name);
         foodMenu.starters.push(new Food(name));
     });
 
@@ -338,6 +343,7 @@ function parseMittagstisch(body, day) {
 
     mainsRows.each((index, item) => {
         var name = $(item).children().first().text();
+        name = sanitizeName(name);
         foodMenu.mains.push(new Food(name, 7.4));
     });
 
@@ -355,6 +361,7 @@ function parseMittagstisch(body, day) {
     aLaCartes.each((index, item) => {
         var entries = $(item).children();
         var name = entries.first().text();
+        name = sanitizeName(name);
         var price = +entries.eq(1).text().replace(",", ".");
         foodMenu.alacarte.push(new Food(name, price));
     });
@@ -389,6 +396,21 @@ function setErrorOnEmpty(menu) {
         menu.error = true;
     }
     return menu;
+}
+
+function sanitizeName(val) {
+    if (typeof val === "string") {
+        val = val.replace(/^[,\.\-\\\? ]+/, "");
+        val = val.replace(/[,\.\-\\\? ]+$/, "");
+        return val;
+    } else if (typeof val === "object" && val.length > 0) {
+        for (let i = 0; i < val.length; i++) {
+            val[i] = sanitizeName(val[i]);
+        }
+        return val;
+    } else {
+        return val;
+    }
 }
 
 module.exports = {
