@@ -17,6 +17,7 @@
     "cheerio": "^0.20.0",
     "compression": "^1.6.2",
     "connect-redis": "^3.1.0",
+    "cookieconsent": "^2.0.0",
     "ejs": "^2.4.1",
     "express": "^4.14.0",
     "express-session": "^1.13.0",

@@ -2,6 +2,16 @@ require('./styles/app.scss');
 require('jquery');
 require('bootstrap');
 
+window.cookieconsent_options = {
+    message: "Wir verwenden Cookies um Besucher dieser Website zu zählen. Gesammelte Daten werden nicht weitergegeben.",
+    dismiss: "OK",
+    learnMore: "",
+    link: null,
+    theme: "dark-bottom"
+};
+
+require('cookieconsent');
+
 var io = require('socket.io-client');
 var Swipe = require('swipejs');
 
@@ -23,26 +33,26 @@ toggleSlideButtons(sanitizeDay(day));
  * Slide buttons should look disabled when no button-press is possible
  */
 function toggleSlideButtons(day) {
-  if (day == 0) {
-    $('.nav-icon.left').addClass('disabled');
-  } else {
-    $('.nav-icon.left').removeClass('disabled');
-  }
-  if (day == 6) {
-    $('.nav-icon.right').addClass('disabled');
-  } else {
-    $('.nav-icon.right').removeClass('disabled');
-  }
+    if (day == 0) {
+        $('.nav-icon.left').addClass('disabled');
+    } else {
+        $('.nav-icon.left').removeClass('disabled');
+    }
+    if (day == 6) {
+        $('.nav-icon.right').addClass('disabled');
+    } else {
+        $('.nav-icon.right').removeClass('disabled');
+    }
 }
 
 $(".nav-icon.left").click(swipe.prev);
 $(".nav-icon.right").click(swipe.next);
 
 var names = ["<span class='about-name' id='kristina'>Kristina</span>",
-  "<span class='about-name' id='markus'><a href='https://github.com/mrukas'>Markus</a></span>",
-  "<span class='about-name' id='fabian'><a href='https://github.com/Kruemelkatze'>Fabian</a></span>"];
+    "<span class='about-name' id='markus'><a href='https://github.com/mrukas'>Markus</a></span>",
+    "<span class='about-name' id='fabian'><a href='https://github.com/Kruemelkatze'>Fabian</a></span>"];
 swapNames();
-if(window.location.pathname.indexOf("/about") === 0) {
+if (window.location.pathname.indexOf("/about") === 0) {
     setInterval(swapNames, 5000);
 }
 
