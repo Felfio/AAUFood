@@ -3,7 +3,8 @@ require('jquery');
 require('bootstrap');
 
 window.cookieconsent_options = {
-    message: "Wir verwenden Cookies um Besucher dieser Website zu zählen. Gesammelte Daten werden nicht weitergegeben.",
+    container: "#cookieConsentHolder",
+    message: "Wir verwenden Cookies, um die Besucher dieser Website zu zählen. Gesammelte Daten werden nicht weitergegeben.",
     dismiss: "OK",
     learnMore: "",
     link: null,

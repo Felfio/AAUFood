@@ -162,8 +162,7 @@ body {
 
 /*Footer*/
 .footer {
-  position: fixed;
-  z-index: 9002;
+  position: relative;
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
@@ -315,6 +314,7 @@ html, body {
 }
 
 .cc_banner.cc_container.cc_container--open {
-  bottom: $footerHeight;
+  position: absolute;
+  bottom: 0;
   background-color: rgba(0,0,0,0.7);
 }
