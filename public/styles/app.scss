@@ -144,6 +144,10 @@ body {
 
   .link-icon {
     color: transparentize($fontColor, 0.25);
+
+    &:hover {
+      color: transparentize($fontColor, 0);
+    }
   }
 }
 
