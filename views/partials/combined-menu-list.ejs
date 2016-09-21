@@ -1,6 +1,11 @@
 <% var restaurantNameLower = restaurantName.replace(" ", "-").toLowerCase(); %>
 <div class="card <%= restaurantNameLower %> combined-menu-list">
-    <h3 class="card-header"><%= restaurantName %></h3>
+    <h3 class="card-header">
+	<%= restaurantName %>
+        <a href="<%= userFriendlyUrl(restaurantNameLower) %>">
+	    <span class="fa fa-globe pull-right" aria-hidden="true"></span>
+	</a>
+    </h3>
     <div class="card-block">
         <% var breakInfo = getBreakInfo(restaurantNameLower) %>
         <% if(isOnBreak(breakInfo)) { %>
