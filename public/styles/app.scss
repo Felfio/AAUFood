@@ -141,6 +141,10 @@ body {
   .sk-folding-cube .sk-cube:before {
     background-color: $bgColor;
   }
+
+  .link-icon {
+    color: transparentize($fontColor, 0.25);
+  }
 }
 
 .mittagstisch {
