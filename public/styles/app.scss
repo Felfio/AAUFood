@@ -214,8 +214,14 @@ body {
     @include footer-border-element(true);
   }
 
-  .impressum {
+  .impressum-link {
     @include footer-border-element(false);
+
+    @media (max-width: 30em) {
+      i.fa {
+        display: none;
+      }
+    }
   }
 
   .footer-pun {
@@ -242,11 +248,11 @@ body {
   }
 }
 
-#impressumHolder {
+#impressum-linkHolder {
   width: 100%;
   text-align: center;
 
-  #impressum {
+  #impressum-link {
     background: transparentize($footerColor, 0.25);
   }
 }
@@ -351,6 +357,7 @@ html, body {
       margin-right: -$navIconMarginInwards;
       padding-right: $navIconMarginInwards;
     }
+
   }
 }
 
