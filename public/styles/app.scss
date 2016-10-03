@@ -13,7 +13,7 @@ $navIconMargin: 3rem;
 $navIconMarginInwards: 1rem;
 $outerPadding: 0.9375rem;
 $footerHeight: 2rem;
-
+$footerColor: #202122;
 /*General definitions*/
 body {
   background-image: url("tileable_wood_texture.jpg");
@@ -182,7 +182,7 @@ body {
   /* Set the fixed height of the footer here */
   height: $footerHeight;
   line-height: $footerHeight; /* Vertically center the text there */
-  background-color: #202122;
+  background-color: $footerColor;
   color: #eceeef;
   text-align: center;
 
@@ -194,14 +194,32 @@ body {
     }
   }
 
-  .daily-counter {
-    float: left;
-    margin-left: $outerPadding;
+  @mixin footer-border-element($left) {
+    position: absolute;
+    background: $footerColor;
+    z-index: 9600;
+
+    @if ($left) {
+      left: 0;
+      margin-left: $outerPadding;
+      padding-right: 0.5em;
+    } @else {
+      right: 0;
+      margin-right: $outerPadding;
+      padding-left: 0.5em;
+    }
   }
 
-  .overall-counter {
-    float: right;
-    margin-right: $outerPadding;
+  .daily-counter {
+    @include footer-border-element(true);
+  }
+
+  .impressum {
+    @include footer-border-element(false);
+  }
+
+  .footer-pun {
+    z-index: 9550;
   }
 
   .fa-heart {
@@ -221,6 +239,15 @@ body {
   }
   .fa-space-shuttle {
     @include footerIcon(#0093ff);
+  }
+}
+
+#impressumHolder {
+  width: 100%;
+  text-align: center;
+
+  #impressum {
+    background: transparentize($footerColor, 0.25);
   }
 }
 
@@ -330,5 +357,5 @@ html, body {
 .cc_banner.cc_container.cc_container--open {
   position: absolute;
   bottom: 0;
-  background-color: rgba(0,0,0,0.7);
+  background-color: rgba(0, 0, 0, 0.7);
 }

@@ -89,9 +89,15 @@ function initSlider() {
 }
 
 function initNameShuffling() {
-    var names = ["<span class='about-name' id='kristina'>Kristina</span>",
-        "<span class='about-name' id='markus'><a href='https://github.com/mrukas'>Markus</a></span>",
-        "<span class='about-name' id='fabian'><a href='https://github.com/Kruemelkatze'>Fabian</a></span>"];
+    var names = [
+        '<span id="kristina">Kristina</span>',
+        '<a id="markus" href="https://github.com/mrukas">Markus</a>',
+        '<a id="fabian" href="https://github.com/Kruemelkatze">Fabian</a>'];
+
+    var additionalNames = [
+        '<a id="benjamin" href="https://github.com/behackl">Benjamin</a>',
+        '<a id="philipp" href="https://github.com/phylib">Philipp</a>'];
+
     swapNames();
     if (window.location.pathname.indexOf("/about") === 0) {
         setInterval(swapNames, 5000);
@@ -102,6 +108,10 @@ function initNameShuffling() {
         $("#name0").html(names[0]);
         $("#name1").html(names[1]);
         $("#name2").html(names[2]);
+
+        shuffle(additionalNames);
+        $("#additionalName0").html(additionalNames[0]);
+        $("#additionalName1").html(additionalNames[1]);
     }
 
     /**
