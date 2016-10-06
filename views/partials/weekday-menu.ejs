@@ -1,7 +1,7 @@
 <% day = day % 7 %>
 <div class="weekday-container">
     <div class="row">
-        <div class="col-lg-4 col-lg-offset-4 weekday-header">
+        <div class="col-xl-4 col-xl-offset-4 weekday-header">
             <span class="weekday">
                 <span class="nav-icon left top pull-left">
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -14,16 +14,16 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-3">
+        <div class="col-xl-3">
             <%- include('combined-menu-list', {restaurantName: 'Mensa', menu: mensa ? mensa[day] : null}) %>
         </div>
-        <div class="col-lg-3">
+        <div class="col-xl-3">
             <%- include('menu-list', {restaurantName: 'Uniwirt', menu: uniwirt ? uniwirt[day] : null}) %>
         </div>
-        <div class="col-lg-3">
+        <div class="col-xl-3">
             <%- include('menu-list', {restaurantName: 'Mittagstisch', menu: mittagstisch ? mittagstisch[day] : null}) %>
         </div>
-        <div class="col-lg-3">
+        <div class="col-xl-3">
             <%- include('menu-list', {restaurantName: 'Uni-Pizzeria', menu: uniPizzeria ? uniPizzeria[day] : null}) %>
         </div>
     </div>
