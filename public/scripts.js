@@ -31,7 +31,7 @@ socket.on('newVisitor', function (data) {
 initSlider();
 initNameShuffling();
 
-var mailPre = "knechtcraft", mailDomain = "gmail.com";
+var mailPre = "contact", mailDomain = "felf.io";
 $("#mail").text(mailPre + "@" + mailDomain);
 
 function initSlider() {
