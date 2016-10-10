@@ -6,7 +6,7 @@ function getMenuName(index, menu) {
     if (menu.isInfo)
         return "Information";
 
-    return "Tagesteller";
+    return "AAU Teller";
 }
 
 module.exports = {

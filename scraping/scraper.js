@@ -95,7 +95,7 @@ function parseMensa(html, day) {
 
     var $classic1 = $('.day-content #category133');
     var $classic2 = $('.day-content #category134');
-    var $dailySpecial = $('.day-content #category135');
+    var $dailySpecial = $('.day-content #category247');
 
     var currentDay1 = $classic1.find('.category-content').eq(dayInWeek).find('p');
     var currentDay2 = $classic2.find('.category-content').eq(dayInWeek).find('p');
