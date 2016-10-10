@@ -45,6 +45,13 @@ function parseUniwirt(html, day) {
         dayInWeek = day;
     }
 
+    debugger;
+
+    if ($("#StandardWrapper").find(".col600 > .col360.noMargin > h3").html().indexOf(timeHelper.getMondayDate()) == -1) {
+        result.outdated = true;
+	return result;
+    }
+
     var $currentDayRows = $("#StandardWrapper").find(".col600 > .col360.noMargin").eq(dayInWeek).find('tr');
 
     $currentDayRows.each((index, item) => {

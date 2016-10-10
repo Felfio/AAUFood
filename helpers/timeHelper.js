@@ -17,7 +17,16 @@ function weekDayName(sanitizedDay) {
     return weekdays[sanitizedDay];
 }
 
+function getMondayDate() {
+    var d = new Date();
+    var day = d.getDay();
+    var diffToMonday = d.getDate() - day + (day == 0 ? -6 : 1);
+    d = new Date(d.setDate(diffToMonday));
+    return d.getDate() + "." + (d.getMonth() + 1);
+}
+
 module.exports = {
     sanitizeDay: sanitizeDay,
-    weekDayName: weekDayName
+    weekDayName: weekDayName,
+    getMondayDate: getMondayDate
 };
