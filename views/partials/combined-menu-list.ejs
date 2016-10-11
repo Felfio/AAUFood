@@ -20,12 +20,19 @@
         <% } else { %>
             <% if (menu != null && menu.closed){ %>
             <div class="text-xs-center">
-                <i class="fa fa-bed fa-2x" aria-hidden="true"></i><br>
+                <i class="fa fa-bed fa-2x info-icon" aria-hidden="true"></i><br>
                 Heute leider geschlossen.
+            </div>
+	    <% } else if (menu != null && menu.outdated){ %>
+            <div class="text-xs-center">
+                <i class="fa fa-calendar-times-o fa-2x info-icon" aria-hidden="true"></i><br>
+                Das Lokal hat das aktuelle Wochenmenü noch nicht auf seiner
+                <a href="<%= userFriendlyUrl(restaurantNameLower) %>" target="_blank">Homepage</a>
+                veröffentlicht.
             </div>
             <% } else if (menu == null || menu.error) { %>
             <div class="text-xs-center error">
-                <i class="fa fa-frown-o fa-2x fa-fw" aria-hidden="true"></i><br>
+                <i class="fa fa-frown-o fa-2x info-icon" aria-hidden="true"></i><br>
                 <p>Leider konnten wir die Daten nicht abrufen.</p>
                 <p>Sie sollten aber auf der <a href="<%= userFriendlyUrl(restaurantNameLower) %>" target="_blank">Homepage
                         des Restaurants</a> stehen.<br></p>

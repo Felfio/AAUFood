@@ -45,6 +45,11 @@ function parseUniwirt(html, day) {
         dayInWeek = day;
     }
 
+    if ($("#StandardWrapper").find(".col600 > .col360.noMargin > h3").html().indexOf(timeHelper.getMondayDate()) == -1) {
+        result.outdated = true;
+	return result;
+    }
+
     var $currentDayRows = $("#StandardWrapper").find(".col600 > .col360.noMargin").eq(dayInWeek).find('tr');
 
     $currentDayRows.each((index, item) => {
@@ -91,6 +96,12 @@ function parseMensa(html, day) {
     if (dayInWeek > 4) {
         result.closed = true;
         return result;
+    }
+
+    var $weekDates = $('#days').find(".date");
+    if ($weekDates.text().indexOf(timeHelper.getMondayDate()) == -1) {
+        result.outdated = true;
+	return result;
     }
 
     var $classic1 = $('.day-content #category133');
@@ -194,6 +205,11 @@ function parseUniPizzeria(html) {
 
     var $menuContent = $('[itemprop="articleBody"]');
 
+    if ($menuContent.find('p > strong').text().indexOf(timeHelper.getMondayDate()) == -1) {
+        result.outdated = true;
+	return result;
+    }
+
     var currentFood = null;
     $menuContent.find('p').each((index, item) => {
 
@@ -287,6 +303,11 @@ function parseMittagstisch(body, day) {
     }
 
     var $ = cheerio.load(body);
+
+    if ($('.companyinfo').text().indexOf(timeHelper.getMondayDate()) == -1) {
+        foodMenu.outdated = true;
+	return foodMenu;
+    }
 
     var dayStates = $(".resp-tabs-list").children();
     var currentDayClosed = false;
