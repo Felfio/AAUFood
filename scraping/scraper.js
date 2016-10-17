@@ -400,6 +400,7 @@ function setErrorOnEmpty(menu) {
 
 function sanitizeName(val) {
     if (typeof val === "string") {
+	val = val.replace(/€\s[0-9](,|.)[0-9]+/, "");
         val = val.replace(/^[,\.\-\\\? ]+/, "");
         val = val.replace(/[,\.\-\\\? ]+$/, "");
         return val;
