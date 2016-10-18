@@ -104,6 +104,9 @@ function parseMensa(html, day) {
 	return result;
     }
 
+
+    $('.day-content br').replaceWith(' ');
+
     var $classic1 = $('.day-content #category133');
     var $classic2 = $('.day-content #category134');
     var $dailySpecial = $('.day-content #category247');
