@@ -164,6 +164,11 @@ function getUniPizzeriaDayPlan(weekMenu, day) {
 
     var menu = new Menu();
 
+    if (weekMenu.outdated) {
+        menu.outdated = true;
+	return menu;
+    }
+
     if (dayInWeek > 4) {
         let info = new Food("Kein Mittagsmenü.", null, true);
         menu.mains.push(info);
