@@ -133,8 +133,19 @@ function createFoodFromMensaCategory(category) {
     let categoryContent = category.find(".category-content");
 
     let meals = categoryContent.find("p").eq(0);
-    meals.find("br").replaceWith(' ');
-    let name = [sanitizeName(meals.text())];
+    meals.find("br").replaceWith('\n');
+
+    let foodNames = [];
+
+    //Check Soup
+    let contents = meals.contents();
+    if (!contents.eq(0).is("strong")) {
+        //WE HAVE A SUPPE
+        foodNames.push(sanitizeName(contents.eq(0).text()));
+        contents = contents.slice(1);
+    }
+
+    foodNames.push(sanitizeName(contents.text()));
 
     let priceTag = categoryContent.find("p").eq(1);
     let match = priceTag.text().match(/€\s[0-9](,|.)[0-9]+/);
@@ -148,7 +159,7 @@ function createFoodFromMensaCategory(category) {
     //isInfo <=> price could not get parsed (or is empty --> 0) and there is only one line of text in .category-content
     var isInfo = (price === 0 || isNaN(price)) && categoryContent.children().length === 1;
 
-    return new Food(name, price, isInfo);
+    return new Food(foodNames, price, isInfo);
 }
 
 function getUniPizzeriaWeekPlan() {
@@ -430,7 +441,7 @@ function sanitizeName(val) {
         val = val.replace(/^[1-9].\s/, ""); // Replace '1. ', '2. '
         val = val.replace(/^[,\.\-\\\? ]+/, "");
         val = val.replace(/[,\.\-\\\? ]+$/, "");
-        return val;
+        return val.trim();
     } else if (typeof val === "object" && val.length > 0) {
         for (let i = 0; i < val.length; i++) {
             val[i] = sanitizeName(val[i]);
