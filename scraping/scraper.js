@@ -275,6 +275,13 @@ function createFoodFromMenuSection(section, menu, dayInWeek) {
         price = priceArray[1];
         price = +price.replace(',', '.');
     }
+    var line = ''
+    for (line of menu) {
+      var match = line.match(/€\s[0-9](,|.)[0-9]+/);
+      if (match != null && match.length > 0) {
+        price = match[0].match(/[0-9]+(,|.)[0-9]+/)[0].replace(',', '.');
+      }
+    }
 
     //isInfo <=> price could not get parsed (or is empty --> 0) and there is only one line of text
     var isInfo = (price == null || isNaN(price) || price === 0) && menu.length === 1;
