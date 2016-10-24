@@ -275,7 +275,7 @@ function createFoodFromMenuSection(section, menu, dayInWeek) {
         price = priceArray[1];
         price = +price.replace(',', '.');
     }
-    var line = ''
+    
     for (line of menu) {
       var match = line.match(/€\s[0-9](,|.)[0-9]+/);
       if (match != null && match.length > 0) {
