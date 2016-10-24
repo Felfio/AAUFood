@@ -105,6 +105,13 @@ function parseMensa(html) {
 
         let day = days.eq(dayInWeek);
 
+        //Check if closed
+        let firstContentText = day.find(".category-content").eq(0).text();
+        if (contains(firstContentText, true, ["geschlossen", "feiertag", "ruhetag"])) {
+            menu.closed = true;
+            continue;
+        }
+
         let classic1Category = day.find('#category133');
         let classic2Category = day.find('#category134');
         let dailySpecialCategory = day.find('#category247');
@@ -133,8 +140,9 @@ function createFoodFromMensaCategory(category) {
     let categoryContent = category.find(".category-content");
 
     let meals = categoryContent.find("p").eq(0);
-    meals.find("br").replaceWith('\n');
+    meals.find("br").replaceWith(' ');
 
+    //Names
     let foodNames = [];
 
     //Check Soup
@@ -147,6 +155,7 @@ function createFoodFromMensaCategory(category) {
 
     foodNames.push(sanitizeName(contents.text()));
 
+    //Price
     let priceTag = categoryContent.find("p").eq(1);
     let match = priceTag.text().match(/€\s[0-9](,|.)[0-9]+/);
 

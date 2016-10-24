@@ -5,6 +5,8 @@ class Menu {
         this.starters = [];
         this.mains = [];
         this.alacarte = [];
+        this.closed = false;
+        this.error = false;
     }
 }
 
