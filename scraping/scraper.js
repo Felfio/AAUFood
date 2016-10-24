@@ -47,7 +47,7 @@ function parseUniwirt(html, day) {
 
     if ($("#StandardWrapper").find(".col600 > .col360.noMargin > h3").html().indexOf(timeHelper.getMondayDate()) == -1) {
         result.outdated = true;
-	return result;
+        return result;
     }
 
     var $currentDayRows = $("#StandardWrapper").find(".col600 > .col360.noMargin").eq(dayInWeek).find('tr');
@@ -74,69 +74,79 @@ function parseUniwirt(html, day) {
 function getMensaWeekPlan() {
     return request.getAsync(MensaUrl)
         .then(res => res.body)
-        .then(body => parseWeek(body, parseMensa));
+        .then(body => parseMensa(body));
 }
 
-function getMensaPlan(day) {
-    return request.getAsync(MensaUrl)
-        .then(res => res.body)
-        .then(body => parseMensa(body, day));
-}
+function parseMensa(html) {
+    var result = new Array(7);
 
-function parseMensa(html, day) {
-    var result = new Menu();
+    let closedMenu = new Menu();
+    closedMenu.closed = true;
+    result[5] = result[6] = closedMenu;
+
     var $ = cheerio.load(html);
-    var dayInWeek;
-    if (day === null || day === undefined) {
-        dayInWeek = ((new Date()).getDay() + 6) % 7;
-    } else {
-        dayInWeek = day;
-    }
 
-    if (dayInWeek > 4) {
-        result.closed = true;
-        return result;
-    }
-
-    var $weekDates = $('#days').find(".date");
+    let $weekDates = $('#days').find('.date');
     if ($weekDates.text().indexOf(timeHelper.getMondayDate()) == -1) {
-        result.outdated = true;
-	return result;
-    }
-
-
-    $('.day-content br').replaceWith(' ');
-
-    var $classic1 = $('.day-content #category133');
-    var $classic2 = $('.day-content #category134');
-    var $dailySpecial = $('.day-content #category247');
-
-    var currentDay1 = $classic1.find('.category-content').eq(dayInWeek).find('p');
-    var currentDay2 = $classic2.find('.category-content').eq(dayInWeek).find('p');
-    var currentDaySpecial = $dailySpecial.find('.category-content').eq(dayInWeek).find('p');
-
-    if (contains(currentDay1.text(), true, ["feiertag", "ruhetag"]) ||
-        contains(currentDay2.text(), true, ["feiertag", "ruhetag"]) ||
-        contains(currentDaySpecial.text(), true, ["feiertag", "ruhetag"])) {
-        result.closed = true;
+        for (let i = 0; i < 5; i++) {
+            let outdatedMenu = new Menu();
+            outdatedMenu.outDated = true;
+            result[i] = outdatedMenu;
+        }
         return result;
     }
 
-    currentDay1 = currentDay1.map((index, item) => $(item).text()).filter(isNotBlank).toArray();
-    currentDay2 = currentDay2.map((index, item) => $(item).text()).filter(isNotBlank).toArray();
-    currentDaySpecial = currentDaySpecial.map((index, item) => $(item).text()).filter(isNotBlank).toArray();
 
-    result.mains = [];
-    if (currentDay1.length) {
-        result.mains.push(createFoodFromMenuSection($classic1, currentDay1, dayInWeek));
+    //Get days
+    let days = $("#days").find(".day");
+    for (let dayInWeek = 0; dayInWeek < 5; dayInWeek++) {
+        let menu = new Menu();
+        result[dayInWeek] = menu;
+
+        let day = days.eq(dayInWeek);
+
+        let classic1Category = day.find('#category133');
+        let classic2Category = day.find('#category134');
+        let dailySpecialCategory = day.find('#category247');
+
+        try {
+            let classic1Food = createFoodFromMensaCategory(classic1Category);
+            menu.mains.push(classic1Food);
+
+            let classic2Food = createFoodFromMensaCategory(classic2Category);
+            menu.mains.push(classic2Food);
+
+            let dailySpecialFood = createFoodFromMensaCategory(dailySpecialCategory);
+            menu.mains.push(dailySpecialFood);
+        } catch (ex) {
+            //Do not log error, as it is most likely to be a parsing error, which we do not want to fill the log file
+            menu.error = true;
+        }
+
+        //Just to be sure
+        setErrorOnEmpty(menu);
     }
-    if (currentDay2.length) {
-        result.mains.push(createFoodFromMenuSection($classic2, currentDay2, dayInWeek));
+    return result;
+}
+
+function createFoodFromMensaCategory(category) {
+    var price = null;
+    let priceArray = category.find('.category-price').text().match(/€ (\S*)/);
+    if (priceArray && priceArray.length) {
+        price = priceArray[1];
+        price = +price.replace(',', '.');
     }
-    if (currentDaySpecial.length) {
-        result.mains.push(createFoodFromMenuSection($dailySpecial, currentDaySpecial, dayInWeek));
-    }
-    return setErrorOnEmpty(result);
+
+    let categoryContent = category.find(".category-content");
+
+    let meals = categoryContent.find("p").eq(0);
+    meals.find("br").replaceWith(' ');
+    let name = [sanitizeName(meals.text())];
+
+    //isInfo <=> price could not get parsed (or is empty --> 0) and there is only one line of text in .category-content
+    var isInfo = (price == null || isNaN(price) || price === 0) && categoryContent.children().length === 1;
+
+    return new Food(name, price, isInfo);
 }
 
 function getUniPizzeriaWeekPlan() {
@@ -215,7 +225,7 @@ function parseUniPizzeria(html) {
 
     if ($menuContent.find('p > strong').text().indexOf(timeHelper.getMondayDate()) == -1) {
         result.outdated = true;
-	return result;
+        return result;
     }
 
     var currentFood = null;
@@ -268,28 +278,6 @@ function parseUniPizzeria(html) {
 
 }
 
-function createFoodFromMenuSection(section, menu, dayInWeek) {
-    var price = null;
-    var priceArray = section.eq(dayInWeek).find('.category-price').text().match(/€ (\S*)/);
-    if (priceArray && priceArray.length) {
-        price = priceArray[1];
-        price = +price.replace(',', '.');
-    }
-    
-    for (line of menu) {
-      var match = line.match(/€\s[0-9](,|.)[0-9]+/);
-      if (match != null && match.length > 0) {
-        price = match[0].match(/[0-9]+(,|.)[0-9]+/)[0].replace(',', '.');
-      }
-    }
-
-    //isInfo <=> price could not get parsed (or is empty --> 0) and there is only one line of text
-    var isInfo = (price == null || isNaN(price) || price === 0) && menu.length === 1;
-
-    let name = sanitizeName(menu);
-    return new Food(name, price, isInfo);
-}
-
 function getMittagstischWeekPlan() {
     return request.getAsync(MittagstischUrl)
         .then(res => res.body)
@@ -321,7 +309,7 @@ function parseMittagstisch(body, day) {
 
     if ($('.companyinfo').text().indexOf(timeHelper.getMondayDate()) == -1) {
         foodMenu.outdated = true;
-	return foodMenu;
+        return foodMenu;
     }
 
     var dayStates = $(".resp-tabs-list").children();
@@ -436,7 +424,7 @@ function setErrorOnEmpty(menu) {
 
 function sanitizeName(val) {
     if (typeof val === "string") {
-	      val = val.replace(/€\s[0-9](,|.)[0-9]+/, ""); // Replace '€ 00.00'
+        val = val.replace(/€\s[0-9](,|.)[0-9]+/, ""); // Replace '€ 00.00'
         val = val.replace(/^[1-9].\s/, ""); // Replace '1. ', '2. '
         val = val.replace(/^[,\.\-\\\? ]+/, "");
         val = val.replace(/[,\.\-\\\? ]+$/, "");
@@ -456,7 +444,6 @@ module.exports = {
     getUniwirtWeekPlan: getUniwirtWeekPlan,
     getMittagstischPlan: getMittagstischPlan,
     getMittagstischWeekPlan: getMittagstischWeekPlan,
-    getMensaPlan: getMensaPlan,
     getMensaWeekPlan: getMensaWeekPlan,
     getUniPizzeriaPlan: getUniPizzeriaPlan,
     getUniPizzeriaWeekPlan: getUniPizzeriaWeekPlan
