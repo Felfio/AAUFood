@@ -130,21 +130,23 @@ function parseMensa(html) {
 }
 
 function createFoodFromMensaCategory(category) {
-    var price = null;
-    let priceArray = category.find('.category-price').text().match(/€ (\S*)/);
-    if (priceArray && priceArray.length) {
-        price = priceArray[1];
-        price = +price.replace(',', '.');
-    }
-
     let categoryContent = category.find(".category-content");
 
     let meals = categoryContent.find("p").eq(0);
     meals.find("br").replaceWith(' ');
     let name = [sanitizeName(meals.text())];
 
+    let priceTag = categoryContent.find("p").eq(1);
+    let match = priceTag.text().match(/€\s[0-9](,|.)[0-9]+/);
+
+    let priceStr = null;
+    if (match != null && match.length > 0) {
+        priceStr = match[0].match(/[0-9]+(,|.)[0-9]+/)[0].replace(',', '.');
+    }
+
+    let price = +priceStr;
     //isInfo <=> price could not get parsed (or is empty --> 0) and there is only one line of text in .category-content
-    var isInfo = (price == null || isNaN(price) || price === 0) && categoryContent.children().length === 1;
+    var isInfo = (price === 0 || isNaN(price)) && categoryContent.children().length === 1;
 
     return new Food(name, price, isInfo);
 }
@@ -176,7 +178,7 @@ function getUniPizzeriaDayPlan(weekMenu, day) {
 
     if (weekMenu.outdated) {
         menu.outdated = true;
-	return menu;
+        return menu;
     }
 
     if (dayInWeek > 4) {
