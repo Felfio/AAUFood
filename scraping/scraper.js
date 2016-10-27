@@ -368,6 +368,11 @@ function parseMittagstisch(body, day) {
 
     //Menü
     var menu = plans.eq(dayInWeek - closedDays);
+    if (menu.text().indexOf("geschlossen") > -1){
+        foodMenu.closed = true;
+	return foodMenu;
+    }
+
     var menuRows = menu.find("tr");
     var first = menuRows.first();
 
