@@ -362,12 +362,12 @@ function parseMittagstisch(body, day) {
     var plans = $(".resp-tabs-container .daydata");
 
     //Wochentag nicht verfügbar
-    if (plans.length <= dayInWeek * 2 - closedDays) {
+    if (plans.length <= dayInWeek - closedDays) {
         return foodMenu;
     }
 
     //Menü
-    var menu = plans.eq(dayInWeek * 2 - closedDays);
+    var menu = plans.eq(dayInWeek - closedDays);
     var menuRows = menu.find("tr");
     var first = menuRows.first();
 
