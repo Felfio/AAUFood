@@ -303,71 +303,67 @@ function parseUniPizzeria(html) {
 function getMittagstischWeekPlan() {
     return request.getAsync(MittagstischUrl)
         .then(res => res.body)
-        .then(body => parseWeek(body, parseMittagstisch));
+        .then(body => parseMittagstisch(body));
 }
 
-function getMittagstischPlan(day) {
-    return request.getAsync(MittagstischUrl)
-        .then(res => res.body)
-        .then(body => parseMittagstisch(body, day));
-}
+function parseMittagstisch(html) {
+    var result = new Array(7);
 
-function parseMittagstisch(body, day) {
-    var foodMenu = new Menu();
+    let closedMenu = new Menu();
+    closedMenu.closed = true;
+    result[5] = result[6] = closedMenu;
 
-    var dayInWeek;
-    if (day === null || day === undefined) {
-        dayInWeek = ((new Date()).getDay() + 6) % 7;
-    } else {
-        dayInWeek = day;
-    }
+    var $ = cheerio.load(html);
 
-    if (dayInWeek > 4) {
-        foodMenu.closed = true;
-        return foodMenu;
-    }
+    var weekIsOutdated = $('.companyinfo').text().indexOf(timeHelper.getMondayDate()) == -1;
 
-    var $ = cheerio.load(body);
+    //Get container divs for single days
+    let days = $(".resp-tabs-container > div");
 
-    if ($('.companyinfo').text().indexOf(timeHelper.getMondayDate()) == -1) {
-        foodMenu.outdated = true;
-        return foodMenu;
-    }
+    for (let dayInWeek = 0; dayInWeek < 5; dayInWeek++) {
+        let dayMenu = new Menu();
+        result[dayInWeek] = dayMenu;
 
-    var dayStates = $(".resp-tabs-list").children();
-    var currentDayClosed = false;
-    var closedDaysMap = {};
-    var closedCnt = 0;
+        let dayDatas = days.eq(dayInWeek).find(".daydata");
 
-    //Count number of closed days before each day (so we can adjust indices by this amount
-    dayStates.each((index, item) => {
-        closedDaysMap["" + index] = closedCnt;
+        //Check if current day is closed
+        let isClosed = false;
 
-        if (item.attribs.class.indexOf("closed") > -1) {
-            closedCnt++;
+        for (let d = 0; d < dayDatas.length; d++) {
+            let dayData = dayDatas.eq(d);
 
-            if (index === dayInWeek) {
-                currentDayClosed = true;
-            }
+            if (dayData.hasClass("closed"))
+                isClosed = true;
+            else if (contains(dayData.text(), true, ["geschlossen", "feiertag", "ruhetag"]))
+                isClosed = true;
+
+            if (isClosed)
+                break;
         }
-    });
 
-    if (currentDayClosed) {
-        foodMenu.closed = true;
-        return foodMenu;
+        if (isClosed) {
+            dayMenu.closed = true;
+            continue;
+        }
+
+        try {
+            parseMittagstischDayMenu(dayDatas, dayMenu);
+            //Just to be sure
+            setErrorOnEmpty(dayMenu);
+
+            if (!dayMenu.error && weekIsOutdated)
+                dayMenu.outdated = true;
+        } catch (ex) {
+            //Do not log parsing errors. They will simply fill the log
+            dayMenu.error = true;
+        }
     }
 
-    var closedDays = closedDaysMap["" + dayInWeek];
+    return result;
+}
 
-    var plans = $(".resp-tabs-container .daydata");
-
-    //Wochentag nicht verfügbar
-    if (plans.length <= dayInWeek * 2 - closedDays) {
-        return foodMenu;
-    }
-
-    //Menü
-    var menu = plans.eq(dayInWeek * 2 - closedDays);
+function parseMittagstischDayMenu(dayDatas, dayMenu) {
+    var menu = dayDatas.eq(0);
     var menuRows = menu.find("tr");
     var first = menuRows.first();
 
@@ -377,45 +373,47 @@ function parseMittagstisch(body, day) {
     }
 
     soupRows.splice(0, 1);
-    soupRows.each((index, item) => {
-        var name = $(item).children().first().text();
+    for (let s = 0; s < soupRows.length; s++) {
+        let soupRow = soupRows.eq(s);
+        let name = soupRow.children().first().text();
         name = sanitizeName(name);
-        foodMenu.starters.push(new Food(name));
-    });
+        dayMenu.starters.push(new Food(name));
+    }
 
     //Hauptspeisen
     var mainsRows = soupRows.last().next().nextUntil('.free', 'tr');
     mainsRows.splice(0, 1);
 
-    mainsRows.each((index, item) => {
-        var name = $(item).children().first().text();
+    for (let m = 0; m < mainsRows.length; m++) {
+        let mainsRow = mainsRows.eq(m);
+        let name = mainsRow.children().first().text();
         name = sanitizeName(name);
-        foodMenu.mains.push(new Food(name, 7.4));
-    });
-
-    //á la carte
-    var aLaCarte = plans.eq(dayInWeek * 2 + 1 - closedDays);
-    var aLaCarteRows = aLaCarte.find("tr");
-    first = aLaCarteRows.first();
-
-    var aLaCartes = first.nextUntil('.free', 'tr');
-    if (!first.hasClass("free") && aLaCartes.unshift) {
-        aLaCartes.unshift(first);
+        dayMenu.mains.push(new Food(name, 7.4));
     }
 
-    aLaCartes.splice(0, 1);
-    aLaCartes.each((index, item) => {
-        var entries = $(item).children();
-        var name = entries.first().text();
-        name = sanitizeName(name);
-        var price = +entries.eq(1).text().replace(",", ".");
-        foodMenu.alacarte.push(new Food(name, price));
-    });
+    //á la carte
+    if (dayDatas.length > 1) {
+        var aLaCarte = dayDatas.eq(1);
 
+        let aLaCarteRows = aLaCarte.find("tr");
+        first = aLaCarteRows.first();
+        var aLaCartes = first.nextUntil('.free', 'tr');
 
-    return setErrorOnEmpty(foodMenu);
+        if (!first.hasClass("free") && aLaCartes.unshift) {
+            aLaCartes.unshift(first);
+        }
+
+        aLaCartes.splice(0, 1);
+
+        for (let a = 0; a < aLaCartes.length; a++) {
+            let entries = aLaCartes.eq(a).children();
+            let name = entries.first().text();
+            name = sanitizeName(name);
+            let price = +entries.eq(1).text().replace(",", ".");
+            dayMenu.alacarte.push(new Food(name, price));
+        }
+    }
 }
-
 
 function isNotBlank(index, element) {
     return element.length !== 0 && element.trim();
@@ -464,7 +462,6 @@ function sanitizeName(val) {
 module.exports = {
     getUniwirtPlan: getUniwirtPlan,
     getUniwirtWeekPlan: getUniwirtWeekPlan,
-    getMittagstischPlan: getMittagstischPlan,
     getMittagstischWeekPlan: getMittagstischWeekPlan,
     getMensaWeekPlan: getMensaWeekPlan,
     getUniPizzeriaPlan: getUniPizzeriaPlan,
