@@ -382,13 +382,16 @@ function parseMittagstischDayMenu(dayDatas, dayMenu) {
 
     //Hauptspeisen
     var mainsRows = soupRows.last().next().nextUntil('.free', 'tr');
-    mainsRows.splice(0, 1);
+    //Remove "Hauptspeise" Info, but only if there is more then one entry and the price info does not hold a price
+    if (mainsRows.length > 1 && mainsRows.eq(0).children().eq(1).text().search(/[0-9](,|.)?[0-9]*/) == -1)
+        mainsRows.splice(0, 1);
 
     for (let m = 0; m < mainsRows.length; m++) {
         let mainsRow = mainsRows.eq(m);
         let name = mainsRow.children().first().text();
         name = sanitizeName(name);
-        dayMenu.mains.push(new Food(name, 7.4));
+        let price = (+mainsRow.children().eq(1).text().replace(",", ".")) || 7.4;
+        dayMenu.mains.push(new Food(name, price));
     }
 
     //á la carte
