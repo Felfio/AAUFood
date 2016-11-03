@@ -246,6 +246,13 @@ body {
   .fa-space-shuttle {
     @include footerIcon(#0093ff);
   }
+
+  .fa-hand-lizard-o {
+    @include footerIcon(#377F31);
+  }
+  .fa-hand-paper-o {
+    @include footerIcon(#FFE4C4);
+  }
 }
 
 #impressum-linkHolder {
