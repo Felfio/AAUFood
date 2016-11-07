@@ -145,6 +145,14 @@ function createFoodFromMensaCategory(category) {
     //Names
     let foodNames = [];
 
+    // ugly bugfix, courtesy of behackl
+    if (categoryContent.find("p").length > 2) {
+        let allContent = categoryContent.find("p")
+        for (var i = 0; i < allContent.length-1; i++) {
+            foodNames.push(sanitizeName(allContent.eq(i).text()));
+	}
+    }
+    else {
     //Check Soup
     let contents = meals.contents();
     if (!contents.eq(0).is("strong")) {
@@ -154,9 +162,10 @@ function createFoodFromMensaCategory(category) {
     }
 
     foodNames.push(sanitizeName(contents.text()));
+    }
 
-    //Price
-    let priceTag = categoryContent.find("p").eq(1);
+    //Price //more ugly bugfix
+    let priceTag = categoryContent.find("p").eq(categoryContent.find("p").length-1);
     let match = priceTag.text().match(/€\s[0-9](,|.)[0-9]+/);
 
     let priceStr = null;
