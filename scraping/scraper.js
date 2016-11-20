@@ -90,7 +90,7 @@ function parseMensa(html) {
     if ($weekDates.text().indexOf(timeHelper.getMondayDate()) == -1) {
         for (let i = 0; i < 5; i++) {
             let outdatedMenu = new Menu();
-            outdatedMenu.outDated = true;
+            outdatedMenu.outdated = true;
             result[i] = outdatedMenu;
         }
         return result;
