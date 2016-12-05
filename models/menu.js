@@ -7,6 +7,7 @@ class Menu {
         this.alacarte = [];
         this.closed = false;
         this.error = false;
+        this.noMenu = false;
     }
 }
 

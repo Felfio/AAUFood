@@ -55,6 +55,8 @@ function parseUniwirt(html, day) {
 
         if (contains(name, true, ["feiertag", "ruhetag", "wir machen pause"])) {
             result.closed = true;
+        }else if (contains(name, true, ["Tagesempfehlung"])) {
+            result.noMenu = true;
         } else if (!price) {
             result.starters.push(new Food(name));
         } else {
@@ -211,6 +213,7 @@ function getUniPizzeriaDayPlan(weekMenu, day) {
 
     if (dayInWeek > 4) {
         let info = new Food("Kein Mittagsmenü.", null, true);
+        menu.noMenu = true;
         menu.mains.push(info);
     } else if (dayInWeek < weekMenu.mains.length) {
         let combinedFood = weekMenu.mains[dayInWeek];
@@ -218,8 +221,9 @@ function getUniPizzeriaDayPlan(weekMenu, day) {
         //Handle holidays (no menu)
         if (contains(combinedFood.name, true, ["feiertag"])) {
             let info = new Food("Kein Mittagsmenü.", null, true);
+            menu.noMenu = true;
             menu.mains.push(info);
-        } else {
+        }else {
 
             let splitted = combinedFood.name.split("<br>");
             let starterExists = splitted.length > 1;
