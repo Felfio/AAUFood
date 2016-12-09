@@ -212,17 +212,13 @@ function getUniPizzeriaDayPlan(weekMenu, day) {
     }
 
     if (dayInWeek > 4) {
-        let info = new Food("Kein Mittagsmenü.", null, true);
         menu.noMenu = true;
-        menu.mains.push(info);
     } else if (dayInWeek < weekMenu.mains.length) {
         let combinedFood = weekMenu.mains[dayInWeek];
 
         //Handle holidays (no menu)
         if (contains(combinedFood.name, true, ["feiertag"])) {
-            let info = new Food("Kein Mittagsmenü.", null, true);
             menu.noMenu = true;
-            menu.mains.push(info);
         }else {
 
             let splitted = combinedFood.name.split("<br>");
@@ -451,7 +447,7 @@ function contains(str, ignoreCase, searches) {
 }
 
 function setErrorOnEmpty(menu) {
-    if (!(menu.starters.length || menu.mains.length || menu.alacarte.length)) {
+    if (!menu.closed && !menu.noMenu && (menu.starters.length + menu.mains.length + menu.alacarte.length === 0)) {
         menu.error = true;
     }
     return menu;
