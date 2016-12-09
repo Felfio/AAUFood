@@ -53,7 +53,7 @@ function parseUniwirt(html, day) {
         name = sanitizeName(name);
         var price = $tds.eq(2).text();
 
-        if (contains(name, true, ["feiertag", "ruhetag", "wir machen pause"])) {
+        if (contains(name, true, ["feiertag", "ruhetag", "wir machen pause", "wir haben geschlossen"])) {
             result.closed = true;
         }else if (contains(name, true, ["Tagesempfehlung"])) {
             result.noMenu = true;
