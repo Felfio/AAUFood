@@ -1,5 +1,4 @@
 require('./styles/app.scss');
-require('jquery');
 require('bootstrap');
 
 window.cookieconsent_options = {
@@ -12,6 +11,11 @@ window.cookieconsent_options = {
 };
 
 require('cookieconsent');
+
+const winterTheme = require('../config').settings.winterTheme;
+if (winterTheme) {
+    require("./snowFall")
+}
 
 var io = require('socket.io-client');
 var Swipe = require('swipejs');

@@ -4,6 +4,10 @@
 @import 'about.scss';
 /*@import 'ribbons.scss';*/
 
+//Switches
+$winterTheme: true;
+$winterTextColor: #f5f5f5;
+
 /*Colors and definitions*/
 $mittagstischGreen: #5fb127;
 $mensaOrange: #f49900;
@@ -13,10 +17,10 @@ $navIconMargin: 3rem;
 $navIconMarginInwards: 1rem;
 $outerPadding: 0.9375rem;
 $footerHeight: 2rem;
-$footerColor: #202122;
+$footerColor: if($winterTheme, rgba(0, 0, 0, 0.8), #202122);
 /*General definitions*/
 body {
-  background-image: url("tileable_wood_texture.jpg");
+  background-image: if($winterTheme, url("../images/winter_planks_512.jpg"), url("../images/tileable_wood_texture.jpg"));
 }
 
 .container-fluid.menu-container {
@@ -196,7 +200,9 @@ body {
 
   @mixin footer-border-element($left) {
     position: absolute;
-    background: $footerColor;
+    @if ($winterTheme == false) {
+      background: $footerColor;
+    }
     z-index: 9600;
 
     @if ($left) {
@@ -252,6 +258,9 @@ body {
   }
   .fa-hand-paper-o {
     @include footerIcon(#FFE4C4);
+  }
+  .fa-snowflake-o {
+    @include footerIcon(#0093ff);
   }
 }
 
@@ -376,4 +385,24 @@ html, body {
   position: absolute;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.7);
+}
+
+//Theme only settings
+#snowCanvas {
+  display: if($winterTheme, inherit, none);
+  position: absolute;
+}
+
+@if ($winterTheme) {
+  .weekday {
+    color: $winterTextColor;
+    padding: 10px 25px 5px 25px;
+    background: rgba(0, 0, 0, 0.7);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  .nav-icon {
+    color: $winterTextColor;
+  }
 }
