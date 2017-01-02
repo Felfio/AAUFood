@@ -55,7 +55,7 @@ function parseUniwirt(html, day) {
 
         if (contains(name, true, ["feiertag", "ruhetag", "wir machen pause", "wir haben geschlossen"])) {
             result.closed = true;
-        }else if (contains(name, true, ["Tagesempfehlung"])) {
+        } else if (contains(name, true, ["Tagesempfehlung"])) {
             result.noMenu = true;
         } else if (!price) {
             result.starters.push(new Food(name));
@@ -65,7 +65,8 @@ function parseUniwirt(html, day) {
         }
     });
 
-    if ($("#StandardWrapper").find(".col600 > .col360.noMargin > h3").html().indexOf(timeHelper.getMondayDate()) == -1) {
+    var dateWrapperText = $("#StandardWrapper").find(".col600 > .col360.noMargin > h3").html();
+    if (dateWrapperText != null && dateWrapperText.indexOf(timeHelper.getMondayDate()) == -1) {
         result.outdated = true;
     }
 
@@ -149,24 +150,24 @@ function createFoodFromMensaCategory(category) {
     // ugly bugfix, courtesy of behackl
     if (categoryContent.find("p").length > 2) {
         let allContent = categoryContent.find("p")
-        for (var i = 0; i < allContent.length-1; i++) {
+        for (var i = 0; i < allContent.length - 1; i++) {
             foodNames.push(sanitizeName(allContent.eq(i).text()));
-	}
+        }
     }
     else {
-    //Check Soup
-    let contents = meals.contents();
-    if (!contents.eq(0).is("strong")) {
-        //WE HAVE A SUPPE
-        foodNames.push(sanitizeName(contents.eq(0).text()));
-        contents = contents.slice(1);
-    }
+        //Check Soup
+        let contents = meals.contents();
+        if (!contents.eq(0).is("strong")) {
+            //WE HAVE A SUPPE
+            foodNames.push(sanitizeName(contents.eq(0).text()));
+            contents = contents.slice(1);
+        }
 
-    foodNames.push(sanitizeName(contents.text()));
+        foodNames.push(sanitizeName(contents.text()));
     }
 
     //Price //more ugly bugfix
-    let priceTag = categoryContent.find("p").eq(categoryContent.find("p").length-1);
+    let priceTag = categoryContent.find("p").eq(categoryContent.find("p").length - 1);
     let match = priceTag.text().match(/(€|e|E)\s[0-9](,|\.)[0-9]+/);
 
     let priceStr = null;
@@ -219,7 +220,7 @@ function getUniPizzeriaDayPlan(weekMenu, day) {
         //Handle holidays (no menu)
         if (contains(combinedFood.name, true, ["feiertag"])) {
             menu.noMenu = true;
-        }else {
+        } else {
 
             let splitted = combinedFood.name.split("<br>");
             let starterExists = splitted.length > 1;
