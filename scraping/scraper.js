@@ -44,7 +44,7 @@ function parseUniwirt(html) {
     //Get Monday Date
     let mondayDate = moment(dayEntries.first().find("p").first().text(), "DD.MM.YY");
     if (mondayDate.isValid() && mondayDate.format("D.M") !== timeHelper.getMondayDate()) {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 6; i++) {
             let outdatedMenu = new Menu();
             outdatedMenu.outdated = true;
             weekPlan[i] = outdatedMenu;
