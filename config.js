@@ -9,7 +9,7 @@ module.exports = {
     },
     onBreak: {
         //The dates are only rendered, never used for checking if closed!
-        mensa: new BreakInfo("Weihnachtspause", "Das Mensa-Team wünscht ein besinnliches Weihnachtsfest.", "22.12 ", "8.1", "fa-snowflake-o")
+        // mensa: new BreakInfo("Weihnachtspause", "Das Mensa-Team wünscht ein besinnliches Weihnachtsfest.", "22.12 ", "8.1", "fa-snowflake-o")
     },
     cache: {
         redisUrl: "//localhost:6379",
