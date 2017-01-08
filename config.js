@@ -9,7 +9,7 @@ module.exports = {
     },
     onBreak: {
         //The dates are only rendered, never used for checking if closed!
-        mensa: new BreakInfo("Weihnachtspause", "Das Mensa-Team wünscht ein besinnliches Weihnachtsfest.", "22.12 ", "8.1", "fa-snowflake-o")
+        // mensa: new BreakInfo("Weihnachtspause", "Das Mensa-Team wünscht ein besinnliches Weihnachtsfest.", "22.12 ", "8.1", "fa-snowflake-o")
     },
     cache: {
         redisUrl: "//localhost:6379",
@@ -20,14 +20,14 @@ module.exports = {
     },
     scraper: {
         mensaUrl: "http://menu.mensen.at/index/index/locid/45",
-        uniwirtUrl: "http://www.uniwirt.at/Default.aspx?SIid=4&LAid=1",
+        uniwirtUrl: "http://www.uniwirt.at",
         mittagstischUrl: "http://www.lakeside-scitec.com/services/gastronomie/mittagstisch/",
         unipizzeriaUrl: "http://www.uni-pizzeria.at/speisen/mittagsteller.html"
     },
     userFriendlyUrls: {
         //Usually the same as the scraper ones
         mensa: "http://menu.mensen.at/index/index/locid/45",
-        uniwirt: "http://www.uniwirt.at/",
+        uniwirt: "http://www.uniwirt.at/wp/home/mittag/",
         mittagstisch: "http://www.lakeside-scitec.com/services/gastronomie/mittagstisch/",
         "uni-pizzeria": "http://www.uni-pizzeria.at/speisen/mittagsteller.html"
     },
