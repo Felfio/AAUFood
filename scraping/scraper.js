@@ -3,6 +3,7 @@
 const Promise = require('bluebird');
 const request = Promise.promisifyAll(require("request"));
 const cheerio = require('cheerio');
+const moment = require('moment');
 const Food = require("../models/food");
 const Menu = require("../models/menu");
 const config = require('../config');
@@ -25,52 +26,84 @@ function parseWeek(input, parseFunction) {
 function getUniwirtWeekPlan() {
     return request.getAsync(UniwirtUrl)
         .then(res => res.body)
-        .then(body => parseWeek(body, parseUniwirt));
+        .then(body => parseUniwirt(body));
 }
 
-function getUniwirtPlan(day) {
-    return request.getAsync(UniwirtUrl)
-        .then(res => res.body)
-        .then(body => parseUniwirt(body, day));
-}
+function parseUniwirt(html) {
+    var weekPlan = new Array(7);
 
-function parseUniwirt(html, day) {
-    var result = new Menu();
+    //Set Sunday closed
+    let closedMenu = new Menu();
+    closedMenu.closed = true;
+    weekPlan[6] = closedMenu;
 
     var $ = cheerio.load(html);
-    var dayInWeek;
-    if (day === null || day === undefined) {
-        dayInWeek = ((new Date()).getDay() + 6) % 7;
-    } else {
-        dayInWeek = day;
-    }
 
-    var $currentDayRows = $("#StandardWrapper").find(".col600 > .col360.noMargin").eq(dayInWeek).find('tr');
+    var dayEntries = $("#mittag").find(".vc_col-sm-2 .hgr-content-tb");
 
-    $currentDayRows.each((index, item) => {
-        var $tds = $(item).children();
-        var name = $tds.eq(0).text();
-        name = sanitizeName(name);
-        var price = $tds.eq(2).text();
-
-        if (contains(name, true, ["feiertag", "ruhetag", "wir machen pause", "wir haben geschlossen"])) {
-            result.closed = true;
-        } else if (contains(name, true, ["Tagesempfehlung"])) {
-            result.noMenu = true;
-        } else if (!price) {
-            result.starters.push(new Food(name));
-        } else {
-            price = +price.substring(2).replace(',', '.');
-            result.mains.push(new Food(name, price));
+    //Get Monday Date
+    let mondayDate = moment(dayEntries.first().find("p").first().text(), "DD.MM.YY");
+    if (mondayDate.isValid() && mondayDate.format("D.M") !== timeHelper.getMondayDate()) {
+        for (let i = 0; i < 5; i++) {
+            let outdatedMenu = new Menu();
+            outdatedMenu.outdated = true;
+            weekPlan[i] = outdatedMenu;
         }
-    });
-
-    var dateWrapperText = $("#StandardWrapper").find(".col600 > .col360.noMargin > h3").html();
-    if (dateWrapperText != null && dateWrapperText.indexOf(timeHelper.getMondayDate()) == -1) {
-        result.outdated = true;
+        return weekPlan;
     }
 
-    return setErrorOnEmpty(result);
+    for (let dayInWeek = 0; dayInWeek < 6; dayInWeek++) {
+        var dayEntry = dayEntries.eq(dayInWeek);
+        try {
+            weekPlan[dayInWeek] = createUniwirtDayMenu(dayEntry);
+        } catch (ex) {
+            let errorMenu = new Menu();
+            errorMenu.error = true;
+            weekPlan[dayInWeek] = errorMenu;
+        }
+    }
+
+    return weekPlan
+}
+
+function createUniwirtDayMenu(dayEntry) {
+    var dayMenu = new Menu();
+    var paragraphs = dayEntry.find("p");
+    //Omit first <p> as it is the date
+    paragraphs = paragraphs.slice(1, paragraphs.length);
+
+    if (paragraphs.length === 1) {
+        //Special cases
+        let pText = paragraphs.text();
+        if (contains(pText, true, ["feiertag", "ruhetag", "wir machen pause", "wir haben geschlossen"])) {
+            dayMenu.closed = true;
+        } else if (contains(pText, true, ["Empfehlung"])) {
+            dayMenu.noMenu = true;
+        } else {
+            let info = new Food(pText, null, true);
+            dayMenu.mains.push(info);
+        }
+    } else {
+        for (let i = 0; i < paragraphs.length; i++) {
+            let pEntry = paragraphs.eq(i);
+
+            let text = pEntry.text().trim();
+            let name = sanitizeName(text);
+
+            let price = text.match(/\d+[\.\,]\d+$/);
+            price = price ? +(price[0].replace(',', '.')) : null;
+
+            let food = new Food(name, price);
+
+            //If it has a price, it is a main course, otherwise a starter
+            if (price)
+                dayMenu.mains.push(food);
+            else
+                dayMenu.starters.push(food);
+        }
+    }
+
+    return setErrorOnEmpty(dayMenu);
 }
 
 function getMensaWeekPlan() {
@@ -456,7 +489,7 @@ function setErrorOnEmpty(menu) {
 
 function sanitizeName(val) {
     if (typeof val === "string") {
-        val = val.replace(/€\s[0-9](,|.)[0-9]+/, ""); // Replace '€ 00.00'
+        val = val.replace(/€?\s[0-9](,|.)[0-9]+/, ""); // Replace '€ 00.00'
         val = val.replace(/^[1-9].\s/, ""); // Replace '1. ', '2. '
         val = val.replace(/^[,\.\-\\\? ]+/, "");
         val = val.replace(/[,\.\-\\\? ]+$/, "");
@@ -472,7 +505,6 @@ function sanitizeName(val) {
 }
 
 module.exports = {
-    getUniwirtPlan: getUniwirtPlan,
     getUniwirtWeekPlan: getUniwirtWeekPlan,
     getMittagstischWeekPlan: getMittagstischWeekPlan,
     getMensaWeekPlan: getMensaWeekPlan,
