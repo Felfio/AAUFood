@@ -122,7 +122,8 @@ function parseMensa(html) {
     var $ = cheerio.load(html);
 
     let $weekDates = $('#days').find('.date');
-    if ($weekDates.text().indexOf(timeHelper.getMondayDate()) == -1) {
+    let mondayDate = moment($weekDates.first().text(), "DD.MM.YY");
+    if (mondayDate.isValid() && mondayDate.format("D.M") !== timeHelper.getMondayDate()) {
         for (let i = 0; i < 5; i++) {
             let outdatedMenu = new Menu();
             outdatedMenu.outdated = true;
