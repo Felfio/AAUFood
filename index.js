@@ -64,8 +64,8 @@ app.locals.isOnBreak = breakHelper.isOnBreak;
 app.locals.getBreakInfo = breakHelper.getBreakInfo;
 app.locals.catFactHeaderUrl = placeKittenHelper.catFactHeaderUrl;
 
-var server = app.listen(3000, function () {
-    console.log('AAU Food listening on port 3000!');
+var server = app.listen(config.settings.nodePort, function () {
+    console.log('AAU Food listening on port ' + config.settings.nodePort + '!');
 });
 
 const io = require('socket.io')(server);
