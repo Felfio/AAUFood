@@ -37,3 +37,7 @@ node_modules
 
 #Folder for bundled scripts and styles
 public/dist
+
+.vscode
+
+runconfig.js
