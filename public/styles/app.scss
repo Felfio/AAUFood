@@ -21,6 +21,7 @@ $footerColor: if($winterTheme, rgba(0, 0, 0, 0.8), #202122);
 /*General definitions*/
 body {
   background-image: if($winterTheme, url("../images/winter_planks_512.jpg"), url("../images/tileable_wood_texture.jpg"));
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .container-fluid.menu-container {

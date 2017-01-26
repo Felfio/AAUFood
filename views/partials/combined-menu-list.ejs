@@ -42,7 +42,7 @@
             <% menu.mains.forEach(function(singleMenu, index){ %>
                 <% if (singleMenu.name && singleMenu.name.length) { %>
                     <% if(singleMenu.price != null && !singleMenu.isInfo) { %>
-                        <span class="label label-default label-pill price-pill pull-xs-right"><%= singleMenu.price + " €" %></span>
+                        <span class="tag tag-default tag-pill price-pill pull-xs-right"><%= singleMenu.price + " €" %></span>
                     <% } %>
 
                     <h5><%= getMensaMenuName(index, singleMenu) %></h5>

@@ -1,10 +1,9 @@
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const webpack = require('webpack');
-// require('bootstrap-loader');
 
 module.exports = {
-    entry: "./public/scripts.js",
+    entry: ["./public/scripts.js", "bootstrap-loader"],
     output: {
         path: path.join(__dirname, 'public/dist'),
         filename: "bundle.js"
@@ -25,7 +24,7 @@ module.exports = {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
                     fallbackLoader: "style-loader",
-                    loader: ["css-loader?minimize=true", "sass-loader"]
+                    loader: ["css-loader?minimize=true", "postcss-loader", "sass-loader"]
                 })
             },
             {
