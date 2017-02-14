@@ -153,14 +153,14 @@ function parseMensa(html) {
         let dailySpecialCategory = day.find('#category247');
 
         try {
+            let dailySpecialFood = createFoodFromMensaCategory(dailySpecialCategory);
+            menu.mains.push(dailySpecialFood);
+
             let classic1Food = createFoodFromMensaCategory(classic1Category);
             menu.mains.push(classic1Food);
 
             let classic2Food = createFoodFromMensaCategory(classic2Category);
             menu.mains.push(classic2Food);
-
-            let dailySpecialFood = createFoodFromMensaCategory(dailySpecialCategory);
-            menu.mains.push(dailySpecialFood);
         } catch (ex) {
             //Do not log error, as it is most likely to be a parsing error, which we do not want to fill the log file
             menu.error = true;
