@@ -29,6 +29,9 @@ class MenuCache extends EventEmitter {
         scraper.getUniPizzeriaWeekPlan()
             .then(weekPlan => this._updateIfInvalid('uniPizzeria', weekPlan));
 
+        scraper.getLapastaWeekPlan()
+            .then(weekPlan => this._updateIfInvalid('lapasta', weekPlan));
+
         winston.info('Updating caches.');
     }
 

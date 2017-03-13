@@ -9,6 +9,8 @@ const Menu = require("../models/menu");
 const config = require('../config');
 const timeHelper = require('../helpers/timeHelper');
 
+const laPastaScraper = require('./lapasta-scraper');
+
 var MensaUrl = config.scraper.mensaUrl;
 var UniwirtUrl = config.scraper.uniwirtUrl;
 var MittagstischUrl = config.scraper.mittagstischUrl;
@@ -510,5 +512,6 @@ module.exports = {
     getMittagstischWeekPlan: getMittagstischWeekPlan,
     getMensaWeekPlan: getMensaWeekPlan,
     getUniPizzeriaPlan: getUniPizzeriaPlan,
-    getUniPizzeriaWeekPlan: getUniPizzeriaWeekPlan
+    getUniPizzeriaWeekPlan: getUniPizzeriaWeekPlan,
+    getLapastaWeekPlan: laPastaScraper.getWeekPlan
 };
