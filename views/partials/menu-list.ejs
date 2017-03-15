@@ -55,12 +55,14 @@
             <ul class="list-group menu-list-group mains">
                 <% menu.mains.forEach(function (main) { %>
                 <li class="list-group-item">
-                    <% if(main.price != null) { %>
-                        <span class="tag tag-default tag-pill price-pill pull-xs-right"><%= main.price + " €" %></span>
+		    <div class="d-flex flex-row">
+		    <div><span class="menu-name">
+                       <%= main.name %>
+                    </span></div>
+		    <% if(main.price != null) { %>
+                        <div><span class="badge badge-default badge-pill price-pill pull-right"><%= main.price + " €" %></span></div>
                     <% }%>
-                          <span class="menu-name">
-                            <%= main.name %>
-                          </span>
+		    </div>
                 </li>
                 <% }); %>
             </ul>

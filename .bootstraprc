@@ -86,7 +86,7 @@ styles:
   list-group: true
   responsive-embed: true
   close: true
-  tags: true
+  badge: true
 
   # Components w/ JavaScript
   modal: false
