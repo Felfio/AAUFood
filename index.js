@@ -22,7 +22,7 @@ bluebird.promisifyAll(redis.Multi.prototype);
 
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
-const redisClient = redis.createClient(config.cache.redisUrl);
+const redisClient = redis.createClient({host: 'redis'});
 const app = express();
 
 winston.add(winston.transports.File, {filename: 'logfile.log'});
