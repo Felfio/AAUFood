@@ -6,6 +6,6 @@ services:
   node:
     build: .
     ports:
-     - "4444:3000"
+     - "${FOOD_PORT}:3000"
     links:
      - redis
