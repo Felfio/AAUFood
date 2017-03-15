@@ -1,0 +1,11 @@
+version: '2'
+services:
+  redis:
+    image: "redis"
+
+  node:
+    build: .
+    ports:
+     - "${FOOD_PORT}:3000"
+    links:
+     - redis

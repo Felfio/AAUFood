@@ -28,10 +28,11 @@ Aktuell:
 * SASS
 * Redis für das Cachen der Menüs
 * Socket.IO für Live-Updates der Besucherzahlen
+* docker und docker-compose
 
 ## Infos für Entwickler
 
-Für die Weiterentwicklung von AAU Food muss `NodeJS` und `Redis` installiert sein. NodeJS Dependencies werden wie gewohnt mit `$ npm install` installiert, Web-Resources werden mit `$ npm run build` compiliert und der Server mit `$ node .` gestartet.
+AAUFood läuft innerhalb eines Docker-Containers, um die App lokal laufen zu lassen muss also `docker` sowie `docker-compose` installiert sein. Die Inbetriebnahme erfolgt dann einfach mittels `$ docker-compose up`, wobei der Port, auf dem die Node-App erreichbar ist in der Umgebungsvariable `FOOD_PORT` gespeichert wird. Beispielsweise startet `$ FOOD_PORT=3000 docker-compose up` die App auf Port 3000. Es sind keine weiteren Schritte erforderlich.
 
 ## Externe Dienste
 * [placekitten](http://placekitten.com) für zufällige Katzenbilder
