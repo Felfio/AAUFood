@@ -202,7 +202,7 @@ function createFoodFromMensaCategory(category) {
 
     //Price //more ugly bugfix
     let priceTag = categoryContent.find("p").eq(categoryContent.find("p").length - 1);
-    let match = priceTag.text().match(/(€|e|E)\s[0-9](,|\.)[0-9]+/);
+    let match = priceTag.text().match(/(€|e|E)[\s]+[0-9](,|\.)[0-9]+/);
 
     let priceStr = null;
     if (match != null && match.length > 0) {
