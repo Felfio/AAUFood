@@ -7,6 +7,7 @@ COPY package.json /usr/src/app/
 RUN npm install
 
 COPY . /usr/src/app
+RUN bash -l -c 'npm run build'
 
 EXPOSE 3000
 
