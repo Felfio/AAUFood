@@ -1,0 +1,158 @@
+<% var title = 'AAU Food: Wochenplan'; %>
+<% include partials/header.ejs %>
+
+<style>
+    body {
+        background: none;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    table {
+        font-size: 10pt;
+    }
+
+    th {
+        text-align: center;
+    }
+
+    .new-page {
+        page-break-after: always;
+    }
+
+    .table .name {
+        /*transform: rotate(-90deg);*/
+        /*text-align: right;*/
+        /*vertical-align: inherit;*/
+        font-weight: bold;
+        color: white;
+    }
+
+    table td, table td * {
+        vertical-align: top;
+    }
+
+    @media print {
+        .table .name {
+            transform: rotate(-90deg);
+            text-align: right;
+            vertical-align: inherit;
+            font-weight: bold;
+            color: white;
+        }
+    }
+
+    .mensa .name {
+        box-shadow: inset 0 0 0 1000px #f49900;
+    }
+
+    .uniwirt .name {
+        background: #800768;
+    }
+
+    .mittagstisch .name {
+        background: #5fb127;
+    }
+
+    .uni-pizzeria .name {
+        background: #2336B1;
+    }
+
+</style>
+
+<h2>Wochenplan
+    <%= moment().day(1).format('DD.MM') %> - <%= moment().day(7).format('DD.MM.YYYY') %> </h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th></th>
+        <th>Montag</th>
+        <th>Dienstag</th>
+        <th>Mittwoch</th>
+        <th>Donnerstag</th>
+        <th>Freitag</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mensa">
+        <td class="name">Mensa</td>
+
+        <% for(let i = 0; i < 6; i++) { %>
+        <td>
+            <ul>
+                <% mensa[i].mains.forEach(function (menu) { %>
+                <% menu.name.forEach(function (name) { %>
+                <li><%= name %></li>
+                <% }); %>
+                <br>
+                <% }); %>
+            </ul>
+        </td>
+        <% } %>
+    </tr>
+
+    <tr class="uniwirt">
+        <td class="name">Uniwirt</td>
+
+        <% for(let i = 0; i < 6; i++) { %>
+        <td>
+            <ul class="starters">
+                <% uniwirt[i].starters.forEach(function (food) { %>
+                <li><%= food.name %></li>
+                <% }); %>
+            </ul>
+
+            <ul class="mains">
+                <% uniwirt[i].mains.forEach(function (food) { %>
+                <li><%= food.name %></li>
+                <% }); %>
+            </ul>
+        </td>
+        <% } %>
+    </tr>
+
+    <tr class="mittagstisch">
+        <td class="name">Mittagstisch</td>
+
+        <% for(let i = 0; i < 6; i++) { %>
+        <td>
+            <ul class="starters">
+                <% mittagstisch[i].starters.forEach(function (food) { %>
+                <li><%= food.name %></li>
+                <% }); %>
+            </ul>
+
+            <ul class="mains">
+                <% mittagstisch[i].mains.forEach(function (food) { %>
+                <li><%= food.name %></li>
+                <% }); %>
+            </ul>
+        </td>
+        <% } %>
+    </tr>
+    <tr class="uni-pizzeria">
+        <td class="name">Uni-Pizzeria</td>
+
+        <% for(let i = 0; i < 6; i++) { %>
+        <td>
+            <ul class="starters">
+                <% uniPizzeria[i].starters.forEach(function (food) { %>
+                <li><%= food.name %></li>
+                <% }); %>
+            </ul>
+
+            <ul class="mains">
+                <% uniPizzeria[i].mains.forEach(function (food) { %>
+                <li><%= food.name %></li>
+                <% }); %>
+            </ul>
+        </td>
+        <% } %>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

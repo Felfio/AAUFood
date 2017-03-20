@@ -2,6 +2,7 @@ const express = require('express');
 const bluebird = require('bluebird');
 const path = require('path');
 const redis = require('redis');
+const moment = require('moment');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const logger = require('morgan');
@@ -56,7 +57,8 @@ app.use(function (err, req, res, next) {
 });
 
 //Locals for usage in views
-app.locals.weekDayName = timeHelper.weekDayName;
+app.locals.moment = moment;
+app.locals.timeHelper = timeHelper;
 app.locals.getMensaMenuName = mensaMenuNameHelper.getMenuName;
 app.locals.getFooterPun = footerPunHelper.getFooterPun;
 app.locals.userFriendlyUrl = restaurant => config.userFriendlyUrls[restaurant];
