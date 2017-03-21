@@ -5,7 +5,11 @@ services:
 
   node:
     build: .
+    volumes:
+     - .:/usr/src/app
     ports:
      - "${FOOD_PORT}:3000"
+    depends_on:
+     - redis
     links:
      - redis
