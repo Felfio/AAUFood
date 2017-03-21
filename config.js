@@ -31,7 +31,7 @@ module.exports = {
         uniwirt: "http://www.uniwirt.at/wp/home/mittag/",
         mittagstisch: "http://www.lakeside-scitec.com/services/gastronomie/mittagstisch/",
         "uni-pizzeria": "http://www.uni-pizzeria.at/speisen/mittagsteller.html",
-        lapasta: "https://lapasta.at/wochenmenue.html"
+        "la-pasta": "https://lapasta.at/wochenmenue.html"
     },
     cookie: {
         // 30 days in milliseconds

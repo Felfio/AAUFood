@@ -12,16 +12,26 @@ router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
     var mensaPlan = menuCache.getMenu('mensa');
     var mittagstischPlan = menuCache.getMenu('mittagstisch');
     var unipizzeriaPlan = menuCache.getMenu('uniPizzeria');
-    var lapastaPlan = menuCache.getMenu('lapasta');
 
-    Promise.all([uniwirtPlan, mensaPlan, mittagstischPlan, unipizzeriaPlan, lapastaPlan])
+    Promise.all([uniwirtPlan, mensaPlan, mittagstischPlan, unipizzeriaPlan])
         .then(results => {
             res.render('index', {
                 uniwirt: JSON.parse(results[0]),
                 mensa: JSON.parse(results[1]),
                 mittagstisch: JSON.parse(results[2]),
                 uniPizzeria: JSON.parse(results[3]),
-                lapasta: JSON.parse(results[4]),
+                visitorStats: req.visitorStats,
+            });
+        });
+});
+
+router.get('/cityfood/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
+    var lapastaPlan = menuCache.getMenu('lapasta');
+
+    Promise.all([lapastaPlan])
+        .then(results => {
+            res.render('cityfood', {
+                lapasta: JSON.parse(results[0]),
                 visitorStats: req.visitorStats,
             });
         });
