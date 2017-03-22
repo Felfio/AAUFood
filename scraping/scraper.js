@@ -283,8 +283,8 @@ function parseUniPizzeria(html) {
     var result = new Menu();
 
     var $ = cheerio.load(html);
-    var _days = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'je Mittagsteller € 7,80'];
-    var _uniPizzeriaPrice = 7.80;
+    var _days = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'je Mittagsteller € 7,90'];
+    var _uniPizzeriaPrice = 7.90;
 
     var $menuContent = $('[itemprop="articleBody"]');
 
