@@ -11,7 +11,7 @@
     }
 
     table {
-        font-size: 10pt;
+        font-size: 8pt;
     }
 
     th {
@@ -22,7 +22,7 @@
         page-break-after: always;
     }
 
-    .table .name {
+    td > .name {
         /*transform: rotate(-90deg);*/
         /*text-align: right;*/
         /*vertical-align: inherit;*/
@@ -35,28 +35,34 @@
     }
 
     @media print {
-        .table .name {
-            transform: rotate(-90deg);
+        @page {size: landscape}
+        .namecol {
+            vertical-align: middle !important;
+            background-color: white !important;
+        }
+        td > .name {
+            display: flex;
+            -webkit-transform: rotate(-90deg);
             text-align: right;
             vertical-align: inherit;
             font-weight: bold;
-            color: white;
+            color: black;
         }
     }
 
-    .mensa .name {
+    .mensa .namecol {
         box-shadow: inset 0 0 0 1000px #f49900;
     }
 
-    .uniwirt .name {
+    .uniwirt .namecol {
         background: #800768;
     }
 
-    .mittagstisch .name {
+    .mittagstisch .namecol {
         background: #5fb127;
     }
 
-    .uni-pizzeria .name {
+    .uni-pizzeria .namecol {
         background: #2336B1;
     }
 
@@ -77,7 +83,7 @@
     </thead>
     <tbody>
     <tr class="mensa">
-        <td class="name">Mensa</td>
+        <td class="namecol"><span class="name">Mensa</span></td>
 
         <% for(let i = 0; i < 6; i++) { %>
         <td>
@@ -94,7 +100,7 @@
     </tr>
 
     <tr class="uniwirt">
-        <td class="name">Uniwirt</td>
+        <td class="namecol"><span class="name">Uniwirt</span></td>
 
         <% for(let i = 0; i < 6; i++) { %>
         <td>
@@ -114,7 +120,7 @@
     </tr>
 
     <tr class="mittagstisch">
-        <td class="name">Mittagstisch</td>
+        <td class="namecol"><span class="name">Mittagstisch</span></td>
 
         <% for(let i = 0; i < 6; i++) { %>
         <td>
@@ -133,7 +139,7 @@
         <% } %>
     </tr>
     <tr class="uni-pizzeria">
-        <td class="name">Uni-Pizzeria</td>
+        <td class="namecol"><span class="name">Uni-Pizzeria</span></td>
 
         <% for(let i = 0; i < 6; i++) { %>
         <td>
