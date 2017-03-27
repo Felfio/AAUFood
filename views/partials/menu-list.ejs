@@ -54,9 +54,13 @@
             <% } %>
             <% if(menu.mains.length) { %>
             <ul class="list-group menu-list-group mains">
-                <% menu.mains.forEach(function (main) { %>
+                <% menu.mains.forEach(function (main, index) { %>
                 <div class="d-flex align-items-start">
-                <h5>mjam</h5>
+                    <% if (menu.mains.length > 1) { %>
+                    <h5>Menü <%= index+1 %></h5>
+                    <% } else { %>
+                    <h5>Mittagsmenü</h5>
+                    <% } %>
                 <% if(main.price != null) { %>
                 <span class="badge badge-default badge-pill price-pill ml-auto mr-0"><%= main.price + " €" %></span>
                 <% }%>
