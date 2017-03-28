@@ -34,7 +34,7 @@
         @page {size: landscape}
         .namecol {
             vertical-align: middle !important;
-            background-color: white !important;
+            padding: 0.25rem !important;
         }
         td > .name {
             display: flex;
@@ -42,27 +42,40 @@
             text-align: right;
             vertical-align: inherit;
             font-weight: bold;
-            color: black;
+            width: 2rem !important;
         }
         .print-hidden {
             display: none;
         }
     }
 
+
     .mensa .namecol {
-        box-shadow: inset 0 0 0 1000px #f49900;
+        background: #f49900 !important;
+    }
+    .mensa .datacol {
+        background: #ffeac2 !important;
     }
 
     .uniwirt .namecol {
-        background: #800768;
+        background: #800768 !important;
+    }
+    .uniwirt .datacol {
+        background: #f6cbe9 !important;
     }
 
     .mittagstisch .namecol {
-        background: #5fb127;
+        background: #5fb127 !important;
+    }
+    .mittagstisch .datacol {
+        background: #cce6b8 !important;
     }
 
     .uni-pizzeria .namecol {
-        background: #2336B1;
+        background: #2336B1 !important;
+    }
+    .uni-pizzeria .datacol {
+        background: #c2c5e9 !important;
     }
 
 </style>
@@ -88,7 +101,7 @@
         <td class="namecol"><span class="name">Mensa</span></td>
 
         <% for(let i = 0; i < 6; i++) { %>
-        <td>
+        <td class="datacol">
             <ul>
                 <% mensa[i].mains.forEach(function (menu) { %>
                 <% menu.name.forEach(function (name) { if (name!="") { %>
@@ -105,7 +118,7 @@
         <td class="namecol"><span class="name">Uniwirt</span></td>
 
         <% for(let i = 0; i < 6; i++) { %>
-        <td>
+        <td class="datacol">
             <ul class="starters">
                 <% uniwirt[i].starters.forEach(function (food) { if (food.name!="") { %>
                 <li><%= food.name %></li>
@@ -125,7 +138,7 @@
         <td class="namecol"><span class="name">Mittagstisch</span></td>
 
         <% for(let i = 0; i < 6; i++) { %>
-        <td>
+        <td class="datacol">
             <ul class="starters">
                 <% mittagstisch[i].starters.forEach(function (food) { if (food.name!="") { %>
                 <li><%= food.name %></li>
@@ -144,7 +157,7 @@
         <td class="namecol"><span class="name">Uni-Pizzeria</span></td>
 
         <% for(let i = 0; i < 6; i++) { %>
-        <td>
+        <td class="datacol">
             <ul class="starters">
                 <% uniPizzeria[i].starters.forEach(function (food) { if (food.name!="") { %>
                 <li><%= food.name %></li>
