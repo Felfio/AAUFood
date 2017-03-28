@@ -6,10 +6,6 @@
         background: none;
     }
 
-    h2 {
-        text-align: center;
-    }
-
     table {
         font-size: 8pt;
     }
@@ -48,6 +44,9 @@
             font-weight: bold;
             color: black;
         }
+        .print-hidden {
+            display: none;
+        }
     }
 
     .mensa .namecol {
@@ -67,9 +66,12 @@
     }
 
 </style>
+<div class="d-flex flex-column align-items-start">
+    <a class="mt-1 ml-1 text-muted btn btn-outline-secondary btn-sm print-hidden" href="/">Zurück zur Tagesansicht</a>
+    <h2 class="mx-auto">Wochenplan
+        <%= moment().day(1).format('DD.MM') %> - <%= moment().day(7).format('DD.MM.YYYY') %> </h2>
+</div>
 
-<h2>Wochenplan
-    <%= moment().day(1).format('DD.MM') %> - <%= moment().day(7).format('DD.MM.YYYY') %> </h2>
 <table class="table">
     <thead>
     <tr>
