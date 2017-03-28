@@ -1,10 +1,11 @@
 <% var title='AAU Food: About' ; %>
 <% include partials/header.ejs %>
 
-<div class="container">
+
+<div class="container d-flex flex-column">
     <div class="about">
         <div class="row">
-            <div class="col-xs-4 col-xs-offset-4 back-icon-container">
+            <div class="mx-auto back-icon-container">
                 <a href="/">
                     <div class="card center-block">
                         <div class="card-block">
@@ -16,8 +17,8 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-6 col-lg-offset-3">
-                <div class="card about-us">
+            <div class="col-lg-8 mx-auto">
+                <div class="card about-us mb-3">
                     <h3 class="card-header">Über uns</h3>
                     <div class="card-block">
                         <p class="card-text">Diese Homepage ist ein Hobbyprojekt und steht in keinerlei Verbindung mit den angeführten Restaurants. Damit sind die Formalitäten erledigt.</p>
@@ -40,35 +41,9 @@
             </div>
         </div>
 
-        <div class="row number-facts">
-            <div class="col-lg-4 col-lg-offset-2">
-                <div class="card">
-                    <div class="card-block">
-                        <h4 class="card-title">
-                            <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
-                            Besucher heute: <%= visitorStats.dailyVisitors %></h4>
-                        <p class="card-text">
-                            <%= dailyVisitorsFact %>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-block">
-                        <h4 class="card-title">
-                            <i class="fa fa-fw fa-calendar-o" aria-hidden="true"></i>
-                            Insgesamt: <%= visitorStats.overallVisitors %></h4>
-                        <p class="card-text">
-                            <%= overallVisitiorsFact %>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row cat-fact">
-            <div class="col-lg-6 col-lg-offset-3">
-                <div class="card">
+        <div class="row d-flex d-row">
+            <div class="flex-1">
+                <div class="card mr-3">
                     <div class="card-img-top cat-fact-header">
                         <img src="<%= catFactHeaderUrl() %>" alt="Random Kitten Image" />
                     </div>
@@ -76,6 +51,31 @@
                         <h4 class="card-title">Random Cat Fact</h4>
                         <p class="card-text">
                             <%= catFact %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-1">
+                <div class="card">
+                    <div class="card-block">
+                        <h4 class="card-title">
+                            <i class="fa fa-fw fa-smile-o" aria-hidden="true"></i> Danke!
+                        </h4>
+                        <p class="card-text">Wir danken für die Unterstützung durch</p>
+                        <div class="sponsor-images">
+                            <a href="https://www.oeh-klagenfurt.at/" target="_blank">
+                                <img src="images/sponsors/oehklagenfurt.png" alt="Die ÖH Klagenfurt">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <div class="card-block">
+                        <h4 class="card-title">
+                            <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
+                            Besucher heute: <%= visitorStats.dailyVisitors %></h4>
+                        <p class="card-text">
+                            <%= dailyVisitorsFact %>
                         </p>
                     </div>
                 </div>

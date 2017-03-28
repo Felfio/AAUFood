@@ -68,12 +68,20 @@ $card-header-bg: rgba(0, 0, 0, 0.7);
   height: auto;
 }
 
+.sponsors .sponsor-images {
+  text-align: center;
+
+  img {
+    max-height: 6em;
+  }
+}
+
 @mixin name($color) {
   &.a {
     color: inherit;
   }
 
-  color: $color ;
+  color: $color;
   font-weight: bold;
 }
 
@@ -103,4 +111,8 @@ $card-header-bg: rgba(0, 0, 0, 0.7);
 
 #mail {
   font-weight: bold;
+}
+
+.flex-1 {
+  flex:1;
 }
