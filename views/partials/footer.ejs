@@ -11,10 +11,21 @@
     <span class="footer-pun">
         <%- getFooterPun() %>
     </span>
-    <a class="impressum-link" title="Impressum" href="https://www.felf.io/about.html">
+
+    <div class="btn-group dropup pull-right">
+        <button type="button" class="btn btn-secondary btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-bars"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+            <a class="ml-2 text-gray-dark" href="/about">Über AAUFood <i class="fa fa-fw fa-users" aria-hidden="true"></i></a>
+            <a class="ml-2 text-gray-dark" href="/print">Wochensicht <i class="fa fa-fw fa-print" aria-hidden="true"></i></a>
+            <a class="ml-2 text-gray-dark" href="https://felf.io">Impressum <i class="fa fa-fw fa-balance-scale" aria-hidden="true"></i></a>
+        </div>
+    </div>
+    <!-- <a class="impressum-link" title="Impressum" href="https://www.felf.io/about.html">
         Impressum
         <i class="fa fa-fw fa-balance-scale" aria-hidden="true"></i>
-    </a>
+    </a> -->
 </footer>
 
 <script src="/dist/bundle.js"></script>
