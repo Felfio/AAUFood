@@ -221,6 +221,10 @@ body {
     @include footer-border-element(true);
   }
 
+  .sitemap {
+    @include footer-border-element(false);
+  }
+
   .impressum-link {
     @include footer-border-element(false);
 
