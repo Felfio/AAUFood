@@ -288,7 +288,8 @@ function parseUniPizzeria(html) {
 
     var $menuContent = $('[itemprop="articleBody"]');
 
-    if ($menuContent.find('p > strong').text().indexOf(timeHelper.getMondayDate()) == -1) {
+    if ($menuContent.find('p > strong').text().indexOf(timeHelper.getMondayDate()) == -1 &&
+        $menuContent.find('p > strong').text().indexOf("18.4.") != -1) { // ugly, ugly hack :-(
         result.outdated = true;
         return result;
     }
