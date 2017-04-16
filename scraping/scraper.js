@@ -377,7 +377,7 @@ function parseMittagstisch(html) {
 
             if (dayData.hasClass("closed"))
                 isClosed = true;
-            else if (contains(dayData.text(), true, ["geschlossen", "feiertag", "ruhetag"]))
+            else if (contains(dayData.text(), true, ["geschlossen", "feiertag", "ruhetag", "ostermontag"]))
                 isClosed = true;
 
             if (isClosed)
