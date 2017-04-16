@@ -2,19 +2,31 @@
     <a href="https://www.felf.io/about.html" id="impressum" class="label label-dark label-pill">Impressum</a>
 </div>-->
 <div id="cookieConsentHolder"></div>
-<footer class="footer">
-    <span class="daily-counter" title="Besucher heute">
+<footer class="footer d-flex flex-row align-items-center">
+    <span class="daily-counter ml-2" title="Besucher heute">
         <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
         <span id="dailyVisitors"><%= visitorStats.dailyVisitors %></span>
     </span>
 
-    <span class="footer-pun">
+    <span class="footer-pun mx-auto">
         <%- getFooterPun() %>
     </span>
-    <a class="impressum-link" title="Impressum" href="https://www.felf.io/about.html">
+
+    <div class="btn-group dropup mr-2">
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="hidden-sm-down">Sitemap</span>
+            <i class="fa fa-map-signs"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+            <a class="ml-2 text-gray-dark" href="/about"><i class="fa fa-fw fa-users" aria-hidden="true"></i> Über AAUFood</a><br>
+            <a class="ml-2 text-gray-dark" href="/print"><i class="fa fa-fw fa-print" aria-hidden="true"></i> Wochensicht</a><br>
+            <a class="ml-2 text-gray-dark" href="https://felf.io"><i class="fa fa-fw fa-balance-scale" aria-hidden="true"></i> Impressum</a>
+        </div>
+    </div>
+    <!-- <a class="impressum-link" title="Impressum" href="https://www.felf.io/about.html">
         Impressum
         <i class="fa fa-fw fa-balance-scale" aria-hidden="true"></i>
-    </a>
+    </a> -->
 </footer>
 
 <script src="/dist/bundle.js"></script>
