@@ -35,7 +35,6 @@ function getMondayDate() {
 function checkInputForCurrentWeek(str) {
     var mon = determineLastMonday();
     for (var i = 0; i <= 6; i++) {
-        console.log(mon);
         if (str.indexOf(dateStringShort(mon)) != -1) // if date in string return True
             return true;
         mon.setDate(mon.getDate() + 1);
