@@ -75,7 +75,7 @@ function createUniwirtDayMenu(dayEntry) {
     if (paragraphs.length === 1) {
         //Special cases
         let pText = paragraphs.text();
-        if (contains(pText, true, ["feiertag", "ruhetag", "wir machen pause", "wir haben geschlossen"])) {
+        if (contains(pText, true, ["feiertag", "ruhetag", "wir machen pause", "wir haben geschlossen", "closed"])) {
             dayMenu.closed = true;
         } else if (contains(pText, true, ["Empfehlung"])) {
             dayMenu.noMenu = true;
@@ -377,7 +377,7 @@ function parseMittagstisch(html) {
 
             if (dayData.hasClass("closed"))
                 isClosed = true;
-            else if (contains(dayData.text(), true, ["geschlossen", "feiertag", "ruhetag"]))
+            else if (contains(dayData.text(), true, ["geschlossen", "feiertag", "ruhetag", "ostermontag"]))
                 isClosed = true;
 
             if (isClosed)
