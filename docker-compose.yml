@@ -5,7 +5,20 @@ services:
 
   node:
     build: .
+    volumes: # these are all folders where updates to the code get sync'ed into the docker container
+     - ./caching:/usr/src/app/caching
+     - ./externals:/usr/src/app/externals
+     - ./helpers:/usr/src/app/helpers
+     - ./middleware:/usr/src/app/middleware
+     - ./models:/usr/src/app/models
+     - ./public/styles:/usr/src/app/public/styles
+     - ./routes:/usr/src/app/routes
+     - ./scraping:/usr/src/app/scraping
+     - ./test:/usr/src/app/test
+     - ./views:/usr/src/app/views
     ports:
      - "${FOOD_PORT}:3000"
+    depends_on:
+     - redis
     links:
      - redis
