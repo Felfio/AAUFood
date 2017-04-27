@@ -20,3 +20,5 @@ ssh-node:
 
 ssh-redis:
 	docker-compose exec redis sh
+
+trigger-rebuild: stop start-daemon
