@@ -1,20 +1,18 @@
 const FooterPun = require("./models/footerPun");
 const BreakInfo = require("./models/breakInfo");
-const runConfig = require("./runconfig.js");
 
 module.exports = {
     settings: {
         useRandomFooterPuns: true,
         defaultFooterPun: "heart",
         winterTheme: false,
-        nodePort: runConfig.nodePort,
+        nodePort: 3000,
     },
     onBreak: {
         //The dates are only rendered, never used for checking if closed!
         // mensa: new BreakInfo("Weihnachtspause", "Das Mensa-Team wünscht ein besinnliches Weihnachtsfest.", "22.12 ", "8.1", "fa-snowflake-o")
     },
     cache: {
-        redisUrl: "//localhost:" + runConfig.redisPort,
         // Time in miliseconds -> 20 min.
         intervall: 1200000,
         overallVisitorKey: "overallVisitors",

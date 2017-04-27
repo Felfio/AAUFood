@@ -75,7 +75,7 @@ function createUniwirtDayMenu(dayEntry) {
     if (paragraphs.length === 1) {
         //Special cases
         let pText = paragraphs.text();
-        if (contains(pText, true, ["feiertag", "ruhetag", "wir machen pause", "wir haben geschlossen"])) {
+        if (contains(pText, true, ["feiertag", "ruhetag", "wir machen pause", "wir haben geschlossen", "closed"])) {
             dayMenu.closed = true;
         } else if (contains(pText, true, ["Empfehlung"])) {
             dayMenu.noMenu = true;
@@ -153,14 +153,14 @@ function parseMensa(html) {
         let dailySpecialCategory = day.find('#category247');
 
         try {
+            let dailySpecialFood = createFoodFromMensaCategory(dailySpecialCategory);
+            menu.mains.push(dailySpecialFood);
+
             let classic1Food = createFoodFromMensaCategory(classic1Category);
             menu.mains.push(classic1Food);
 
             let classic2Food = createFoodFromMensaCategory(classic2Category);
             menu.mains.push(classic2Food);
-
-            let dailySpecialFood = createFoodFromMensaCategory(dailySpecialCategory);
-            menu.mains.push(dailySpecialFood);
         } catch (ex) {
             //Do not log error, as it is most likely to be a parsing error, which we do not want to fill the log file
             menu.error = true;
@@ -283,13 +283,12 @@ function parseUniPizzeria(html) {
     var result = new Menu();
 
     var $ = cheerio.load(html);
-    var _days = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'je Mittagsteller € 7,80'];
-    var _uniPizzeriaPrice = 7.80;
+    var _days = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'je Mittagsteller € 7,90'];
+    var _uniPizzeriaPrice = 7.90;
 
     var $menuContent = $('[itemprop="articleBody"]');
 
-    if ($menuContent.find('p > strong').text().indexOf(timeHelper.getMondayDate()) == -1 &&
-        $menuContent.find('p > strong').text().indexOf("18.4.") == -1) { // ugly, ugly hack :-(
+    if (! timeHelper.checkInputForCurrentWeek($menuContent.find('p > strong').text())) {
         result.outdated = true;
         return result;
     }
