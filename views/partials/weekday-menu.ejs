@@ -1,13 +1,13 @@
 <% day = day % 7 %>
 <div class="weekday-container">
-    <div class="row mb-4">
-        <div class="ml-auto mr-auto weekday-header">
+    <div class="row">
+        <div class="col-12 weekday-header">
             <span class="weekday">
-                <span class="nav-icon left top mr-auto">
+                <span class="nav-icon left top">
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                 </span>
                 <%= timeHelper.weekDayName(day) %>
-                <span class="nav-icon right top ml-auto">
+                <span class="nav-icon right top">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                 </span>
             </span>

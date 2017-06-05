@@ -91,7 +91,8 @@ body {
     .list-group-item {
       background: none;
       padding-top: 0;
-      padding-bottom: 0rem;
+      padding-bottom: 0;
+      padding-right: 0;
       border: none;
     }
 
@@ -116,9 +117,6 @@ body {
 }
 
 .menu-list {
-  .list-group-item {
-    padding-left: 0;
-  }
   .menu-list-group.starters {
     &:empty {
       display: none;
@@ -126,6 +124,10 @@ body {
 
     .list-group-item:not(:last-child) {
       padding-bottom: 0.25rem;
+    }
+
+    .list-group-item {
+      padding-left: 0;
     }
   }
 
@@ -346,6 +348,7 @@ html, body {
       padding-right: $outerPadding;
       margin-left: -$navIconMarginInwards;
       padding-left: $navIconMarginInwards;
+      float: right;
     }
 
     &.left {
@@ -353,6 +356,7 @@ html, body {
       padding-left: $outerPadding;
       margin-right: -$navIconMarginInwards;
       padding-right: $navIconMarginInwards;
+      float: left;
     }
   }
 
