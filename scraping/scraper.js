@@ -467,13 +467,19 @@ function parseMittagstischDayMenu(dayDatas, dayMenu) {
 }
 
 function getPrincsWeekPlan() {
-    return PDFJS.getDocument(PrincsUrl).then(
-        pdf => pdf.getPage(1).then(
-            page => page.getTextContent().then(
-                textContent => parsePrincsPDFContent(textContent)
-            )
-        )
-    );
+    return request.getAsync(PrincsUrl)
+        .then(res => res.body)
+        .then(function(body) {
+            let $ = cheerio.load(body);
+            let pdfurl = PrincsUrl + $("a:contains('WOCHENKARTE')").attr('href');
+            return PDFJS.getDocument(pdfurl).then(
+                pdf => pdf.getPage(1).then(
+                    page => page.getTextContent().then(
+                        textContent => parsePrincsPDFContent(textContent)
+                    )
+                )
+            );
+        });
 }
 
 function parsePrincsPDFContent(content) {
