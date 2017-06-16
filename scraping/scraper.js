@@ -3,6 +3,8 @@
 const Promise = require('bluebird');
 const request = Promise.promisifyAll(require("request"));
 const cheerio = require('cheerio');
+const PDFJS = require("pdfjs-dist");
+global.XMLHttpRequest = require('xhr2');
 const moment = require('moment');
 const Food = require("../models/food");
 const Menu = require("../models/menu");
@@ -15,6 +17,7 @@ var MensaUrl = config.scraper.mensaUrl;
 var UniwirtUrl = config.scraper.uniwirtUrl;
 var MittagstischUrl = config.scraper.mittagstischUrl;
 var PizzeriaUrl = config.scraper.unipizzeriaUrl;
+let PrincsUrl = config.scraper.princsUrl;
 
 function parseWeek(input, parseFunction) {
     var menus = [];
@@ -463,6 +466,66 @@ function parseMittagstischDayMenu(dayDatas, dayMenu) {
     }
 }
 
+function getPrincsWeekPlan() {
+    return PDFJS.getDocument(PrincsUrl).then(
+        pdf => pdf.getPage(1).then(
+            page => page.getTextContent().then(
+                textContent => parsePrincsPDFContent(textContent)
+            )
+        )
+    );
+}
+
+function parsePrincsPDFContent(content) {
+    let result = new Array(7);
+
+    let closedMenu = new Menu();
+    closedMenu.closed = true;
+    result[5] = result[6] = closedMenu;
+
+    let contentString = "";
+    content.items.forEach(itm => contentString += itm.str + "\n");
+
+    let pos = ["MONTAG", "DIENSTAG", "MITTWOCH", "DONNERSTAG", "FREITAG", "WOCHENMENÜ"]
+                .map(day => contentString.indexOf(day));
+    for (let i = 0; i<5; i++) {
+        result[i] = parsePrinceDayMenu(contentString.slice(pos[i], pos[i+1]));
+    }
+
+    return result;
+}
+
+function parsePrinceDayMenu(menuString) {
+    let dayMenu = new Menu();
+    if (menuString.indexOf("Feiertag") > -1) {
+        dayMenu.closed = true;
+        return dayMenu;
+    }
+
+    // prepare the menuString: split after line breaks, remove empty line breaks
+    menuString  = menuString.split("\n");
+    let ind = [];
+    for (let i=menuString.length-1; i>=0; i--) {
+        if(menuString[i].match(/^\s*$/) || menuString[i].indexOf("8,70") > -1) {
+            ind.push(i);
+        }
+    }
+    for (let j=0; j < ind.length; j++) {
+        menuString.splice(ind[j],1);
+    }
+    menuString.shift();
+
+    // first line is starter, rest is main course
+    let starter = new Food(menuString[0]);
+    dayMenu.starters.push(starter);
+
+    menuString.shift();
+    let main = new Food(menuString.join(""), 8.70);
+    dayMenu.mains.push(main);
+
+    return dayMenu;
+}
+
 function isNotBlank(index, element) {
     return element.length !== 0 && element.trim();
 }
@@ -513,5 +576,6 @@ module.exports = {
     getMensaWeekPlan: getMensaWeekPlan,
     getUniPizzeriaPlan: getUniPizzeriaPlan,
     getUniPizzeriaWeekPlan: getUniPizzeriaWeekPlan,
-    getLapastaWeekPlan: laPastaScraper.getWeekPlan
+    getLapastaWeekPlan: laPastaScraper.getWeekPlan,
+    getPrincsWeekPlan: getPrincsWeekPlan
 };
