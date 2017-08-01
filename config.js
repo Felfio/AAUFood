@@ -10,7 +10,7 @@ module.exports = {
     },
     onBreak: {
         //The dates are only rendered, never used for checking if closed!
-        // mensa: new BreakInfo("Weihnachtspause", "Das Mensa-Team wünscht ein besinnliches Weihnachtsfest.", "22.12 ", "8.1", "fa-snowflake-o")
+        mensa: new BreakInfo("Sommerpause", "Die Mensa macht Pause.", "31.7 ", "3.9", "fa-sun-o")
     },
     cache: {
         // Time in miliseconds -> 20 min.
