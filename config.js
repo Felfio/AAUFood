@@ -38,7 +38,7 @@ module.exports = {
     externalApis: {
         paramKey: "${param}",
         numbersApi: "http://numbersapi.com/${param}",
-        catFactsApi: "http://catfacts-api.appspot.com/api/facts?number=1", //We want to work with single facts, so number is not a param here
+        catFactsApi: "https://catfact.ninja/fact",
         placeKittenApi: "https://placekitten.com/${param}/200",
         placeKittenWidth: 700,
         placeKittenWidthSpan: 200

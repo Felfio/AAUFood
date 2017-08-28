@@ -17,7 +17,7 @@ function getCatFact() {
     var url = config.externalApis.catFactsApi;
     return getGenericResponse(url, body => {
         var json = JSON.parse(body);
-        return json.success === "true" && json.facts && json.facts.length ? json.facts[0] : null;
+        return json.fact && json.length ? json.fact : null;
     });
 }
 
