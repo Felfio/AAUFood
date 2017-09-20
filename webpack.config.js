@@ -52,6 +52,9 @@ module.exports = {
             "window.jQuery": "jquery",
             "window.Tether": 'tether',
             "Tether": 'tether',
+	    "Popper": "popper.js",
+	    "Tooltip": "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
+	    "Util": 'exports-loader?Util!bootstrap/js/dist/util',
         })
     ]
 };
