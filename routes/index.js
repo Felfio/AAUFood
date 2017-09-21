@@ -25,6 +25,18 @@ router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
         });
 });
 
+router.get('/city/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
+    var lapastaPlan = menuCache.getMenu('lapasta');
+
+    Promise.all([lapastaPlan])
+        .then(results => {
+            res.render('cityfood', {
+                lapasta: JSON.parse(results[0]),
+                visitorStats: req.visitorStats,
+            });
+        });
+});
+
 router.get('/about', counter.countVisitors, function (req, res, next) {
     var dailyVisitors = req.visitorStats.dailyVisitors;
     var overallVisitors = req.visitorStats.overallVisitors;
