@@ -1,12 +1,12 @@
 <% day = day % 7 %>
 <div class="weekday-container">
     <div class="row">
-        <div class="col-xl-4 col-xl-offset-4 weekday-header">
+        <div class="col-12 weekday-header">
             <span class="weekday">
                 <span class="nav-icon left top pull-left">
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                 </span>
-                <%= weekDayName(day) %>
+                <%= timeHelper.weekDayName(day) %>
                 <span class="nav-icon right top pull-right">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                 </span>
