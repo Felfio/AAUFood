@@ -25,7 +25,7 @@ router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
         });
 });
 
-router.get('/cityfood/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
+router.get('/city/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
     var lapastaPlan = menuCache.getMenu('lapasta');
 
     Promise.all([lapastaPlan])
