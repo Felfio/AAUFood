@@ -77,7 +77,7 @@ function _parseDayMenu(dayEntry) {
       let text = pEntry.text().trim();
       let name = scraperHelper.sanitizeName(text);
 
-      let price = null; // todo: Ask Krissi about price
+      let price = 7.8;
 
       let food = new Food(name, price);
 
