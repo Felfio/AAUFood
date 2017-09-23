@@ -14,7 +14,7 @@ $card-header-bg: rgba(0, 0, 0, 0.7);
   .about-us {
     background: none;
 
-    .card-block {
+    .card-body {
       background: white;
       padding-top: 0.5rem;
     }
@@ -40,7 +40,7 @@ $card-header-bg: rgba(0, 0, 0, 0.7);
     }
   }
 
-  .back-icon-container .card-block {
+  .back-icon-container .card-body {
     padding-top: 1.1rem;
   }
 }

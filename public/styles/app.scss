@@ -63,7 +63,7 @@ body {
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
-  .card-block {
+  .card-body {
     .error p {
       margin-bottom: 0.25rem;
 
@@ -198,11 +198,13 @@ body {
   color: #eceeef;
   text-align: center;
 
-  a {
-    color: #eceeef;
+  .footer-pun {
+    a {
+	color: #eceeef;
 
-    &:hover {
-      text-decoration: none;
+	&:hover {
+	  text-decoration: none;
+	}
     }
   }
 
