@@ -14,6 +14,7 @@ $mensaOrange: #f49900;
 $uniwirtPurple: #800768;
 $uniPizzeriaBg: #2336B1;
 $laPastaBg: #ca0928;
+$princessBg: #e30613;
 $navIconMargin: 3rem;
 $navIconMarginInwards: 1rem;
 $outerPadding: 0.9375rem;
@@ -177,6 +178,10 @@ body {
 
 .la-pasta {
   @include restaurantColors($laPastaBg, white);
+}
+
+.princs {
+  @include restaurantColors($princessBg, white);
 }
 
 @mixin footerIcon($color) {
