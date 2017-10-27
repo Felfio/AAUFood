@@ -512,14 +512,25 @@ function parsePrinceDayMenu(menuString) {
     menuString  = menuString.split("\n");
     let ind = [];
     for (let i=menuString.length-1; i>=0; i--) {
-        if(menuString[i].match(/^\s*$/) || menuString[i].indexOf("8,70") > -1) {
-            ind.push(i);
+        if(menuString[i].match(/^\s*$/)
+          || menuString[i].indexOf("8,70") > -1
+          || menuString[i] == "-"
+          || (i > 0 && menuString[i] == menuString[i-1])) {
+          ind.push(i);
         }
     }
     for (let j=0; j < ind.length; j++) {
         menuString.splice(ind[j],1);
     }
+    for (let i = 0; i < menuString.length; i++) {
+      if (menuString[i].indexOf("|") >= 0) {
+        menuString[i] = ", ";
+      }
+    }
+
     menuString.shift();
+    menuString.shift();
+    console.log(menuString);
 
     // first line is starter, rest is main course
     let starter = new Food(menuString[0]);
