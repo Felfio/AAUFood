@@ -530,7 +530,6 @@ function parsePrinceDayMenu(menuString) {
 
     menuString.shift();
     menuString.shift();
-    console.log(menuString);
 
     // first line is starter, rest is main course
     let starter = new Food(menuString[0]);
