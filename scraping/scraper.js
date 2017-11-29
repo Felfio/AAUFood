@@ -490,7 +490,7 @@ function parsePrincsPDFContent(content) {
     result[5] = result[6] = closedMenu;
 
     let contentString = "";
-    content.items.forEach(itm => contentString += itm.str + "\n");
+    content.items.forEach(itm => contentString += itm.str + (itm.str == ' ' ? '\n' : ''));
 
     let pos = ["MONTAG", "DIENSTAG", "MITTWOCH", "DONNERSTAG", "FREITAG", "WOCHENMENÜ"]
                 .map(day => contentString.indexOf(day));
@@ -503,40 +503,23 @@ function parsePrincsPDFContent(content) {
 
 function parsePrinceDayMenu(menuString) {
     let dayMenu = new Menu();
-    if (menuString.indexOf("Feiertag") > -1) {
+    if (menuString.toLowerCase().indexOf("feiertag") > -1) {
         dayMenu.closed = true;
         return dayMenu;
     }
 
-    // prepare the menuString: split after line breaks, remove empty line breaks
-    menuString  = menuString.split("\n");
-    let ind = [];
-    for (let i=menuString.length-1; i>=0; i--) {
-        if(menuString[i].match(/^\s*$/)
-          || menuString[i].indexOf("8,70") > -1
-          || menuString[i] == "-"
-          || (i > 0 && menuString[i] == menuString[i-1])) {
-          ind.push(i);
-        }
-    }
-    for (let j=0; j < ind.length; j++) {
-        menuString.splice(ind[j],1);
-    }
-    for (let i = 0; i < menuString.length; i++) {
-      if (menuString[i].indexOf("|") >= 0) {
-        menuString[i] = ", ";
-      }
-    }
+    // assumed menuString structure at this point:
+    // 1st + 2nd line: DAY, DATE \n YEAR
+    // 3rd line: starter
+    // remaining lines: food, separated by |
+    menuString = menuString.split("\n");
+    menuString.splice(0,2);
 
-    menuString.shift();
-    menuString.shift();
-
-    // first line is starter, rest is main course
     let starter = new Food(menuString[0]);
     dayMenu.starters.push(starter);
 
-    menuString.shift();
-    let main = new Food(menuString.join(""), 8.70);
+    menuString.splice(0,1);
+    let main = new Food(menuString.join("").replace(/\s*\|/g, ","), 8.70);
     dayMenu.mains.push(main);
 
     return dayMenu;
