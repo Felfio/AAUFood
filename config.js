@@ -23,7 +23,8 @@ module.exports = {
         uniwirtUrl: "http://www.uniwirt.at",
         mittagstischUrl: "http://www.lakeside-scitec.com/services/gastronomie/mittagstisch/",
         unipizzeriaUrl: "http://www.uni-pizzeria.at/speisen/mittagsteller.html",
-        lapastaUrl: "https://lapasta.at/wochenmenue.html"
+        lapastaUrl: "https://lapasta.at/wochenmenue.html",
+        princsUrl: "http://www.princs.com/"
     },
     userFriendlyUrls: {
         //Usually the same as the scraper ones
@@ -31,7 +32,8 @@ module.exports = {
         uniwirt: "http://www.uniwirt.at/wp/home/mittag/",
         mittagstisch: "http://www.lakeside-scitec.com/services/gastronomie/mittagstisch/",
         "uni-pizzeria": "http://www.uni-pizzeria.at/speisen/mittagsteller.html",
-        "la-pasta": "https://lapasta.at/wochenmenue.html"
+        "la-pasta": "https://lapasta.at/wochenmenue.html",
+        princs: "http://www.princs.com/"
     },
     cookie: {
         // 30 days in milliseconds

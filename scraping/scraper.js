@@ -3,6 +3,8 @@
 const Promise = require('bluebird');
 const request = Promise.promisifyAll(require("request"));
 const cheerio = require('cheerio');
+const PDFJS = require("pdfjs-dist");
+global.XMLHttpRequest = require('xhr2');
 const moment = require('moment');
 const Food = require("../models/food");
 const Menu = require("../models/menu");
@@ -15,6 +17,7 @@ var MensaUrl = config.scraper.mensaUrl;
 var UniwirtUrl = config.scraper.uniwirtUrl;
 var MittagstischUrl = config.scraper.mittagstischUrl;
 var PizzeriaUrl = config.scraper.unipizzeriaUrl;
+let PrincsUrl = config.scraper.princsUrl;
 
 function parseWeek(input, parseFunction) {
     var menus = [];
@@ -463,6 +466,65 @@ function parseMittagstischDayMenu(dayDatas, dayMenu) {
     }
 }
 
+function getPrincsWeekPlan() {
+    return request.getAsync(PrincsUrl)
+        .then(res => res.body)
+        .then(function(body) {
+            let $ = cheerio.load(body);
+            let pdfurl = PrincsUrl + $("a:contains('WOCHENKARTE')").attr('href');
+            return PDFJS.getDocument(pdfurl).then(
+                pdf => pdf.getPage(1).then(
+                    page => page.getTextContent().then(
+                        textContent => parsePrincsPDFContent(textContent)
+                    )
+                )
+            );
+        });
+}
+
+function parsePrincsPDFContent(content) {
+    let result = new Array(7);
+
+    let closedMenu = new Menu();
+    closedMenu.closed = true;
+    result[5] = result[6] = closedMenu;
+
+    let contentString = "";
+    content.items.forEach(itm => contentString += itm.str + (itm.str == ' ' ? '\n' : ''));
+
+    let pos = ["MONTAG", "DIENSTAG", "MITTWOCH", "DONNERSTAG", "FREITAG", "WOCHENMENÜ"]
+                .map(day => contentString.indexOf(day));
+    for (let i = 0; i<5; i++) {
+        result[i] = parsePrinceDayMenu(contentString.slice(pos[i], pos[i+1]));
+    }
+
+    return result;
+}
+
+function parsePrinceDayMenu(menuString) {
+    let dayMenu = new Menu();
+    if (menuString.toLowerCase().indexOf("feiertag") > -1) {
+        dayMenu.closed = true;
+        return dayMenu;
+    }
+
+    // assumed menuString structure at this point:
+    // 1st + 2nd line: DAY, DATE \n YEAR
+    // 3rd line: starter
+    // remaining lines: food, separated by |
+    menuString = menuString.split("\n");
+    menuString.splice(0,2);
+
+    let starter = new Food(menuString[0]);
+    dayMenu.starters.push(starter);
+
+    menuString.splice(0,1);
+    let main = new Food(menuString.join("").replace(/\s*\|/g, ","), 8.70);
+    dayMenu.mains.push(main);
+
+    return dayMenu;
+}
+
 function isNotBlank(index, element) {
     return element.length !== 0 && element.trim();
 }
@@ -513,5 +575,6 @@ module.exports = {
     getMensaWeekPlan: getMensaWeekPlan,
     getUniPizzeriaPlan: getUniPizzeriaPlan,
     getUniPizzeriaWeekPlan: getUniPizzeriaWeekPlan,
-    getLapastaWeekPlan: laPastaScraper.getWeekPlan
+    getLapastaWeekPlan: laPastaScraper.getWeekPlan,
+    getPrincsWeekPlan: getPrincsWeekPlan
 };

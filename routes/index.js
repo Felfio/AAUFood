@@ -27,11 +27,13 @@ router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
 
 router.get('/city/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
     var lapastaPlan = menuCache.getMenu('lapasta');
+    var princsPlan = menuCache.getMenu('princs');
 
-    Promise.all([lapastaPlan])
+    Promise.all([lapastaPlan, princsPlan])
         .then(results => {
             res.render('cityfood', {
                 lapasta: JSON.parse(results[0]),
+                princs: JSON.parse(results[1]),
                 visitorStats: req.visitorStats,
             });
         });
