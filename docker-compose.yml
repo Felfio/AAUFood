@@ -5,6 +5,7 @@ services:
 
   node:
     build: .
+    restart: always
     volumes: # these are all folders where updates to the code get sync'ed into the docker container
      - ./caching:/usr/src/app/caching
      - ./externals:/usr/src/app/externals
