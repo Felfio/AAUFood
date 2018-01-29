@@ -1,12 +1,15 @@
 "use strict";
 
 function getMenuName(index, menu) {
-    if (index > 0)
-        return "Menü Classic " + index;
+    if (index == 0)
+        return "Tagesteller";
+    if (index == 3)
+        return "AAU Teller";
     if (menu.isInfo)
         return "Information";
+    return "Menü Classic " + index;
 
-    return "AAU Special";
+
 }
 
 module.exports = {

@@ -156,6 +156,7 @@ function parseMensa(html) {
         let classic1Category = day.find('#category133');
         let classic2Category = day.find('#category134');
         let dailySpecialCategory = day.find('#category247');
+        let AAUSpecialCategory = day.find('#category132');
 
         try {
             let dailySpecialFood = createFoodFromMensaCategory(dailySpecialCategory);
@@ -166,6 +167,9 @@ function parseMensa(html) {
 
             let classic2Food = createFoodFromMensaCategory(classic2Category);
             menu.mains.push(classic2Food);
+
+            let AAUSpecialFood = createFoodFromMensaAAUSpecialCategory(AAUSpecialCategory, dayInWeek);
+            menu.mains.push(AAUSpecialFood);
         } catch (ex) {
             //Do not log error, as it is most likely to be a parsing error, which we do not want to fill the log file
             menu.error = true;
@@ -208,6 +212,30 @@ function createFoodFromMensaCategory(category) {
     //Price //more ugly bugfix
     let priceTag = categoryContent.find("p").eq(categoryContent.find("p").length - 1);
     let match = priceTag.text().match(/(€|e|E)[\s]+[0-9](,|\.)[0-9]+/);
+
+    let priceStr = null;
+    if (match != null && match.length > 0) {
+        priceStr = match[0].match(/[0-9]+(,|\.)[0-9]+/)[0].replace(',', '.');
+    }
+
+    let price = +priceStr;
+    //isInfo <=> price could not get parsed (or is empty --> 0) and there is only one line of text in .category-content
+    var isInfo = (price === 0 || isNaN(price)) && categoryContent.children().length === 1;
+
+    return new Food(foodNames, price, isInfo);
+}
+
+function createFoodFromMensaAAUSpecialCategory(category, currentDay) {
+    let dayNames = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
+    let currentDayName = dayNames[currentDay];
+    let categoryContent = category.find(".category-content");
+
+    let meal = categoryContent.find(`p:contains(${currentDayName})`).text().split(":")[1].trim();
+    let foodNames = [meal];
+
+    //Price
+    let priceTag = categoryContent.find("p").eq(categoryContent.find("p").length - 1);
+    let match = categoryContent.text().match(/(€|e|E)[\s]+[0-9](,|\.)[0-9]+/);
 
     let priceStr = null;
     if (match != null && match.length > 0) {
