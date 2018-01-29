@@ -1,0 +1,18 @@
+before_script:
+  - docker info
+
+build:
+  stage: build
+  script:
+    - docker-compose build
+
+deploy:
+  stage: deploy
+  script:
+    - docker-compose stop
+    - docker-compose up -d
+  environment:
+    name: production/$CI_COMMIT_REF_NAME
+    url: https://food.felf.io
+  only:
+    - master

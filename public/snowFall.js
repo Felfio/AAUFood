@@ -1,7 +1,7 @@
 window.maxParticles = require('../config').snowFall.particles;
 
 
-$(window).load(function () {
+$(window).ready(function () {
     //canvas init
     var canvas = document.getElementById("snowCanvas");
     var ctx = canvas.getContext("2d");
