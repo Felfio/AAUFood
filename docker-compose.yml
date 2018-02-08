@@ -18,6 +18,7 @@ services:
      - ./scraping:/usr/src/app/scraping
      - ./test:/usr/src/app/test
      - ./views:/usr/src/app/views
+     - ./config.js:/usr/src/app/config.js
     ports:
      - "${FOOD_PORT}:3000"
     depends_on:
