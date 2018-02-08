@@ -169,7 +169,9 @@ function parseMensa(html) {
             menu.mains.push(classic2Food);
 
             let AAUSpecialFood = createFoodFromMensaAAUSpecialCategory(AAUSpecialCategory, dayInWeek);
-            menu.mains.push(AAUSpecialFood);
+            if (AAUSpecialFood != null){
+                menu.mains.push(AAUSpecialFood);
+            }
         } catch (ex) {
             //Do not log error, as it is most likely to be a parsing error, which we do not want to fill the log file
             menu.error = true;
@@ -230,7 +232,12 @@ function createFoodFromMensaAAUSpecialCategory(category, currentDay) {
     let currentDayName = dayNames[currentDay];
     let categoryContent = category.find(".category-content");
 
-    let meal = categoryContent.find(`p:contains(${currentDayName})`).text().split(":")[1].trim();
+    let meal = categoryContent.find(`p:contains(${currentDayName})`).text();
+    if (meal.length === 0){
+        return null;
+    } else {
+        meal = meal.split(":")[1].trim();
+    }
     let foodNames = [meal];
 
     //Price
