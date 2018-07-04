@@ -140,6 +140,10 @@ body {
   }
 }
 
+.menu-name-container {
+  overflow-x: auto;
+}
+
 /*Restaurant-specific*/
 @mixin restaurantColors($bgColor, $fontColor) {
   .card-header, .price-pill {
