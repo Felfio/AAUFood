@@ -473,7 +473,7 @@ function parseMittagstischDayMenu(dayDatas, dayMenu) {
         let mainsRow = mainsRows.eq(m);
         let name = mainsRow.children().first().text();
         name = sanitizeName(name);
-        let price = (+mainsRow.children().eq(1).text().replace(",", ".")) || 7.4;
+        let price = (+mainsRow.children().eq(1).text().replace(",", ".")) || 8.0;
         dayMenu.mains.push(new Food(name, price));
     }
 
