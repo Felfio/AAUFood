@@ -17,6 +17,7 @@ const mensaMenuNameHelper = require('./helpers/mensaMenuNameHelper');
 const footerPunHelper = require('./helpers/footerPunHelper');
 const breakHelper = require('./helpers/breakHelper');
 const placeKittenHelper = require('./helpers/placeKittenHelper');
+const menuStateHelper = require('./helpers/menuStateHelper');
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
@@ -64,6 +65,7 @@ app.locals.getFooterPun = footerPunHelper.getFooterPun;
 app.locals.userFriendlyUrl = restaurant => config.userFriendlyUrls[restaurant];
 app.locals.isOnBreak = breakHelper.isOnBreak;
 app.locals.getBreakInfo = breakHelper.getBreakInfo;
+app.locals.menuStateHelper = menuStateHelper;
 app.locals.catFactHeaderUrl = placeKittenHelper.catFactHeaderUrl;
 
 var server = app.listen(config.settings.nodePort, function () {

@@ -1,10 +1,10 @@
 <% var restaurantNameLower = restaurantName.replace(" ", "-").toLowerCase(); %>
-<div class="card <%= restaurantNameLower %> menu-list mb-3">
+<div class="card <%= restaurantNameLower %> menu-list">
     <h3 class="card-header">
-	<%= restaurantName %>
+        <%= restaurantName %>
         <a class="link-icon" target="_blank" href="<%= userFriendlyUrl(restaurantNameLower) %>">
-	    <span class="fa fa-globe pull-right" aria-hidden="true"></span>
-	</a>
+            <i class="fa fa-globe pull-right" aria-hidden="true"></i>
+        </a>
     </h3>
     <div class="card-body">
         <% var breakInfo = getBreakInfo(restaurantNameLower)%>
