@@ -12,8 +12,7 @@
     <div class="card-body">
         <% menuState = menuStateHelper.getMenuState(restaurant, menu) %>
         <% if(!menuStateHelper.isDefaultState(menuState)) { %>
-            <%- include('infos', { restaurant, menuState }) %>
-
+            <%- include('infos/infos', { restaurant, menuState }) %>
         <% } else if(combinedMenuList){ %>
             <%- include('menu-lists/combined-menu-list', { menu }) %>
         <% } else { %>

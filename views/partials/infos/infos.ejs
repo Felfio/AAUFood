@@ -1,18 +1,18 @@
 <!-- Parameters: restaurant, menuState -->
 <% switch (menuState) {
     case menuStateHelper.MenuState.OnBreak: %>
-        <%- include('icon-infos/on-break', {restaurant}) %>
+        <%- include('on-break', {restaurant}) %>
         <% break;
     case menuStateHelper.MenuState.Closed: %>
-        <%- include('icon-infos/closed', {restaurant}) %>
+        <%- include('closed', {restaurant}) %>
         <% break;
     case menuStateHelper.MenuState.NoMenu: %>
-        <%- include('icon-infos/no-menu', {restaurant}) %>
+        <%- include('no-menu', {restaurant}) %>
         <% break;
     case menuStateHelper.MenuState.Outdated: %>
-        <%- include('icon-infos/outdated', {restaurant}) %>
+        <%- include('outdated', {restaurant}) %>
         <% break;
     case menuStateHelper.MenuState.Error: %>
-        <%- include('icon-infos/error', {restaurant}) %>
+        <%- include('error', {restaurant}) %>
         <% break; %>
 <% } %>
