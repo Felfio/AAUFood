@@ -1,11 +1,11 @@
 <!-- Parameters: restaurant, restaurantName, menu, combinedMenuList (optional) -->
 <% combinedMenuList = typeof(combinedMenuList) === 'boolean' && combinedMenuList /* handling optional parameter */ %>
 
-<div class="card <%= restaurant %> menu-list">
+<div class="card restaurant <%= restaurant %>">
     <h3 class="card-header">
         <span><%= restaurantName %></span>
         <a class="link-icon" target="_blank" href="<%= userFriendlyUrl(restaurant) %>">
-            <i class="fa fa-globe pull-right" aria-hidden="true"></i>
+            <i class="fa fa-globe-americas" aria-hidden="true"></i>
         </a>
     </h3>
 

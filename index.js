@@ -65,6 +65,7 @@ app.locals.isOnBreak = breakHelper.isOnBreak;
 app.locals.getBreakInfo = breakHelper.getBreakInfo;
 app.locals.menuStateHelper = menuStateHelper;
 app.locals.catFactHeaderUrl = placeKittenHelper.catFactHeaderUrl;
+app.locals.isWinterThemeEnabled = () => config.settings.winterTheme;
 
 var server = app.listen(config.settings.nodePort, function () {
     console.log('AAU Food listening on port ' + config.settings.nodePort + '!');

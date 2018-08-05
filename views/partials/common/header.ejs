@@ -26,10 +26,13 @@
     <link rel="icon" sizes="194x194" href="favicons/fav_194.png">
     <link rel="icon" sizes="32x32" href="favicons/fav_32.png">
 
-    <!--link href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
-    <link href="/styles/app.css" rel="stylesheet"-->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.2.0/css/solid.css" integrity="sha384-B/E/KxBX31kY/5sew+X4c8e6ErosbqOOsA3t4k6VVmx8Hrz//v0tEUtXmUVx9X6Q" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.2.0/css/brands.css" integrity="sha384-Ei2oxwH0wpwmp7KPdhYnajC5fWDdMENOjDw9OfzWvcFcOGn0Egy+L5AAculaqBbD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.2.0/css/fontawesome.css" integrity="sha384-4eP+1rYQmuI3hxrmyE+GT/EIiNbF4R85ciN3jMpmIh+bU5Hz2IU7AdcVe+JS+AJz" crossorigin="anonymous">
     <link href="/dist/bundle.css" rel="stylesheet">
 </head>
 <body>
-<canvas id="snowCanvas"></canvas>
+
+<% if(isWinterThemeEnabled()) { %>
+    <canvas id="snowCanvas"></canvas>
+<% } %>
