@@ -1,0 +1,18 @@
+<% day = day % 7 %>
+<div class="weekday-container">
+    <div class="row">
+        <div class="col-12 weekday-header">
+            <span class="weekday">
+                <%= timeHelper.weekDayName(day) %>
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-12">
+            <%- include('restaurant', {restaurant: 'la-pasta', restaurantName: 'La Pasta', menu: lapasta ? lapasta[day] : null}) %>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12">
+            <%- include('restaurant', {restaurant: 'princs', restaurantName: 'Princs', menu: princs ? princs[day] : null}) %>
+        </div>
+    </div>
+</div>

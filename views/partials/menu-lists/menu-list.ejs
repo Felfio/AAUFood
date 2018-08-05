@@ -1,0 +1,29 @@
+<!-- Parameters: menu -->
+
+<% if(menu.starters.length) { %>
+    <ul class="list-group menu-list-group starters">
+        <% menu.starters.forEach(function (starter) { %>
+            <li class="list-group-item">
+                <%= starter.name %>
+            </li>
+        <% }); %>
+    </ul>
+<% } %>
+<% if(menu.mains.length) { %>
+    <ul class="list-group menu-list-group mains">
+        <% menu.mains.forEach(function (main, index) { %>
+            <li class="menu-title">
+                <%= menu.mains.length > 1 ? `Menü ${index + 1}` : 'Mittagsmenü' %>
+
+                <% if(main.price) { %>
+                    <div class="price-tag">
+                        <%= main.price + " €" %>
+                    </div>
+                <% }%>
+            </li>
+            <li class="list-group-item menu-name">
+                <%= main.name %>
+            </li>
+        <% }); %>
+    </ul>
+<% } %>

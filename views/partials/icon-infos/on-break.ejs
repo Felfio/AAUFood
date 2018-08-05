@@ -1,0 +1,9 @@
+<% var breakInfo = getBreakInfo(restaurant)%>
+<div class="on-break">
+    <h5><%= breakInfo.title %></h5>
+    <p class="break-text"><%= breakInfo.text %></p>
+    <p class="break-date">
+        <%= breakInfo.from %> - <%= breakInfo.to %>
+    </p>
+    <i class="fa <%= breakInfo.icon %> fa-2x" aria-hidden="true"></i>
+</div>

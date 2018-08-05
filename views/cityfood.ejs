@@ -1,5 +1,5 @@
 <% var title = 'City Food'; %>
-<% include partials/header.ejs %>
+<% include partials/common/header.ejs %>
 
 <div class="nav-icons-center">
         <span class="nav-icon left center">
@@ -13,12 +13,12 @@
 <div class="container-fluid menu-container">
     <div id='slider' class='swipe'>
         <div class='swipe-wrap'>
-            <% for(var d = 0; d < 7; d++) { %>
-            <%- include('partials/cityfood-weekday-menu', {day: d}) %>
+            <% for(var day = 0; day < 7; day++) { %>
+                <%- include('partials/day-cityfood', { day }) %>
             <% } %>
         </div>
     </div>
 </div>
 
 
-<% include partials/footer.ejs %>
+<% include partials/common/footer.ejs %>

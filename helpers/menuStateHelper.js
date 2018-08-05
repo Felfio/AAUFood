@@ -3,10 +3,10 @@ const breakHelper = require('./breakHelper');
 
 const MenuState = {
     Normal: 0,
-    OnBreak: 1,
+    NoMenu: 1,
     Closed: 2,
-    NoMenu: 3,
-    Outdated: 4,
+    Outdated: 3,
+    OnBreak: 4,
     Error: 5,
 }
 
@@ -30,7 +30,12 @@ function getMenuState(restaurant, menu) {
     return MenuState.Normal;
 }
 
+function isDefaultState(menuState) {
+    return menuState === MenuState.Normal;
+}
+
 module.exports = {
     getMenuState: getMenuState,
     MenuState: MenuState,
+    isDefaultState: isDefaultState,
 };

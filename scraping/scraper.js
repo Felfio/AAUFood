@@ -10,6 +10,7 @@ const Food = require("../models/food");
 const Menu = require("../models/menu");
 const config = require('../config');
 const timeHelper = require('../helpers/timeHelper');
+const mensaMenuNameHelper = require('../helpers/mensaMenuNameHelper');
 
 const laPastaScraper = require('./lapasta-scraper');
 
@@ -159,21 +160,22 @@ function parseMensa(html) {
         let AAUSpecialCategory = day.find('#category132');
 
         try {
-            let dailySpecialFood = createFoodFromMensaCategory(dailySpecialCategory);
+            let dailySpecialFood = createFoodFromMensaCategory(dailySpecialCategory, menu.mains.length);
             menu.mains.push(dailySpecialFood);
 
-            let classic1Food = createFoodFromMensaCategory(classic1Category);
+            let classic1Food = createFoodFromMensaCategory(classic1Category, menu.mains.length);
             menu.mains.push(classic1Food);
 
-            let classic2Food = createFoodFromMensaCategory(classic2Category);
+            let classic2Food = createFoodFromMensaCategory(classic2Category, menu.mains.length);
             menu.mains.push(classic2Food);
 
-            let AAUSpecialFood = createFoodFromMensaAAUSpecialCategory(AAUSpecialCategory, dayInWeek);
+            let AAUSpecialFood = createFoodFromMensaAAUSpecialCategory(AAUSpecialCategory, dayInWeek, menu.mains.length);
             if (AAUSpecialFood != null){
                 menu.mains.push(AAUSpecialFood);
             }
         } catch (ex) {
             //Do not log error, as it is most likely to be a parsing error, which we do not want to fill the log file
+            console.log(ex);
             menu.error = true;
         }
 
@@ -183,7 +185,7 @@ function parseMensa(html) {
     return result;
 }
 
-function createFoodFromMensaCategory(category) {
+function createFoodFromMensaCategory(category, index) {
     let categoryContent = category.find(".category-content");
 
     let meals = categoryContent.find("p").eq(0);
@@ -211,6 +213,8 @@ function createFoodFromMensaCategory(category) {
         foodNames.push(sanitizeName(contents.text()));
     }
 
+    foodNames = foodNames.filter(x => x);
+
     //Price //more ugly bugfix
     let priceTag = categoryContent.find("p").eq(categoryContent.find("p").length - 1);
     let match = priceTag.text().match(/(€|e|E)[\s]+[0-9](,|\.)[0-9]+/);
@@ -224,7 +228,10 @@ function createFoodFromMensaCategory(category) {
     //isInfo <=> price could not get parsed (or is empty --> 0) and there is only one line of text in .category-content
     var isInfo = (price === 0 || isNaN(price)) && categoryContent.children().length === 1;
 
-    return new Food(foodNames, price, isInfo);
+    let foodName = mensaMenuNameHelper.getMenuName(index);
+    let food = new Food(foodName, price, isInfo);
+    food.entries = foodNames;
+    return food;
 }
 
 function createFoodFromMensaAAUSpecialCategory(category, currentDay) {
@@ -238,10 +245,9 @@ function createFoodFromMensaAAUSpecialCategory(category, currentDay) {
     } else {
         meal = meal.split(":")[1].trim();
     }
-    let foodNames = [meal];
+    let foodNames = [meal].filter(x => x);
 
     //Price
-    let priceTag = categoryContent.find("p").eq(categoryContent.find("p").length - 1);
     let match = categoryContent.text().match(/(€|e|E)[\s]+[0-9](,|\.)[0-9]+/);
 
     let priceStr = null;
@@ -253,7 +259,10 @@ function createFoodFromMensaAAUSpecialCategory(category, currentDay) {
     //isInfo <=> price could not get parsed (or is empty --> 0) and there is only one line of text in .category-content
     var isInfo = (price === 0 || isNaN(price)) && categoryContent.children().length === 1;
 
-    return new Food(foodNames, price, isInfo);
+    let foodName = mensaMenuNameHelper.getMenuName(index, isInfo);
+    let food = new Food(foodName, price, isInfo);
+    food.entries = foodNames;
+    return food;
 }
 
 function getUniPizzeriaWeekPlan() {
