@@ -76,16 +76,21 @@ function createUniwirtDayMenu(dayEntry) {
     var dayMenu = new Menu();
     var paragraphs = dayEntry.find("p");
     //Omit first <p> as it is the date
+    var dateParagraph = paragraphs.eq(0);
     paragraphs = paragraphs.slice(1, paragraphs.length);
+    paragraphs = paragraphs.filter(":not(:empty)");
 
-    if (paragraphs.length === 1) {
+    if (paragraphs.length < 2) {
         //Special cases
-        let pText = paragraphs.text();
+        let pText = paragraphs.length === 0 ? dateParagraph.text() : paragraphs.text();
+        pText = pText.replace(/\d\d\.\d\d\.\d+/, "").trim();
+
         if (contains(pText, true, ["feiertag", "ruhetag", "wir machen pause", "wir haben geschlossen", "closed"])) {
             dayMenu.closed = true;
         } else if (contains(pText, true, ["Empfehlung"])) {
             dayMenu.noMenu = true;
         } else {
+            pText = pText.charAt(0).toUpperCase() + pText.slice(1);
             let info = new Food(pText, null, true);
             dayMenu.mains.push(info);
         }
