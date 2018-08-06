@@ -1,28 +1,6 @@
 @import "~bootstrap/scss/bootstrap.scss";
+@import "_variables.scss";
 @import "about.scss";
-
-/*Colors and definitions*/
-$mittagstischGreen: #5fb127;
-$mensaOrange: #f49900;
-$uniwirtPurple: #800768;
-$uniPizzeriaBg: #2336b1;
-$laPastaBg: #ca0928;
-$princsBg: #e30613;
-
-$infoIconColor: #444;
-$allergensColor: #c0c0c0;
-$darkEmboss: 1.5px 1.5px 0px #222;
-
-$navIconMargin: 16px;
-$navIconMarginInwards: 16px;
-$outerPadding: 15px;
-
-$menuSpacing: 14px;
-$menuItemSpacing: 4px;
-
-$footerHeight: 32px;
-$footerColor: rgba(0, 0, 0, 0.75);
-$footerFontColor: #eceeef;
 
 /*General definitions*/
 body {
@@ -213,7 +191,10 @@ footer {
 
   // Easy fix for real centering
   > * {
-    min-width: 100px;
+    min-width: 50px;
+    @media (min-width: 62em) {
+      min-width: 100px;
+    }
 
     &:last-child {
       text-align: right;
