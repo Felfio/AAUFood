@@ -107,10 +107,15 @@ function createUniwirtDayMenu(dayEntry) {
             let food = new Food(name, price);
 
             //If it has a price, it is a main course, otherwise a starter
-            if (price)
-                dayMenu.mains.push(food);
-            else
-                dayMenu.starters.push(food);
+            let hasName = !!name.trim();
+            if (hasName) {
+                if (price) {
+                    dayMenu.mains.push(food);
+                } else  {
+                    dayMenu.starters.push(food);
+                }
+            }
+
         }
     }
 
