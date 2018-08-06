@@ -32,7 +32,7 @@ socket.on('newVisitor', function (data) {
     overallVisitors.text(data.overallVisitors);
 });
 
-$(document).ready(() => {
+$(document).ready(function() {
     requestAnimationFrame(initSlider);
     initNameShuffling();
 });
