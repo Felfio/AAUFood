@@ -185,9 +185,15 @@ function parseMensa(html) {
             }
         } catch (ex) {
             //Do not log error, as it is most likely to be a parsing error, which we do not want to fill the log file
-            console.log(ex);
             menu.error = true;
         }
+
+        // COMMENT TEST CODE AFTER TESTING
+        // menu.mains[0].entries.push(new Food("Linsenrisotto mit Spinat (A,C,G,L)"));
+        // menu.mains[1].entries.push(new Food("Erbsensuppe"));
+        // menu.mains[1].entries.push(new Food("Kartoffelauflauf mit sehr viel Speck (B,,A,C,O,N"));
+        // menu.mains[2].entries.push(new Food("Erbsensuppe mit Nudeleinlage"));
+        // menu.mains[2].entries.push(new Food("Wiener Schnitzel (A,F,G)"));
 
         //Just to be sure
         setErrorOnEmpty(menu);
@@ -240,7 +246,7 @@ function createFoodFromMensaCategory(category, index) {
 
     let foodName = mensaMenuNameHelper.getMenuName(index);
     let food = new Food(foodName, price, isInfo);
-    food.entries = foodNames;
+    food.entries = foodNames.map(n => new Food(n));
     return food;
 }
 
@@ -271,7 +277,7 @@ function createFoodFromMensaAAUSpecialCategory(category, currentDay) {
 
     let foodName = mensaMenuNameHelper.getMenuName(index, isInfo);
     let food = new Food(foodName, price, isInfo);
-    food.entries = foodNames;
+    food.entries = foodNames.map(n => new Food(n));
     return food;
 }
 

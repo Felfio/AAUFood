@@ -14,7 +14,10 @@
 
         <% singleMenu.entries.forEach(function(menuItem){ %>
             <li class="list-group-item">
-                <%= menuItem %>
+                <%= menuItem.name %>
+                <% if(menuItem.allergens) { %> 
+                    <span class="allergens"><%= menuItem.allergens %></span>
+                <% } %>
             </li>
         <% }); %>
     <% }); %>

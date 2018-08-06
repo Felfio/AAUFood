@@ -58,6 +58,11 @@ body {
     font-size: 14px;
     font-weight: 600;
   }
+
+  .allergens {
+    color: $allergensColor;
+    font-size: 12px;
+  }
 }
 
 @mixin restaurantColors($bgColor, $fontColor) {

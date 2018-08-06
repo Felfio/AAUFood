@@ -117,8 +117,8 @@
         <td class="datacol">
             <ul>
                 <% mensa[i].mains.forEach(function (menu) { %>
-                <% menu.entries.forEach(function (name) { if (name!="") { %>
-                <li><%= name %></li>
+                <% menu.entries.forEach(function (menuItem) { if (menuItem.name !="") { %>
+                <li><%= menuItem.name %></li>
                 <% }}); %>
                 <br>
                 <% }); %>
