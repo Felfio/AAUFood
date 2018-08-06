@@ -1,19 +1,21 @@
 <!-- Parameters: menu -->
 
-<% menu.mains.forEach((singleMenu, index) => { %>
-    <span class="menu-title">
-        <%= singleMenu.name %>
-    </span>
-    <% if(singleMenu.price && !singleMenu.isInfo) { %>
-        <div class="price-tag">
-                <%= main.price + " €" %>
-        </div>
-    <% } %>
-    <ul class="list-group menu-list-group">
+<ul class="list-group combined-menu-list-group">
+    <% menu.mains.forEach((singleMenu, index) => { %>
+        <li class="menu-title">
+            <%= singleMenu.name %>
+
+            <% if(singleMenu.price && !singleMenu.isInfo) { %>
+                <div class="price-tag">
+                        <%= main.price + " €" %>
+                </div>
+            <% } %>
+        </li>
+
         <% singleMenu.entries.forEach(function(menuItem){ %>
             <li class="list-group-item">
                 <%= menuItem %>
             </li>
         <% }); %>
-    </ul>
-<% }); %>
+    <% }); %>
+</ul>

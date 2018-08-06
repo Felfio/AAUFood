@@ -16,6 +16,9 @@ $navIconMargin: 16px;
 $navIconMarginInwards: 16px;
 $outerPadding: 15px;
 
+$menuSpacing: 14px;
+$menuItemSpacing: 4px;
+
 $footerHeight: 32px;
 $footerColor: rgba(0, 0, 0, 0.75);
 $footerFontColor: #eceeef;
@@ -30,13 +33,12 @@ body {
 
 html,
 body {
-  height: calc(100% - #{$footerHeight});
+  height: 100%;
 }
 
 .container-fluid.menu-container {
   max-width: 100vw;
   min-height: 100%;
-  margin-bottom: $footerHeight;
   padding-left: 0;
   padding-right: 0;
   margin-left: 0;
@@ -50,13 +52,13 @@ body {
 }
 
 .card {
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,.25), 0 6px 20px 0 rgba(0,0,0,.24);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25), 0 6px 20px 0 rgba(0, 0, 0, 0.24);
   border: none;
 }
 
 /*Restaurant cards*/
 .restaurant {
-  margin-bottom: $outerPadding;
+  margin-bottom: $outerPadding + 4px;
   .card-header {
     border-bottom: 0;
     line-height: 1;
@@ -65,15 +67,17 @@ body {
       font-family: $font-family-sans-serif;
       font-weight: lighter;
     }
-  
+
     i {
       float: right;
     }
   }
 
-  .menu-title,
-  .price-tag {
+  .menu-title {
+    list-style: none;
     font-family: $font-family-sans-serif;
+    font-size: 14px;
+    font-weight: 600;
   }
 }
 
@@ -91,8 +95,7 @@ body {
     }
   }
 
-  .menu-title,
-  .price-tag {
+  .menu-title {
     color: $bgColor;
   }
 
@@ -123,6 +126,33 @@ body {
 
 .princs {
   @include restaurantColors($princsBg, white);
+}
+
+/* Menu Lists */
+.restaurant ul li {
+  padding: 0;
+  border: none;
+}
+
+ul.starters {
+  margin-bottom: $menuSpacing;
+
+  li:not(:last-child) {
+    margin-bottom: $menuItemSpacing;
+  }
+}
+
+ul.mains, ul.combined-menu-list-group {
+  li.menu-title:not(:first-child) {
+    margin-top: $menuSpacing;
+  }
+
+  li.list-group-item {
+    margin-top: $menuItemSpacing;
+  }  
+  li.menu-title + li.list-group-item {
+    margin-top: 0;
+  }  
 }
 
 /* Footer */
@@ -156,8 +186,7 @@ footer {
       background: $footerFontColor;
       color: #222;
     }
-  } 
-
+  }
 
   // Easy fix for real centering
   > * {
@@ -169,6 +198,8 @@ footer {
   }
 
   .footer-pun {
+    white-space: nowrap;
+
     a {
       color: $footerFontColor;
 
@@ -235,11 +266,10 @@ footer {
   padding: 0 4px;
 
   > .restaurants-row {
-    
     @media (max-width: 61.9em) {
       margin: 0;
     }
-    @media (min-width: 62.0em) {
+    @media (min-width: 62em) {
       margin: 0 calc(48px);
     }
   }
@@ -257,8 +287,6 @@ footer {
   }
 }
 
-
-
 .nav-icon {
   z-index: 5000;
   position: fixed;
@@ -269,7 +297,7 @@ footer {
   opacity: 0.4;
   transition: opacity 0.2s ease-in-out;
 
-  &:hover:not(.disabled){
+  &:hover:not(.disabled) {
     opacity: 1;
     cursor: pointer;
   }

@@ -13,15 +13,19 @@
     <ul class="list-group menu-list-group mains">
         <% menu.mains.forEach(function (main, index) { %>
             <li class="menu-title">
-                <%= menu.mains.length > 1 ? `Menü ${index + 1}` : 'Mittagsmenü' %>
+                <% if (!main.isInfo) { %>
+                    <%= menu.mains.length > 1 ? `Menü ${index + 1}` : 'Menü' %>
 
-                <% if(main.price) { %>
-                    <div class="price-tag">
-                        <%= main.price + " €" %>
-                    </div>
-                <% }%>
+                    <% if(main.price) { %>
+                        <div class="price-tag">
+                            <%= main.price + " €" %>
+                        </div>
+                    <% }%>
+                <% } else { %>
+                    Information
+                <% } %>                
             </li>
-            <li class="list-group-item menu-name">
+            <li class="list-group-item">
                 <%= main.name %>
             </li>
         <% }); %>
