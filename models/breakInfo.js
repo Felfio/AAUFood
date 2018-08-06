@@ -1,11 +1,11 @@
 "use strict";
 
 class BreakInfo {
-    constructor(title, text, from, to, icon) {
-        this.title = title;
-        this.text = text;
+    constructor(textPre, from, to, textPost, icon) {
+        this.textPre = textPre;
         this.from = from;
         this.to = to;
+        this.textPost = textPost;
         this.icon = icon;
     }
 }

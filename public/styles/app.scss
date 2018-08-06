@@ -9,6 +9,7 @@ $uniPizzeriaBg: #2336b1;
 $laPastaBg: #ca0928;
 $princsBg: #e30613;
 
+$infoIconColor: #444;
 $allergensColor: #c0c0c0;
 $darkEmboss: 1.5px 1.5px 0px #222;
 
@@ -142,17 +143,39 @@ ul.starters {
   }
 }
 
-ul.mains, ul.combined-menu-list-group {
+ul.mains,
+ul.combined-menu-list-group {
   li.menu-title:not(:first-child) {
     margin-top: $menuSpacing;
   }
 
   li.list-group-item {
     margin-top: $menuItemSpacing;
-  }  
+  }
   li.menu-title + li.list-group-item {
     margin-top: 0;
-  }  
+  }
+}
+
+/* Infos */
+.info {
+  text-align: center;
+
+  .info-icon {
+    color: $infoIconColor;
+    margin-bottom: 12px;
+  }
+
+  p {
+    margin-bottom: $menuItemSpacing;
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  .break-date {
+    font-weight: bold;
+  }
 }
 
 /* Footer */
