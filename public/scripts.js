@@ -32,8 +32,10 @@ socket.on('newVisitor', function (data) {
     overallVisitors.text(data.overallVisitors);
 });
 
-initSlider();
-initNameShuffling();
+$(document).ready(() => {
+    requestAnimationFrame(initSlider);
+    initNameShuffling();
+});
 
 var mailPre = "contact", mailDomain = "felf.io";
 $("#mail").text(mailPre + "@" + mailDomain);
