@@ -43,7 +43,7 @@ body {
     line-height: 1;
 
     > span {
-      font-family: $font-family-sans-serif;
+      font-family: $headingFont;
       font-weight: lighter;
     }
 
@@ -54,7 +54,7 @@ body {
 
   .menu-title {
     list-style: none;
-    font-family: $font-family-sans-serif;
+    font-family: $headingFont;
     font-size: 14px;
     font-weight: 600;
   }
