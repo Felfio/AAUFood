@@ -62,6 +62,6 @@ module.exports = {
          new FooterPun("infinity", "To infinity ", "fa-space-shuttle", null, " and beyond!")*/
     ],
     snowFall: {
-        particles: 50,
+        particles: 150,
     }
 };
