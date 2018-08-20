@@ -1,0 +1,18 @@
+<!-- Parameters: restaurant, menuState -->
+<% switch (menuState) {
+    case menuStateHelper.MenuState.OnBreak: %>
+        <%- include('on-break', {restaurant}) %>
+        <% break;
+    case menuStateHelper.MenuState.Closed: %>
+        <%- include('closed', {restaurant}) %>
+        <% break;
+    case menuStateHelper.MenuState.NoMenu: %>
+        <%- include('no-menu', {restaurant}) %>
+        <% break;
+    case menuStateHelper.MenuState.Outdated: %>
+        <%- include('outdated', {restaurant}) %>
+        <% break;
+    case menuStateHelper.MenuState.Error: %>
+        <%- include('error', {restaurant}) %>
+        <% break; %>
+<% } %>

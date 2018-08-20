@@ -1,0 +1,24 @@
+<% day = day % 7 %>
+<div class="weekday-container">
+    <div class="row">
+        <div class="col-12 weekday-header">
+            <span class="weekday">
+                <%= timeHelper.weekDayName(day) %>
+            </span>
+        </div>
+    </div>
+    <div class="row restaurants-row">
+        <div class="col-xl-3 col-lg-6 col-md-12">
+            <%- include('restaurant', {restaurant: 'mensa', restaurantName: 'Mensa', menu: mensa ? mensa[day] : null, combinedMenuList: true}) %>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-12">
+            <%- include('restaurant', {restaurant: 'uniwirt', restaurantName: 'Uniwirt', menu: uniwirt ? uniwirt[day] : null}) %>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-12">
+            <%- include('restaurant', {restaurant: 'mittagstisch', restaurantName: 'Mittagstisch', menu: mittagstisch ? mittagstisch[day] : null}) %>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-12">
+            <%- include('restaurant', {restaurant: 'uni-pizzeria', restaurantName: 'Uni-Pizzeria', menu: uniPizzeria ? uniPizzeria[day] : null}) %>
+        </div>
+    </div>
+</div>

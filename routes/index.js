@@ -16,10 +16,10 @@ router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
     Promise.all([uniwirtPlan, mensaPlan, mittagstischPlan, unipizzeriaPlan])
         .then(results => {
             res.render('index', {
-                uniwirt: JSON.parse(results[0]),
-                mensa: JSON.parse(results[1]),
-                mittagstisch: JSON.parse(results[2]),
-                uniPizzeria: JSON.parse(results[3]),
+                uniwirt: JSON.parse(results[0]) || [],
+                mensa: JSON.parse(results[1]) || [],
+                mittagstisch: JSON.parse(results[2]) || [],
+                uniPizzeria: JSON.parse(results[3]) || [],
                 visitorStats: req.visitorStats,
             });
         });
@@ -32,8 +32,8 @@ router.get('/city/:day(-?\\d*)?', counter.countVisitors, function (req, res, nex
     Promise.all([lapastaPlan, princsPlan])
         .then(results => {
             res.render('cityfood', {
-                lapasta: JSON.parse(results[0]),
-                princs: JSON.parse(results[1]),
+                lapasta: JSON.parse(results[0]) || [],
+                princs: JSON.parse(results[1]) || [],
                 visitorStats: req.visitorStats,
             });
         });

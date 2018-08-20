@@ -10,6 +10,7 @@ const Food = require("../models/food");
 const Menu = require("../models/menu");
 const config = require('../config');
 const timeHelper = require('../helpers/timeHelper');
+const mensaMenuNameHelper = require('../helpers/mensaMenuNameHelper');
 
 const laPastaScraper = require('./lapasta-scraper');
 
@@ -75,16 +76,21 @@ function createUniwirtDayMenu(dayEntry) {
     var dayMenu = new Menu();
     var paragraphs = dayEntry.find("p");
     //Omit first <p> as it is the date
+    var dateParagraph = paragraphs.eq(0);
     paragraphs = paragraphs.slice(1, paragraphs.length);
+    paragraphs = paragraphs.filter(":not(:empty)");
 
-    if (paragraphs.length === 1) {
+    if (paragraphs.length < 2) {
         //Special cases
-        let pText = paragraphs.text();
+        let pText = paragraphs.length === 0 ? dateParagraph.text() : paragraphs.text();
+        pText = pText.replace(/\d\d\.\d\d\.\d+/, "").trim();
+
         if (contains(pText, true, ["feiertag", "ruhetag", "wir machen pause", "wir haben geschlossen", "closed"])) {
             dayMenu.closed = true;
         } else if (contains(pText, true, ["Empfehlung"])) {
             dayMenu.noMenu = true;
         } else {
+            pText = pText.charAt(0).toUpperCase() + pText.slice(1);
             let info = new Food(pText, null, true);
             dayMenu.mains.push(info);
         }
@@ -101,10 +107,15 @@ function createUniwirtDayMenu(dayEntry) {
             let food = new Food(name, price);
 
             //If it has a price, it is a main course, otherwise a starter
-            if (price)
-                dayMenu.mains.push(food);
-            else
-                dayMenu.starters.push(food);
+            let hasName = !!name.trim();
+            if (hasName) {
+                if (price) {
+                    dayMenu.mains.push(food);
+                } else  {
+                    dayMenu.starters.push(food);
+                }
+            }
+
         }
     }
 
@@ -159,16 +170,16 @@ function parseMensa(html) {
         let AAUSpecialCategory = day.find('#category132');
 
         try {
-            let dailySpecialFood = createFoodFromMensaCategory(dailySpecialCategory);
+            let dailySpecialFood = createFoodFromMensaCategory(dailySpecialCategory, menu.mains.length);
             menu.mains.push(dailySpecialFood);
 
-            let classic1Food = createFoodFromMensaCategory(classic1Category);
+            let classic1Food = createFoodFromMensaCategory(classic1Category, menu.mains.length);
             menu.mains.push(classic1Food);
 
-            let classic2Food = createFoodFromMensaCategory(classic2Category);
+            let classic2Food = createFoodFromMensaCategory(classic2Category, menu.mains.length);
             menu.mains.push(classic2Food);
 
-            let AAUSpecialFood = createFoodFromMensaAAUSpecialCategory(AAUSpecialCategory, dayInWeek);
+            let AAUSpecialFood = createFoodFromMensaAAUSpecialCategory(AAUSpecialCategory, dayInWeek, menu.mains.length);
             if (AAUSpecialFood != null){
                 menu.mains.push(AAUSpecialFood);
             }
@@ -177,13 +188,20 @@ function parseMensa(html) {
             menu.error = true;
         }
 
+        // COMMENT TEST CODE AFTER TESTING
+        // menu.mains[0].entries.push(new Food("Linsenrisotto mit Spinat (A,C,G,L)"));
+        // menu.mains[1].entries.push(new Food("Erbsensuppe"));
+        // menu.mains[1].entries.push(new Food("Kartoffelauflauf mit sehr viel Speck (B,,A,C,O,N"));
+        // menu.mains[2].entries.push(new Food("Erbsensuppe mit Nudeleinlage"));
+        // menu.mains[2].entries.push(new Food("Wiener Schnitzel (A,F,G)"));
+
         //Just to be sure
         setErrorOnEmpty(menu);
     }
     return result;
 }
 
-function createFoodFromMensaCategory(category) {
+function createFoodFromMensaCategory(category, index) {
     let categoryContent = category.find(".category-content");
 
     let meals = categoryContent.find("p").eq(0);
@@ -211,6 +229,8 @@ function createFoodFromMensaCategory(category) {
         foodNames.push(sanitizeName(contents.text()));
     }
 
+    foodNames = foodNames.filter(x => x);
+
     //Price //more ugly bugfix
     let priceTag = categoryContent.find("p").eq(categoryContent.find("p").length - 1);
     let match = priceTag.text().match(/(€|e|E)[\s]+[0-9](,|\.)[0-9]+/);
@@ -224,7 +244,10 @@ function createFoodFromMensaCategory(category) {
     //isInfo <=> price could not get parsed (or is empty --> 0) and there is only one line of text in .category-content
     var isInfo = (price === 0 || isNaN(price)) && categoryContent.children().length === 1;
 
-    return new Food(foodNames, price, isInfo);
+    let foodName = mensaMenuNameHelper.getMenuName(index);
+    let food = new Food(foodName, price, isInfo);
+    food.entries = foodNames.map(n => new Food(n));
+    return food;
 }
 
 function createFoodFromMensaAAUSpecialCategory(category, currentDay) {
@@ -238,10 +261,9 @@ function createFoodFromMensaAAUSpecialCategory(category, currentDay) {
     } else {
         meal = meal.split(":")[1].trim();
     }
-    let foodNames = [meal];
+    let foodNames = [meal].filter(x => x);
 
     //Price
-    let priceTag = categoryContent.find("p").eq(categoryContent.find("p").length - 1);
     let match = categoryContent.text().match(/(€|e|E)[\s]+[0-9](,|\.)[0-9]+/);
 
     let priceStr = null;
@@ -253,7 +275,10 @@ function createFoodFromMensaAAUSpecialCategory(category, currentDay) {
     //isInfo <=> price could not get parsed (or is empty --> 0) and there is only one line of text in .category-content
     var isInfo = (price === 0 || isNaN(price)) && categoryContent.children().length === 1;
 
-    return new Food(foodNames, price, isInfo);
+    let foodName = mensaMenuNameHelper.getMenuName(index, isInfo);
+    let food = new Food(foodName, price, isInfo);
+    food.entries = foodNames.map(n => new Food(n));
+    return food;
 }
 
 function getUniPizzeriaWeekPlan() {

@@ -1,166 +1,90 @@
-@import '~bootstrap/scss/bootstrap.scss';
-@import '~font-awesome/css/font-awesome.css';
-@import 'spinner.scss';
-@import 'about.scss';
-/*@import 'ribbons.scss';*/
+@import "~bootstrap/scss/bootstrap.scss";
+@import "_variables.scss";
+@import "about.scss";
 
-//Switches
-$winterTheme: false;
-$winterTextColor: #f5f5f5;
-
-/*Colors and definitions*/
-$mittagstischGreen: #5fb127;
-$mensaOrange: #f49900;
-$uniwirtPurple: #800768;
-$uniPizzeriaBg: #2336B1;
-$laPastaBg: #ca0928;
-$princsBg: #e30613;
-$navIconMargin: 3rem;
-$navIconMarginInwards: 1rem;
-$outerPadding: 0.9375rem;
-$footerHeight: 2rem;
-$footerColor: if($winterTheme, rgba(0, 0, 0, 0.8), #202122);
 /*General definitions*/
 body {
-  background-image: if($winterTheme, url("../images/winter_planks_512.jpg"), url("../images/tileable_wood_texture.jpg"));
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  background-image: url("../images/woodnew_double.jpg");
+  background-position-y: bottom;
+}
+
+html,
+body {
+  height: calc(100vh - #{$footerHeight});
 }
 
 .container-fluid.menu-container {
-  @media (min-width: 62em) {
-    max-width: 85vw;
-    margin-left: 7vw;
-    margin-right: 7vw;
-    min-height: 100%;
-    margin-bottom: $footerHeight;
-  }
-}
-
-.center-block {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-#navbar.bg-inverse {
-  background: hsla(204, 4%, 13%, 1);
-}
-
-.on-break {
-  text-align: center;
-}
-
-.break-date {
-  font-weight: bold;
+  max-width: 100vw;
+  min-height: 100%;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .break-text {
-  margin-bottom: 8px;
-
   &:empty {
     display: none;
   }
 }
 
 .card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25), 0 6px 20px 0 rgba(0, 0, 0, 0.24);
+  border: none;
+}
 
-  .card-body {
-    .error p {
-      margin-bottom: 0.25rem;
+/*Restaurant cards*/
+.restaurant {
+  margin-bottom: $outerPadding + 4px;
+  .card-header {
+    border-bottom: 0;
+    line-height: 1;
 
-      &:last-child {
-        margin-bottom: 0;
-      }
+    > span {
+      font-family: $headingFont;
+      font-weight: lighter;
     }
+
+    i {
+      float: right;
+    }
+  }
+
+  .menu-title {
+    list-style: none;
+    font-family: $headingFont;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .allergens {
+    color: $allergensColor;
+    font-size: 12px;
   }
 }
 
-.menu-list, .combined-menu-list {
-  &.card {
-    border: none;
-
-    .card-header {
-      margin-bottom: 0;
-      border-bottom: 0;
-    }
-  }
-
-  .menu-list-group {
-    &:not(:last-child) {
-      margin-bottom: 0.75rem;
-    }
-
-    .list-group-item {
-      background: none;
-      padding-top: 0;
-      padding-bottom: 0;
-      padding-right: 0;
-      border: none;
-    }
-
-    .price-pill {
-      margin-right: -20px;
-      margin-top: 0.125rem;
-      margin-left: 0.5rem;
-    }
-  }
-}
-
-.combined-menu-list {
-  .menu-list-group {
-    .list-group-item:not(:last-child) {
-      padding-bottom: 0.25rem;
-    }
-  }
-  .price-pill {
-    margin-top: 0.125rem;
-    margin-left: 0.5rem;
-  }
-}
-
-.menu-list {
-  .menu-list-group.starters {
-    &:empty {
-      display: none;
-    }
-
-    .list-group-item:not(:last-child) {
-      padding-bottom: 0.25rem;
-    }
-
-    .list-group-item {
-      padding-left: 0;
-    }
-  }
-
-  .menu-list-group.mains {
-    .list-group-item:not(:last-child) {
-      padding-bottom: 0.5rem;
-    }
-  }
-}
-
-.menu-name-container {
-  overflow-x: auto;
-}
-
-/*Restaurant-specific*/
 @mixin restaurantColors($bgColor, $fontColor) {
-  .card-header, .price-pill {
+  .card-header {
     background: $bgColor;
     color: $fontColor;
-  }
-
-  .sk-folding-cube .sk-cube:before {
-    background-color: $bgColor;
   }
 
   .link-icon {
     color: transparentize($fontColor, 0.25);
 
     &:hover {
-      color: transparentize($fontColor, 0);
+      color: $fontColor;
     }
+  }
+
+  .menu-title {
+    color: $bgColor;
+  }
+
+  .price-tag {
+    float: right;
   }
 }
 
@@ -188,123 +112,144 @@ body {
   @include restaurantColors($princsBg, white);
 }
 
-@mixin footerIcon($color) {
-  vertical-align: middle;
-  font-size: 1.25em;
-  color: $color;
+/* Menu Lists */
+.restaurant ul li {
+  padding: 0;
+  border: none;
 }
 
-/*Footer*/
-.footer {
+ul.starters {
+  margin-bottom: $menuSpacing;
+
+  li:not(:last-child) {
+    margin-bottom: $menuItemSpacing;
+  }
+}
+
+ul.mains,
+ul.combined-menu-list-group {
+  li.menu-title:not(:first-child) {
+    margin-top: $menuSpacing;
+  }
+
+  li.list-group-item {
+    margin-top: $menuItemSpacing;
+  }
+  li.menu-title + li.list-group-item {
+    margin-top: 0;
+  }
+}
+
+/* Infos */
+.info {
+  text-align: center;
+
+  .info-icon {
+    color: $infoIconColor;
+    margin-bottom: 12px;
+  }
+
+  p {
+    margin-bottom: $menuItemSpacing;
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  .break-date {
+    font-weight: bold;
+  }
+}
+
+/* Footer */
+.cc_banner.cc_container.cc_container--open {
+  background-color: $footerColor !important;
+  border-bottom: 1pt solid black;
+}
+
+footer {
   z-index: 9500;
   position: relative;
   bottom: 0;
   width: 100%;
-  /* Set the fixed height of the footer here */
   height: $footerHeight;
-  line-height: $footerHeight; /* Vertically center the text there */
+  padding: 0 $outerPadding;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
   background-color: $footerColor;
-  color: #eceeef;
-  text-align: center;
+  color: $footerFontColor;
+
+  .btn {
+    color: $footerFontColor;
+    border: none;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      background: $footerFontColor;
+      color: #222;
+    }
+  }
+
+  // Easy fix for real centering
+  > * {
+    min-width: 50px;
+    @media (min-width: 62em) {
+      min-width: 100px;
+    }
+
+    &:last-child {
+      text-align: right;
+    }
+  }
 
   .footer-pun {
+    white-space: nowrap;
+
     a {
-	color: #eceeef;
+      color: $footerFontColor;
 
-	&:hover {
-	  text-decoration: none;
-	}
+      &:hover {
+        text-decoration: none;
+      }
     }
-  }
+    i {
+      vertical-align: middle;
+      font-size: 1.25em;
 
-  @mixin footer-border-element($left) {
-    position: absolute;
-    @if ($winterTheme == false) {
-      background: $footerColor;
-    }
-    z-index: 9600;
+      &.fa-heart {
+        color: #df0101;
+      }
 
-    @if ($left) {
-      left: 0;
-      margin-left: $outerPadding;
-      padding-right: 0.5em;
-    } @else {
-      right: 0;
-      margin-right: $outerPadding;
-      padding-left: 0.5em;
-    }
-  }
+      &.fa-empire {
+        color: #a00000;
+      }
 
-  .daily-counter {
-    @include footer-border-element(true);
-  }
+      &.fa-rebel {
+        color: #f1592a;
+      }
 
-  .sitemap {
-    @include footer-border-element(false);
-  }
+      &.fa-star {
+        color: gold;
+      }
+      &.fa-space-shuttle {
+        color: #0093ff;
+      }
 
-  .impressum-link {
-    @include footer-border-element(false);
-
-    @media (max-width: 30em) {
-      i.fa {
-        display: none;
+      &.fa-hand-lizard {
+        color: #377f31;
+      }
+      &.fa-hand-paper {
+        color: #ffe4c4;
+      }
+      &.fa-snowflake {
+        color: #0093ff;
       }
     }
   }
-
-  .footer-pun {
-    z-index: 9550;
-  }
-
-  .fa-heart {
-    @include footerIcon(#DF0101);
-  }
-
-  .fa-empire {
-    @include footerIcon(#A00000);
-  }
-
-  .fa-rebel {
-    @include footerIcon(#F1592A);
-  }
-
-  .fa-star {
-    @include footerIcon(gold);
-  }
-  .fa-space-shuttle {
-    @include footerIcon(#0093ff);
-  }
-
-  .fa-hand-lizard-o {
-    @include footerIcon(#377F31);
-  }
-  .fa-hand-paper-o {
-    @include footerIcon(#FFE4C4);
-  }
-  .fa-snowflake-o {
-    @include footerIcon(#0093ff);
-  }
-}
-
-#impressum-linkHolder {
-  width: 100%;
-  text-align: center;
-
-  #impressum-link {
-    background: transparentize($footerColor, 0.25);
-  }
-}
-
-html, body {
-  height: calc(100% - 2rem);
-}
-
-.container {
-  min-height: 100%;
-  margin-bottom: $footerHeight;
-  padding-left: 0;
-  padding-right: 0;
 }
 
 /* Swipe */
@@ -327,107 +272,69 @@ html, body {
 
 /* Weekday and Navigation*/
 .weekday-container {
-  padding-left: .9375rem;
-  padding-right: .9375rem;
+  padding: 0 4px;
+
+  > .restaurants-row {
+    @media (max-width: 61.9em) {
+      margin: 0;
+    }
+    @media (min-width: 62em) {
+      margin: 0 calc(48px);
+    }
+  }
 
   .weekday-header {
     text-align: center;
+    padding: 4px 0;
 
     .weekday {
       font-weight: 500;
-      font-size: 2.5rem;
+      font-size: 2.8rem;
+      color: white;
+      text-shadow: $darkEmboss;
     }
   }
 }
 
-.info-icon {
-  margin-bottom: 0.75rem;
-}
-
 .nav-icon {
-  font-weight: bold;
-  cursor: pointer;
+  z-index: 5000;
+  position: fixed;
+  top: 40vh;
+  font-size: 4rem;
+  color: white;
+  text-shadow: $darkEmboss;
+  opacity: 0.4;
+  transition: opacity 0.2s ease-in-out;
 
-  &.disabled {
-    cursor: default;
-    color: rgba(0, 0, 0, 0.1);
+  &:hover:not(.disabled) {
+    opacity: 1;
+    cursor: pointer;
+  }
+
+  &.right {
+    right: $navIconMargin;
+    margin-right: -$navIconMargin;
+    padding-right: $navIconMargin;
+    margin-left: -$navIconMarginInwards;
+    padding-left: $navIconMarginInwards;
+  }
+
+  &.left {
+    left: $navIconMargin;
+    margin-left: -$navIconMargin;
+    padding-left: $navIconMargin;
+    margin-right: -$navIconMarginInwards;
+    padding-right: $navIconMarginInwards;
   }
 
   // Small devices (landscape phones, less than 48em)
   @media (max-width: 61.9em) {
-    &.center {
-      display: none;
-    }
-
-    &.right {
-      margin-right: -$outerPadding;
-      padding-right: $outerPadding;
-      margin-left: -$navIconMarginInwards;
-      padding-left: $navIconMarginInwards;
-      float: right;
-    }
-
-    &.left {
-      margin-left: -$outerPadding;
-      padding-left: $outerPadding;
-      margin-right: -$navIconMarginInwards;
-      padding-right: $navIconMarginInwards;
-      float: left;
-    }
-  }
-
-  // Medium devices (tablets, 48em and up)
-  @media (min-width: 62em) {
-    z-index: 5000;
-    position: fixed;
-    top: 40vh;
-    font-size: 5rem;
-
-    &.top {
-      display: none;
-    }
-
-    &.right {
-      right: $navIconMargin;
-      margin-right: -$navIconMargin;
-      padding-right: $navIconMargin;
-      margin-left: -$navIconMarginInwards;
-      padding-left: $navIconMarginInwards;
-    }
-
-    &.left {
-      left: $navIconMargin;
-      margin-left: -$navIconMargin;
-      padding-left: $navIconMargin;
-      margin-right: -$navIconMarginInwards;
-      padding-right: $navIconMarginInwards;
-    }
-
+    display: none;
   }
 }
 
-.cc_banner.cc_container.cc_container--open {
-  position: absolute;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
-//Theme only settings
 #snowCanvas {
-  display: if($winterTheme, inherit, none);
   position: absolute;
-}
-
-@if ($winterTheme) {
-  .weekday {
-    color: $winterTextColor;
-    padding: 10px 25px 5px 25px;
-    background: rgba(0, 0, 0, 0.7);
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-  }
-
-  .nav-icon {
-    color: $winterTextColor;
-  }
+  top: 0;
+  left: 0;
 }
