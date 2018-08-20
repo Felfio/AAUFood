@@ -1,81 +1,92 @@
 /*about.scss*/
-$card-header-bg: rgba(0, 0, 0, 0.7);
+#about {
 
-.about {
-  padding-top: 0.8rem;
-
-  padding-left: .9375rem;
-  padding-right: .9375rem;
-
+  /* All cards */
   .card {
     border: none;
   }
 
+  /* About us card */
   .about-us {
     background: none;
+    margin-bottom: 15px;
+
+    .card-header {
+      border-bottom: 0;
+      line-height: 1;
+      font-family: $font-family-sans-serif;
+      font-weight: lighter;
+      color: white;
+      background: $footerColor;
+    }
 
     .card-body {
       background: white;
-      padding-top: 0.5rem;
-    }
-
-    .card-header {
-      margin-bottom: 0;
-      color: white;
-      background: $card-header-bg;
     }
   }
 
-  .back-icon-container {
+  /* Back icon */
+  .back-icon {
     text-align: center;
+    padding: 16px 0;
+    color: white;
+    font-weight: 500;
+    text-shadow: $darkEmboss;
 
-    .card {
-      border-radius: 50%;
-      width: 5.2rem;
-      height: 5.2rem;
-      color: #373a3c;
-      &:hover {
-        text-decoration: none;
-      }
+    &,
+    > a {
+      color: white;
+    }
+
+    h5 {
+      margin-bottom: 0;
+    }
+  }
+}
+
+#extra-infos {
+  > * {
+    margin-bottom: 15px;
+
+    > .card + .card {
+      margin-top: 15px;
     }
   }
 
-  .back-icon-container .card-body {
-    padding-top: 1.1rem;
+  .cat-fact-header {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+  }
+  
+  .cat-fact-header img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 100%;
+    width: auto;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  
+  .cat-fact-header img.portrait {
+    width: 100%;
+    height: auto;
+  }
+  
+  .sponsor-images {
+    text-align: center;
+  
+    img {
+      max-height: 6em;
+    }
   }
 }
 
-.cat-fact-header {
-  position: relative;
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-}
 
-.cat-fact-header img {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  height: 100%;
-  width: auto;
-  -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-
-.cat-fact-header img.portrait {
-  width: 100%;
-  height: auto;
-}
-
-.sponsor-images {
-  text-align: center;
-
-  img {
-    max-height: 6em;
-  }
-}
-
+/* Little stylings */
 @mixin name($color) {
   &.a {
     color: inherit;
@@ -90,29 +101,22 @@ $card-header-bg: rgba(0, 0, 0, 0.7);
 }
 
 #fabian {
-  @include name(#09B22E);
+  @include name(#09b22e);
 }
 
 #markus {
-  @include name(#4B09B2);
+  @include name(#4b09b2);
 }
 
 #benjamin {
-  @include name(#D61800);
+  @include name(#d61800);
 }
 
 #philipp {
   @include name(#3f77d8);
 }
 
-.nowrap {
-  white-space: nowrap;
-}
-
 #mail {
   font-weight: bold;
-}
 
-.flex-1 {
-  flex:1;
 }

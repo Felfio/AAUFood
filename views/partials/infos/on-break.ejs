@@ -1,0 +1,14 @@
+<% var breakInfo = getBreakInfo(restaurant)%>
+<% var icon = breakInfo.icon || "fa fa-umbrella-beach" %>
+<div class="info">
+    <i class="fa <%= icon %> fa-2x info-icon" aria-hidden="true"></i>
+    <p>
+        <%= breakInfo.textPre %>
+        <br />
+        <span class="break-date">
+            <%= breakInfo.from %> - <%= breakInfo.to %>
+        </span>
+        <br />
+        <%= breakInfo.textPost %>
+    </p>
+</div>

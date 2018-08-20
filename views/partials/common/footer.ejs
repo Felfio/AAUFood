@@ -1,18 +1,18 @@
-<!--<div id="impressumHolder">
-    <a href="https://www.felf.io/about.html" id="impressum" class="label label-dark label-pill">Impressum</a>
-</div>-->
 <div id="cookieConsentHolder"></div>
-<footer class="footer d-flex flex-row align-items-center">
+
+<footer id="footer" class="footer">
     <div class="daily-counter" title="Besucher heute">
-        <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
-        <span id="dailyVisitors"><%= visitorStats.dailyVisitors %></span>
+        <i class="fa fa-fw fa-clock" aria-hidden="true"></i>
+        <span id="dailyVisitors">
+            <%= visitorStats.dailyVisitors %>
+        </span>
     </div>
 
-    <div class="footer-pun mx-auto">
+    <div class="footer-pun">
         <%- getFooterPun() %>
     </div>
 
-    <div class="btn-group dropup sitemap">
+    <div class="dropup sitemap">
         <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="hidden-sm-down">Sitemap</span>
             <i class="fa fa-map-signs"></i>
@@ -23,10 +23,6 @@
             <a class="dropdown-item" href="https://felf.io"><i class="fa fa-fw fa-balance-scale" aria-hidden="true"></i> Impressum</a>
         </div>
     </div>
-    <!-- <a class="impressum-link" title="Impressum" href="https://www.felf.io/about.html">
-        Impressum
-        <i class="fa fa-fw fa-balance-scale" aria-hidden="true"></i>
-    </a> -->
 </footer>
 
 <script src="/dist/bundle.js"></script>

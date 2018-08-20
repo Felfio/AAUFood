@@ -12,10 +12,7 @@ window.cookieconsent_options = {
 
 require('cookieconsent');
 
-const winterTheme = require('../config').settings.winterTheme;
-if (winterTheme) {
-    require("./snowFall")
-}
+var snowFall = require("./snowFall");
 
 var io = require('socket.io-client');
 var Swipe = require('swipejs');
@@ -32,8 +29,15 @@ socket.on('newVisitor', function (data) {
     overallVisitors.text(data.overallVisitors);
 });
 
-initSlider();
-initNameShuffling();
+$(document).ready(function() {
+    // Both slider and snowfall depend on window size
+    // This messy setup was the only way to get both working correctly
+    requestAnimationFrame(function() {
+        initSlider();
+        snowFall.initSnowFall();
+    });
+    initNameShuffling();
+});
 
 var mailPre = "contact", mailDomain = "felf.io";
 $("#mail").text(mailPre + "@" + mailDomain);

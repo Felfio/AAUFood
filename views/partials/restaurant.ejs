@@ -1,0 +1,22 @@
+<!-- Parameters: restaurant, restaurantName, menu, combinedMenuList (optional) -->
+<% combinedMenuList = typeof(combinedMenuList) === 'boolean' && combinedMenuList /* handling optional parameter */ %>
+
+<div class="card restaurant <%= restaurant %>">
+    <h3 class="card-header">
+        <span><%= restaurantName %></span>
+        <a class="link-icon" target="_blank" href="<%= userFriendlyUrl(restaurant) %>">
+            <i class="fa fa-globe-americas" aria-hidden="true"></i>
+        </a>
+    </h3>
+
+    <div class="card-body">
+        <% menuState = menuStateHelper.getMenuState(restaurant, menu) %>
+        <% if(!menuStateHelper.isDefaultState(menuState)) { %>
+            <%- include('infos/infos', { restaurant, menuState }) %>
+        <% } else if(combinedMenuList){ %>
+            <%- include('menu-lists/combined-menu-list', { menu }) %>
+        <% } else { %>
+            <%- include('menu-lists/menu-list', { menu }) %>
+        <% } %>
+    </div>
+</div>
