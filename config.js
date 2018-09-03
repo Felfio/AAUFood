@@ -12,7 +12,7 @@ module.exports = {
         //The dates are only rendered, never used for checking if closed!
         // mensa: new BreakInfo("Wir befinden uns für den Zeitraum", "28.7", "2.9", "in Sommerpause.", "fa fa-sun"),
         // mensa: new BreakInfo("Wir befinden uns für den Zeitraum", "28.7", "2.9", "in Sommerpause."),
-        mensa: new BreakInfo("Wir befinden uns für den Zeitraum", "28.7", "2.9", "in Sommerpause."),
+        // mensa: new BreakInfo("Wir befinden uns für den Zeitraum", "28.7", "2.9", "in Sommerpause."),
     },
     cache: {
         // Time in miliseconds -> 20 min.
