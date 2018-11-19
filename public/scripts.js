@@ -24,7 +24,6 @@ var dailyVisitors = $('#dailyVisitors');
 
 var socket = io();
 socket.on('newVisitor', function (data) {
-    console.log(data);
     dailyVisitors.text(data.dailyVisitors);
     overallVisitors.text(data.overallVisitors);
 });

@@ -78,8 +78,8 @@
             <label class="custom-control-label" for="uniwirt">Uniwirt</label>
         </div>
         <div class="custom-control custom-checkbox print-hidden">
-            <input type="checkbox" class="custom-control-input" id="mittagstisch" checked onclick="toggleRow('mittagstisch');">
-            <label class="custom-control-label" for="mittagstisch">Mittagstisch</label>
+            <input type="checkbox" class="custom-control-input" id="hotspot" checked onclick="toggleRow('hotspot');">
+            <label class="custom-control-label" for="hotspot">Hotspot</label>
         </div>
         <div class="custom-control custom-checkbox print-hidden">
             <input type="checkbox" class="custom-control-input" id="uni-pizzeria" checked onclick="toggleRow('uni-pizzeria');">
@@ -139,19 +139,19 @@
         <% } %>
     </tr>
 
-    <tr class="mittagstisch">
-        <td class="namecol"><span class="name">Mittagstisch</span></td>
+    <tr class="hotspot">
+        <td class="namecol"><span class="name">Hotspot</span></td>
 
         <% for(let i = 0; i < 5; i++) { %>
         <td class="datacol">
             <ul class="starters">
-                <% mittagstisch[i].starters.forEach(function (food) { if (food.name!="") { %>
+                <% hotspot[i].starters.forEach(function (food) { if (food.name!="") { %>
                 <li><%= food.name %></li>
                 <% }}); %>
             </ul>
 
             <ul class="mains">
-                <% mittagstisch[i].mains.forEach(function (food) { if (food.name!="") { %>
+                <% hotspot[i].mains.forEach(function (food) { if (food.name!="") { %>
                 <li><%= food.name %></li>
                 <% }}); %>
             </ul>

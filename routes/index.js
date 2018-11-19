@@ -10,15 +10,15 @@ const counter = require('../middleware/visitorCounter');
 router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
     var uniwirtPlan = menuCache.getMenu('uniwirt');
     var mensaPlan = menuCache.getMenu('mensa');
-    var mittagstischPlan = menuCache.getMenu('mittagstisch');
+    var hotspotPlan = menuCache.getMenu('hotspot');
     var unipizzeriaPlan = menuCache.getMenu('uniPizzeria');
 
-    Promise.all([uniwirtPlan, mensaPlan, mittagstischPlan, unipizzeriaPlan])
+    Promise.all([uniwirtPlan, mensaPlan, hotspotPlan, unipizzeriaPlan])
         .then(results => {
             res.render('index', {
                 uniwirt: JSON.parse(results[0]) || [],
                 mensa: JSON.parse(results[1]) || [],
-                mittagstisch: JSON.parse(results[2]) || [],
+                hotspot: JSON.parse(results[2]) || [],
                 uniPizzeria: JSON.parse(results[3]) || [],
                 visitorStats: req.visitorStats,
             });
@@ -60,15 +60,15 @@ router.get('/about', counter.countVisitors, function (req, res, next) {
 router.get('/print', counter.countVisitors, function (req, res, next) {
     var uniwirtPlan = menuCache.getMenu('uniwirt');
     var mensaPlan = menuCache.getMenu('mensa');
-    var mittagstischPlan = menuCache.getMenu('mittagstisch');
+    var hotspotPlan = menuCache.getMenu('hotspot');
     var unipizzeriaPlan = menuCache.getMenu('uniPizzeria');
 
-    Promise.all([uniwirtPlan, mensaPlan, mittagstischPlan, unipizzeriaPlan])
+    Promise.all([uniwirtPlan, mensaPlan, hotspotPlan, unipizzeriaPlan])
         .then(results => {
             res.render('print', {
                 uniwirt: JSON.parse(results[0]),
                 mensa: JSON.parse(results[1]),
-                mittagstisch: JSON.parse(results[2]),
+                hotspot: JSON.parse(results[2]),
                 uniPizzeria: JSON.parse(results[3])
             });
         });

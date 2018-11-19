@@ -1,0 +1,13 @@
+<!-- Parameters: starters -->
+<% if(starters.length) { %>
+    <ul class="list-group menu-list-group starters">
+        <% starters.forEach(function (starter) { %>
+            <li class="list-group-item">
+                <%= starter.name %>
+                <% if(starter.allergens) { %> 
+                    <span class="allergens"><%= starter.allergens %></span>
+                <% } %>
+            </li>
+        <% }); %>
+    </ul>
+<% } %>

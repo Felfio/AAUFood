@@ -52,7 +52,7 @@ body {
     }
   }
 
-  .menu-title {
+  .menu-title, .price-tag {
     list-style: none;
     font-family: $headingFont;
     font-size: 14px;
@@ -62,6 +62,17 @@ body {
   .allergens {
     color: $allergensColor;
     font-size: 12px;
+  }
+
+  .price-tag {
+    float: right;
+    font-style: normal;
+  }
+}
+
+@mixin mainsItem(){
+  ul.combined-menu-list-group li.list-group-item, ul.mains li.list-group-item {
+    @content
   }
 }
 
@@ -82,14 +93,13 @@ body {
   .menu-title {
     color: $bgColor;
   }
-
-  .price-tag {
-    float: right;
-  }
 }
 
-.mittagstisch {
-  @include restaurantColors($mittagstischGreen, white);
+.hotspot {
+  @include restaurantColors($hotspotGreen, white);
+  @include mainsItem {
+    margin-top: $menuItemSpacing * 1.5;
+  }
 }
 
 .mensa {
@@ -141,6 +151,11 @@ ul.combined-menu-list-group {
 }
 
 /* Infos */
+ul.info-elements{
+  margin-top: $menuSpacing * 1.2;
+  font-style: italic;
+}
+
 .info {
   text-align: center;
 

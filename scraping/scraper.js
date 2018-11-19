@@ -16,7 +16,7 @@ const laPastaScraper = require('./lapasta-scraper');
 
 var MensaUrl = config.scraper.mensaUrl;
 var UniwirtUrl = config.scraper.uniwirtUrl;
-var MittagstischUrl = config.scraper.mittagstischUrl;
+var HotspotUrl = config.scraper.hotspotUrl;
 var PizzeriaUrl = config.scraper.unipizzeriaUrl;
 let PrincsUrl = config.scraper.princsUrl;
 
@@ -111,7 +111,7 @@ function createUniwirtDayMenu(dayEntry) {
             if (hasName) {
                 if (price) {
                     dayMenu.mains.push(food);
-                } else  {
+                } else {
                     dayMenu.starters.push(food);
                 }
             }
@@ -180,7 +180,7 @@ function parseMensa(html) {
             menu.mains.push(classic2Food);
 
             let AAUSpecialFood = createFoodFromMensaAAUSpecialCategory(AAUSpecialCategory, dayInWeek, menu.mains.length);
-            if (AAUSpecialFood != null){
+            if (AAUSpecialFood != null) {
                 menu.mains.push(AAUSpecialFood);
             }
         } catch (ex) {
@@ -256,7 +256,7 @@ function createFoodFromMensaAAUSpecialCategory(category, currentDay) {
     let categoryContent = category.find(".category-content");
 
     let meal = categoryContent.find(`p:contains(${currentDayName})`).text();
-    if (meal.length === 0){
+    if (meal.length === 0) {
         return null;
     } else {
         meal = meal.split(":")[1].trim();
@@ -353,7 +353,7 @@ function parseUniPizzeria(html) {
 
     var $menuContent = $('[itemprop="articleBody"]');
 
-    if (! timeHelper.checkInputForCurrentWeek($menuContent.find('p > strong').text())) {
+    if (!timeHelper.checkInputForCurrentWeek($menuContent.find('p > strong').text())) {
         result.outdated = true;
         return result;
     }
@@ -408,13 +408,13 @@ function parseUniPizzeria(html) {
 
 }
 
-function getMittagstischWeekPlan() {
-    return request.getAsync(MittagstischUrl)
+function getHotspotWeekPlan() {
+    return request.getAsync(HotspotUrl)
         .then(res => res.body)
-        .then(body => parseMittagstisch(body));
+        .then(body => parseHotspot(body));
 }
 
-function parseMittagstisch(html) {
+function parseHotspot(html) {
     var result = new Array(7);
 
     let closedMenu = new Menu();
@@ -422,114 +422,83 @@ function parseMittagstisch(html) {
     result[5] = result[6] = closedMenu;
 
     var $ = cheerio.load(html);
+    var mainContent = $("section > .content");
 
-    var weekIsOutdated = $('.companyinfo').text().indexOf(timeHelper.getMondayDate()) == -1;
+    var dateText = mainContent.find("> h1").eq(0).text() || "";
+    var weekIsOutdated = dateText.indexOf(timeHelper.getMondayDate()) == -1;
 
-    //Get container divs for single days
-    let days = $(".resp-tabs-container > div");
+    var menuForWeek = new Menu();
+    menuForWeek.outdated = weekIsOutdated;
+
+    // SOUPS
+    var soupGroup = mainContent.find("p:contains(Suppen) + ul").eq(0);
+    if (soupGroup.length) {
+        soupGroup.children().each((i, e) => {
+            let name = $(e).text();
+            let soup = new Food(name);
+            menuForWeek.starters.push(soup);
+        });
+    }
+
+    // MAINS
+    var mainsGroup = mainContent.find("p:contains(Hauptspeisen) + ul").eq(0);
+    // If we find it by text content, fine. Otherwise, try non-empty group next to soup group
+    mainsGroup = mainsGroup.length ? mainsGroup : soupGroup.find("~ ul").filter((i, e) => $(e).text().trim().length).eq(0);
+    if (mainsGroup.length) {
+        let mainsMenu = new Food("Hauptspeisen");
+        mainsMenu.entries = mainsGroup.children().map((i, e) => new Food($(e).text())).toArray();
+        menuForWeek.mains.push(mainsMenu);
+    }
+
+    //PRICES (also filter for € to not target "Preiselbeeren" :) )
+    var mainPrice;
+    var priceWrapper = mainContent.find("> p:contains(preis):contains(€), > p:contains(Preis):contains(€)").eq(0);
+    // var splitPriceInfos = priceWrapper.html().split("<br>");
+    var priceLines = priceWrapper.clone()    //clone the element
+        .children() //select all the children
+        .remove()   //remove all the children
+        .end()  //again go back to selected element
+        .text()
+        .replace(/(\d+)[,\.](\d+)/, "$1.$2\n")
+        .split("\n");
+
+    for (let priceLine of priceLines) {
+        let priceLineSplit = priceLine.split("€");
+
+        if (priceLineSplit[0] && priceLineSplit[1]) {
+            let price = parseFloat(priceLineSplit[1].replace(',', '.').trim());
+
+            if (!isNaN(price)) {
+                let priceInfo = new Food(sanitizeName(priceLineSplit[0]), price);
+                menuForWeek.infoElements.push(priceInfo);
+
+                if (!mainPrice && priceLineSplit[0].toLowerCase().includes("hauptspeise")) {
+                    mainPrice = price;
+                }
+            }
+        }
+    }
+
+    if (mainPrice) {
+        menuForWeek.mains.forEach(m => m.price = mainPrice);
+    }
+
+    setErrorOnEmpty(menuForWeek);
+
+    // TODO when we have infos about page layout: Closed info
+    //if (contains(dateText.text(), true, ["geschlossen", "feiertag", "ruhetag", "ostermontag"])
 
     for (let dayInWeek = 0; dayInWeek < 5; dayInWeek++) {
-        let dayMenu = new Menu();
-        result[dayInWeek] = dayMenu;
-
-        let dayDatas = days.eq(dayInWeek).find(".daydata");
-
-        //Check if current day is closed
-        let isClosed = false;
-
-        for (let d = 0; d < dayDatas.length; d++) {
-            let dayData = dayDatas.eq(d);
-
-            if (dayData.hasClass("closed"))
-                isClosed = true;
-            else if (contains(dayData.text(), true, ["geschlossen", "feiertag", "ruhetag", "ostermontag"]))
-                isClosed = true;
-
-            if (isClosed)
-                break;
-        }
-
-        if (isClosed) {
-            dayMenu.closed = true;
-            continue;
-        }
-
-        try {
-            parseMittagstischDayMenu(dayDatas, dayMenu);
-            //Just to be sure
-            setErrorOnEmpty(dayMenu);
-
-            if (!dayMenu.error && weekIsOutdated)
-                dayMenu.outdated = true;
-        } catch (ex) {
-            //Do not log parsing errors. They will simply fill the log
-            dayMenu.error = true;
-        }
+        result[dayInWeek] = menuForWeek;
     }
 
     return result;
 }
 
-function parseMittagstischDayMenu(dayDatas, dayMenu) {
-    var menu = dayDatas.eq(0);
-    var menuRows = menu.find("tr");
-    var first = menuRows.first();
-
-    var soupRows = first.nextUntil('.free', 'tr');
-    if (!first.hasClass("free")) {
-        soupRows.unshift(first);
-    }
-
-    soupRows.splice(0, 1);
-    for (let s = 0; s < soupRows.length; s++) {
-        let soupRow = soupRows.eq(s);
-        let name = soupRow.children().first().text();
-        name = sanitizeName(name);
-        dayMenu.starters.push(new Food(name));
-    }
-
-    //Hauptspeisen
-    var mainsRows = soupRows.last().next().nextUntil('.free', 'tr');
-    //Remove "Hauptspeise" Info, but only if there is more then one entry and the price info does not hold a price
-    if (mainsRows.length > 1 && mainsRows.eq(0).children().eq(1).text().search(/[0-9](,|.)?[0-9]*/) == -1)
-        mainsRows.splice(0, 1);
-
-    for (let m = 0; m < mainsRows.length; m++) {
-        let mainsRow = mainsRows.eq(m);
-        let name = mainsRow.children().first().text();
-        name = sanitizeName(name);
-        let price = (+mainsRow.children().eq(1).text().replace(",", ".")) || 8.0;
-        dayMenu.mains.push(new Food(name, price));
-    }
-
-    //á la carte
-    if (dayDatas.length > 1) {
-        var aLaCarte = dayDatas.eq(1);
-
-        let aLaCarteRows = aLaCarte.find("tr");
-        first = aLaCarteRows.first();
-        var aLaCartes = first.nextUntil('.free', 'tr');
-
-        if (!first.hasClass("free") && aLaCartes.unshift) {
-            aLaCartes.unshift(first);
-        }
-
-        aLaCartes.splice(0, 1);
-
-        for (let a = 0; a < aLaCartes.length; a++) {
-            let entries = aLaCartes.eq(a).children();
-            let name = entries.first().text();
-            name = sanitizeName(name);
-            let price = +entries.eq(1).text().replace(",", ".");
-            dayMenu.alacarte.push(new Food(name, price));
-        }
-    }
-}
-
 function getPrincsWeekPlan() {
     return request.getAsync(PrincsUrl)
         .then(res => res.body)
-        .then(function(body) {
+        .then(function (body) {
             let $ = cheerio.load(body);
             let pdfurl = PrincsUrl + $("a:contains('WOCHENKARTE')").attr('href');
             return PDFJS.getDocument(pdfurl).then(
@@ -553,9 +522,9 @@ function parsePrincsPDFContent(content) {
     content.items.forEach(itm => contentString += itm.str + (itm.str == ' ' ? '\n' : ''));
 
     let pos = ["MONTAG", "DIENSTAG", "MITTWOCH", "DONNERSTAG", "FREITAG", "WOCHENMENÜ"]
-                .map(day => contentString.indexOf(day));
-    for (let i = 0; i<5; i++) {
-        result[i] = parsePrinceDayMenu(contentString.slice(pos[i], pos[i+1]));
+        .map(day => contentString.indexOf(day));
+    for (let i = 0; i < 5; i++) {
+        result[i] = parsePrinceDayMenu(contentString.slice(pos[i], pos[i + 1]));
     }
 
     return result;
@@ -573,12 +542,12 @@ function parsePrinceDayMenu(menuString) {
     // 3rd line: starter
     // remaining lines: food, separated by |
     menuString = menuString.split("\n");
-    menuString.splice(0,2);
+    menuString.splice(0, 2);
 
     let starter = new Food(menuString[0]);
     dayMenu.starters.push(starter);
 
-    menuString.splice(0,1);
+    menuString.splice(0, 1);
     let main = new Food(menuString.join("").replace(/\s*\|/g, ","), 8.70);
     dayMenu.mains.push(main);
 
@@ -614,6 +583,7 @@ function setErrorOnEmpty(menu) {
 
 function sanitizeName(val) {
     if (typeof val === "string") {
+        val = val.replace(/  +/g, " "); // multiple spaces to one
         val = val.replace(/€?\s[0-9](,|.)[0-9]+/, ""); // Replace '€ 00.00'
         val = val.replace(/^[1-9].\s/, ""); // Replace '1. ', '2. '
         val = val.replace(/^[,\.\-\\\? ]+/, "");
@@ -631,7 +601,7 @@ function sanitizeName(val) {
 
 module.exports = {
     getUniwirtWeekPlan: getUniwirtWeekPlan,
-    getMittagstischWeekPlan: getMittagstischWeekPlan,
+    getHotspotWeekPlan: getHotspotWeekPlan,
     getMensaWeekPlan: getMensaWeekPlan,
     getUniPizzeriaPlan: getUniPizzeriaPlan,
     getUniPizzeriaWeekPlan: getUniPizzeriaWeekPlan,
