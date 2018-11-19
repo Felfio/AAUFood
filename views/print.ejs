@@ -161,7 +161,7 @@
                     <td>
                         <ul class="mains">
                             <li><strong>Hauptspeisen für gesamte Woche</strong></li>
-                            <% hotspot[0].mains.forEach(function (menu) { menu.entries.splice(-1,1);%>
+                            <% hotspot[0].mains.forEach(function (menu) { %>
                                 <% for (let i = 0; i < menu.entries.length / 2; i++) { if (menu.entries[i].name !="") { %>
                                     <li><%= menu.entries[i].name %></li>
                                 <% }}; %>
