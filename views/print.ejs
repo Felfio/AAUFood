@@ -46,6 +46,11 @@
         vertical-align: top;
     }
 
+    .table table td {
+        border-top: none;
+        padding: 0;
+    }
+
     @media print {
         @page {size: landscape}
         .namecol {
@@ -142,21 +147,41 @@
     <tr class="hotspot">
         <td class="namecol"><span class="name">Hotspot</span></td>
 
-        <% for(let i = 0; i < 5; i++) { %>
         <td class="datacol">
             <ul class="starters">
-                <% hotspot[i].starters.forEach(function (food) { if (food.name!="") { %>
-                <li><%= food.name %></li>
-                <% }}); %>
-            </ul>
-
-            <ul class="mains">
-                <% hotspot[i].mains.forEach(function (food) { if (food.name!="") { %>
+                <li><strong>Suppen für gesamte Woche</strong></li>
+                <% hotspot[0].starters.forEach(function (food) { if (food.name!="") { %>
                 <li><%= food.name %></li>
                 <% }}); %>
             </ul>
         </td>
-        <% } %>
+        <td class="datacol" colSpan="4">
+            <table>
+                <tr>
+                    <td>
+                        <ul class="mains">
+                            <li><strong>Hauptspeisen für gesamte Woche</strong></li>
+                            <% hotspot[0].mains.forEach(function (menu) { menu.entries.splice(-1,1);%>
+                                <% for (let i = 0; i < menu.entries.length / 2; i++) { if (menu.entries[i].name !="") { %>
+                                    <li><%= menu.entries[i].name %></li>
+                                <% }}; %>
+                            <% }); %>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="mains">
+                            <li><strong>&nbsp;</strong></li>
+                            <% hotspot[0].mains.forEach(function (menu) { %>
+                                <% for (let i = Math.ceil(menu.entries.length / 2); i < menu.entries.length; i++) { if (menu.entries[i].name !="") { %>
+                                    <li><%= menu.entries[i].name %></li>
+                                <% }}; %>
+                            <% }); %>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+            
+        </td>
     </tr>
     <tr class="uni-pizzeria">
         <td class="namecol"><span class="name">Uni-Pizzeria</span></td>
