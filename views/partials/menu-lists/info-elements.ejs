@@ -1,0 +1,17 @@
+<!-- Parameters: infoElements -->
+
+<% if(infoElements.length) { %>
+    <ul class="list-group menu-list-group info-elements">
+        <% infoElements.forEach(function (infoElement, index) { %>
+            <li class="list-group-item">
+                <%= infoElement.name %>
+
+                <% if(infoElement.price) { %>
+                    <div class="price-tag">
+                        <%= infoElement.price + " €" %>
+                    </div>
+                <% }%>
+            </li>
+        <% }); %>
+    </ul>
+<% } %>

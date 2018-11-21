@@ -1,16 +1,6 @@
 <!-- Parameters: menu -->
-<% if(menu.starters.length) { %>
-    <ul class="list-group menu-list-group starters">
-        <% menu.starters.forEach(function (starter) { %>
-            <li class="list-group-item">
-                <%= starter.name %>
-                <% if(starter.allergens) { %> 
-                    <span class="allergens"><%= starter.allergens %></span>
-                <% } %>
-            </li>
-        <% }); %>
-    </ul>
-<% } %>
+<%- include('starters', { starters: menu.starters }) %>
+
 <% if(menu.mains.length) { %>
     <ul class="list-group menu-list-group mains">
         <% menu.mains.forEach(function (main, index) { %>
@@ -36,3 +26,5 @@
         <% }); %>
     </ul>
 <% } %>
+
+<%- include('info-elements', { infoElements: menu.infoElements }) %>

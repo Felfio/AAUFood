@@ -15,7 +15,7 @@
             <%- include('restaurant', {restaurant: 'uniwirt', restaurantName: 'Uniwirt', menu: uniwirt ? uniwirt[day] : null}) %>
         </div>
         <div class="col-xl-3 col-lg-6 col-md-12">
-            <%- include('restaurant', {restaurant: 'mittagstisch', restaurantName: 'Mittagstisch', menu: mittagstisch ? mittagstisch[day] : null}) %>
+            <%- include('restaurant', {restaurant: 'hotspot', restaurantName: 'Hotspot', menu: hotspot ? hotspot[day] : null, combinedMenuList: true}) %>
         </div>
         <div class="col-xl-3 col-lg-6 col-md-12">
             <%- include('restaurant', {restaurant: 'uni-pizzeria', restaurantName: 'Uni-Pizzeria', menu: uniPizzeria ? uniPizzeria[day] : null}) %>

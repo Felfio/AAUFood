@@ -20,8 +20,8 @@ class MenuCache extends EventEmitter {
         scraper.getMensaWeekPlan()
             .then(weekPlan => this._updateIfInvalid('mensa', weekPlan));
 
-        scraper.getMittagstischWeekPlan()
-            .then(weekPlan => this._updateIfInvalid('mittagstisch', weekPlan));
+        scraper.getHotspotWeekPlan()
+            .then(weekPlan => this._updateIfInvalid('hotspot', weekPlan));
 
         scraper.getUniwirtWeekPlan()
             .then(weekPlan => this._updateIfInvalid('uniwirt', weekPlan));

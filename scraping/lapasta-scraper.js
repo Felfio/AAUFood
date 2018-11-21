@@ -45,7 +45,6 @@ function _parseHTML(html) {
     try {
         weekPlan[dayInWeek] = _parseDayMenu(dayEntry);
     } catch (ex) {
-        console.log("error", ex)
         let errorMenu = new Menu();
         errorMenu.error = true;
         weekPlan[dayInWeek] = errorMenu;

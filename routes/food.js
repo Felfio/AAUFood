@@ -13,12 +13,12 @@ router.get('/uniwirt/:day?', function (req, res) {
         .then(menu => res.send(menu));
 });
 
-router.get('/mittagstisch/:day?', function (req, res) {
+router.get('/hotspot/:day?', function (req, res) {
     /*var day = +req.params.day;
-     scraper.getMittagstischPlan(day)
+     scraper.getHotspotPlan(day)
      .then(result => res.json(result));*/
     res.setHeader('Content-Type', 'application/json');
-    cache.getMenu('mittagstisch', timeHelper.sanitizeDay(req.params.day))
+    cache.getMenu('hotspot', timeHelper.sanitizeDay(req.params.day))
         .then(menu => res.send(menu));
 });
 

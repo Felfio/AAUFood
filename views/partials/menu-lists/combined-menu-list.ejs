@@ -1,4 +1,5 @@
 <!-- Parameters: menu -->
+<%- include('starters', { starters: menu.starters }) %>
 
 <ul class="list-group combined-menu-list-group">
     <% menu.mains.forEach((singleMenu, index) => { %>
@@ -22,3 +23,5 @@
         <% }); %>
     <% }); %>
 </ul>
+
+<%- include('info-elements', { infoElements: menu.infoElements }) %>

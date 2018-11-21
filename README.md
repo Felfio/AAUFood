@@ -4,7 +4,7 @@ Eine Webseite zum Crawlen und Darstellen der Mittagsmenüs von Lokalen nahe der 
 ## Aktuell unterstützte Restaurants
 * Mensa Klagenfurt
 * Uniwirt
-* Mittagstisch
+* Hotspot
 * Uni-Pizzeria
 
 ## Info
@@ -14,7 +14,7 @@ AAU Food bietet eine JSON-API zur Abfrage von Menüs:
 ```/food/{restaurant}``` und ```/food/{restaurant}/{dayInWeek}```, wobei 0 <= dayInWeek <= 6
 
 Aktuell:
-* ```/food/mittagstisch```
+* ```/food/hotspot```
 * ```/food/uniwirt```
 * ```/food/mensa```
 * ```/food/unipizzeria```
