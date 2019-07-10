@@ -11,6 +11,8 @@ services:
      - ./app:/usr/src/aaufood/app
     ports:
      - "${FOOD_PORT}:3000"
+    environment:
+      "FOODDEV": "${FOODDEV}"
     depends_on:
      - redis
     links:

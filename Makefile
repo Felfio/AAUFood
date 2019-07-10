@@ -6,6 +6,9 @@ build: Dockerfile package.json
 start: build
 	docker-compose up
 
+start-dev: build
+	FOODDEV="yes" docker-compose up
+
 start-daemon: build
 	docker-compose up -d
 

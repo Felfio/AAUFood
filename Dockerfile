@@ -7,6 +7,7 @@ WORKDIR /usr/src/aaufood
 
 COPY package.json /usr/src/aaufood
 COPY package-lock.json /usr/src/aaufood
+COPY start.sh /usr/src/aaufood
 RUN npm install
 
 COPY app/. /usr/src/aaufood/app
@@ -14,4 +15,4 @@ RUN sh -l -c 'npm run build'
 
 EXPOSE 3000
 
-CMD [ "node", "app/index.js" ]
+CMD [ "./start.sh" ]
