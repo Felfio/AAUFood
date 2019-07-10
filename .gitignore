@@ -36,6 +36,6 @@ node_modules
 .idea/*
 
 #Folder for bundled scripts and styles
-public/dist
+app/public/dist
 
 .vscode
