@@ -5,7 +5,7 @@ const webpack = require('webpack');
 module.exports = {
     entry: ["./app/public/scripts.js"],
     output: {
-        path: path.join(__dirname, 'app/public/dist'),
+        path: path.join(__dirname, 'public/dist'),
         filename: "bundle.js"
     },
     module: {
