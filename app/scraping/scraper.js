@@ -45,10 +45,12 @@ function parseUniwirt(html) {
 
     var $ = cheerio.load(html);
 
-    var dayEntries = $("#mittag").find(".vc_col-sm-2 .hgr-content-tb");
+    var dayEntries = $("body").find(".vc_custom_1411211617286"); // better search for vc_row? look at changes
 
-    //Get Monday Date
-    let mondayDate = moment(dayEntries.first().find("p").first().text(), "DD.MM.YY");
+    // Get Monday Date
+    let mondayDate = moment(dayEntries.find("h4:contains(Montag)").next().text(), "DD.MM.YYYY");
+
+    // Set outdated 
     if (mondayDate.isValid() && mondayDate.format("D.M") !== timeHelper.getMondayDate()) {
         for (let i = 0; i < 6; i++) {
             let outdatedMenu = new Menu();
@@ -58,8 +60,10 @@ function parseUniwirt(html) {
         return weekPlan;
     }
 
+    var date = mondayDate;
     for (let dayInWeek = 0; dayInWeek < 6; dayInWeek++) {
-        var dayEntry = dayEntries.eq(dayInWeek);
+        var dateString = date.format("DD.MM.YYYY");
+        var dayEntry = dayEntries.find(`p:contains(${dateString})`).parent();
         try {
             weekPlan[dayInWeek] = createUniwirtDayMenu(dayEntry);
         } catch (ex) {
@@ -67,7 +71,11 @@ function parseUniwirt(html) {
             errorMenu.error = true;
             weekPlan[dayInWeek] = errorMenu;
         }
+        date.add(1,'days');
     }
+
+    // Saturday a la carte
+    weekPlan[5].noMenu = true;
 
     return weekPlan
 }
