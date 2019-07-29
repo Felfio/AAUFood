@@ -45,10 +45,12 @@ function parseUniwirt(html) {
 
     var $ = cheerio.load(html);
 
-    var dayEntries = $("#mittag").find(".vc_col-sm-2 .hgr-content-tb");
+    var dayEntries = $("body").find(".vc_custom_1411211617286"); // better search for vc_row? look at changes
 
-    //Get Monday Date
-    let mondayDate = moment(dayEntries.first().find("p").first().text(), "DD.MM.YY");
+    // Get Monday Date
+    let mondayDate = moment(dayEntries.find("h4:contains(Montag)").next().text(), "DD.MM.YYYY");
+
+    // Set outdated 
     if (mondayDate.isValid() && mondayDate.format("D.M") !== timeHelper.getMondayDate()) {
         for (let i = 0; i < 6; i++) {
             let outdatedMenu = new Menu();
@@ -58,8 +60,10 @@ function parseUniwirt(html) {
         return weekPlan;
     }
 
+    var date = mondayDate;
     for (let dayInWeek = 0; dayInWeek < 6; dayInWeek++) {
-        var dayEntry = dayEntries.eq(dayInWeek);
+        var dateString = date.format("DD.MM.YYYY");
+        var dayEntry = dayEntries.find(`p:contains(${dateString})`).parent();
         try {
             weekPlan[dayInWeek] = createUniwirtDayMenu(dayEntry);
         } catch (ex) {
@@ -67,7 +71,11 @@ function parseUniwirt(html) {
             errorMenu.error = true;
             weekPlan[dayInWeek] = errorMenu;
         }
+        date.add(1,'days');
     }
+
+    // Saturday a la carte
+    weekPlan[5].noMenu = true;
 
     return weekPlan
 }
@@ -415,81 +423,80 @@ function getHotspotWeekPlan() {
 }
 
 function parseHotspot(html) {
+    
     var result = new Array(7);
-
     let closedMenu = new Menu();
     closedMenu.closed = true;
     result[5] = result[6] = closedMenu;
 
     var $ = cheerio.load(html);
+    
     var mainContent = $("section > .content");
-
-    var dateText = mainContent.find("> h1").eq(0).text() || "";
+    var dateText = mainContent.find("h1:contains(Mittagsmenüs vom)").eq(0).text() || "";
+    dateText = dateText.replace(".0","."); // workaround, 22.07 != 22.7
     var weekIsOutdated = dateText.indexOf(timeHelper.getMondayDate()) == -1;
 
     var menuForWeek = new Menu();
+    var menuForDay = new Menu();
     menuForWeek.outdated = weekIsOutdated;
 
     // SOUPS
-    var soupGroup = mainContent.find("p:contains(Suppen) + ul").eq(0);
-    if (soupGroup.length) {
-        soupGroup.children().each((i, e) => {
-            let name = $(e).text();
-            let soup = new Food(name);
-            menuForWeek.starters.push(soup);
-        });
+    var contentTable =  mainContent.find("> table > tbody");
+    var soup = contentTable.find("tr:contains(SUPPEN)");
+    while ($.text(soup).replace(/\s/g, '').length) { // loop while name is not empty
+        soup = soup.next();
+        let titlefield = soup.find("> td > ul > li");
+        let name = $(titlefield).text();
+        name = name.trimRight(); // remove space at end of text
+        let soupFood = new Food(name);
+        menuForWeek.starters.push(soupFood);
+        menuForDay.starters.push(soupFood);
     }
 
     // MAINS
-    var mainsGroup = mainContent.find("p:contains(Hauptspeisen) + ul").eq(0);
-    // If we find it by text content, fine. Otherwise, try non-empty group next to soup group
-    mainsGroup = mainsGroup.length ? mainsGroup : soupGroup.find("~ ul").filter((i, e) => $(e).text().trim().length).eq(0);
-    if (mainsGroup.length) {
-        let mainsMenu = new Food("Hauptspeisen");
-        mainsMenu.entries = mainsGroup.children().map((i, e) => new Food($(e).text())).toArray();
-        menuForWeek.mains.push(mainsMenu);
-    }
+    // Wochenhit
+    var main = contentTable.find("tr:contains(WOCHENHIT)").next();
+    var description = $(main).text();
+    var titlefield = main.next().find("> td:contains(€)");
+    var price = ($(titlefield).text()).trimLeft();
+    price = price.replace("€ ", "");
+    price = price.replace(",",".");
+    var mainCourse = new Food("Wochenhit",parseFloat(price));
+    mainCourse.entries = [new Food(description), new Food("inkl. Vöslauer oder Pepsi PET 0.5l")];
+    menuForDay.mains.push(mainCourse);
+    menuForWeek.mains.push(mainCourse);
 
-    //PRICES (also filter for € to not target "Preiselbeeren" :) )
-    var mainPrice;
-    var priceWrapper = mainContent.find("> p:contains(preis):contains(€), > p:contains(Preis):contains(€)").eq(0);
-    // var splitPriceInfos = priceWrapper.html().split("<br>");
-    var priceLines = priceWrapper.clone()    //clone the element
-        .children() //select all the children
-        .remove()   //remove all the children
-        .end()  //again go back to selected element
-        .text()
-        .replace(/(\d+)[,\.](\d+)/, "$1.$2\n")
-        .split("\n");
-
-    for (let priceLine of priceLines) {
-        let priceLineSplit = priceLine.split("€");
-
-        if (priceLineSplit[0] && priceLineSplit[1]) {
-            let price = parseFloat(priceLineSplit[1].replace(',', '.').trim());
-
-            if (!isNaN(price)) {
-                let priceInfo = new Food(sanitizeName(priceLineSplit[0]), price);
-                menuForWeek.infoElements.push(priceInfo);
-
-                if (!mainPrice && priceLineSplit[0].toLowerCase().includes("hauptspeise")) {
-                    mainPrice = price;
-                }
-            }
+    // Hauptspeisen
+    main = contentTable.find("tr:contains(HAUPT)").next().next();
+    while ($.text(main).replace(/\s/g, '').length) { // loop while name is not empty
+        titlefield = main.find("> td > ul > li");
+        description = $(titlefield).text();
+        titlefield = main.find("> td > ul > li > strong");
+        let title = $(titlefield).text();
+        title.trimRight();
+        description = description.trimRight();
+        description = description.replace(title,"");
+        description = description.trimLeft();
+        titlefield = main.find("> td:contains(€)");
+        price = ($(titlefield).text()).trimLeft();
+        price = price.replace("€ ", "");
+        price = price.replace(",",".");
+        mainCourse = new Food(title,parseFloat(price));
+        mainCourse.entries = [new Food(description)];
+        menuForDay.mains.push(mainCourse);
+        if (!title.includes("des Tages")){
+            menuForWeek.mains.push(mainCourse);
         }
-    }
-
-    if (mainPrice) {
-        menuForWeek.mains.forEach(m => m.price = mainPrice);
+        main = main.next();
     }
 
     setErrorOnEmpty(menuForWeek);
-
-    // TODO when we have infos about page layout: Closed info
-    //if (contains(dateText.text(), true, ["geschlossen", "feiertag", "ruhetag", "ostermontag"])
-
+    setErrorOnEmpty(menuForDay);
     for (let dayInWeek = 0; dayInWeek < 5; dayInWeek++) {
-        result[dayInWeek] = menuForWeek;
+        if (new Date().getDay()-1 == dayInWeek)
+            result[dayInWeek] = menuForDay;
+        else
+            result[dayInWeek] = menuForWeek;
     }
 
     return result;

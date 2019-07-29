@@ -1,10 +1,16 @@
 export FOOD_PORT ?= 3000
 
-start:
-	docker-compose up --build
+build: Dockerfile package.json
+	docker-compose build node
 
-start-daemon:
-	docker-compose up --build -d
+start: build
+	docker-compose up
+
+start-dev: build
+	FOODDEV="yes" docker-compose up
+
+start-daemon: build
+	docker-compose up -d
 
 restart:
 	docker-compose restart
