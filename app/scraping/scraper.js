@@ -450,16 +450,27 @@ function parseHotspot(html) {
         name = name.trimRight(); // remove space at end of text
         let soupFood = new Food(name);
         menuForWeek.starters.push(soupFood);
-        menuForDay.starters.push(soupFood)
+        menuForDay.starters.push(soupFood);
     }
 
     // MAINS
-    var main = contentTable.find("tr:contains(HAUPT)");
-    main = main.next();
-    main = main.next();
+    // Wochenhit
+    var main = contentTable.find("tr:contains(WOCHENHIT)").next();
+    var description = $(main).text();
+    var titlefield = main.next().find("> td:contains(€)");
+    var price = ($(titlefield).text()).trimLeft();
+    price = price.replace("€ ", "");
+    price = price.replace(",",".");
+    var mainCourse = new Food("Wochenhit",parseFloat(price));
+    mainCourse.entries = [new Food(description), new Food("inkl. Vöslauer oder Pepsi PET 0.5l")];
+    menuForDay.mains.push(mainCourse);
+    menuForWeek.mains.push(mainCourse);
+
+    // Hauptspeisen
+    main = contentTable.find("tr:contains(HAUPT)").next().next();
     while ($.text(main).replace(/\s/g, '').length) { // loop while name is not empty
-        let titlefield = main.find("> td > ul > li");
-        let description = $(titlefield).text();
+        titlefield = main.find("> td > ul > li");
+        description = $(titlefield).text();
         titlefield = main.find("> td > ul > li > strong");
         let title = $(titlefield).text();
         title.trimRight();
@@ -467,11 +478,10 @@ function parseHotspot(html) {
         description = description.replace(title,"");
         description = description.trimLeft();
         titlefield = main.find("> td:contains(€)");
-        let price = ($(titlefield).text()).trimLeft();
-        let mainCourse = new Food(title);
+        price = ($(titlefield).text()).trimLeft();
         price = price.replace("€ ", "");
         price = price.replace(",",".");
-        mainCourse.price = parseFloat(price);
+        mainCourse = new Food(title,parseFloat(price));
         mainCourse.entries = [new Food(description)];
         menuForDay.mains.push(mainCourse);
         if (!title.includes("des Tages")){
@@ -481,7 +491,7 @@ function parseHotspot(html) {
     }
 
     setErrorOnEmpty(menuForWeek);
-
+    setErrorOnEmpty(menuForDay);
     for (let dayInWeek = 0; dayInWeek < 5; dayInWeek++) {
         if (new Date().getDay()-1 == dayInWeek)
             result[dayInWeek] = menuForDay;
