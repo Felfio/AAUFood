@@ -1,30 +1,33 @@
 export FOOD_PORT ?= 3000
 
+DOCKER_COMPOSE=docker-compose -f docker-compose.yml
+DOCKER_COMPOSE_DEV=$(DOCKER_COMPOSE) -f dev.docker-compose.yml
+
 build: Dockerfile package.json
-	docker-compose build node
+	$(DOCKER_COMPOSE) build node
 
 start: build
-	docker-compose up
+	$(DOCKER_COMPOSE) up
 
 start-dev: build
-	FOODDEV="yes" docker-compose up
+	$(DOCKER_COMPOSE_DEV) up
 
 start-daemon: build
-	docker-compose up -d
+	$(DOCKER_COMPOSE) up -d
 
 restart:
-	docker-compose restart
+	$(DOCKER_COMPOSE) restart
 
 stop:
-	docker-compose stop
+	$(DOCKER_COMPOSE) stop
 
 npm-build:
-	docker-compose exec node npm run build
+	$(DOCKER_COMPOSE) exec node npm run build
 
 ssh-node:
-	docker-compose exec node sh
+	$(DOCKER_COMPOSE) exec node sh
 
 ssh-redis:
-	docker-compose exec redis sh
+	$(DOCKER_COMPOSE) exec redis sh
 
 trigger-rebuild: stop start-daemon
