@@ -498,8 +498,8 @@ function parseHotspot(html) {
         else
             result[dayInWeek] = menuForWeek;
     }
-    
-    return result; 
+
+    return result;
 }
 
 function getPrincsWeekPlan() {
