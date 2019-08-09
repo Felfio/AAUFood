@@ -106,6 +106,10 @@ body {
   @include restaurantColors($villalidoBg, white)
 }
 
+.bits-and-bytes{
+  @include restaurantColors($bitsAndBytes, white)
+}
+
 .mensa {
   @include restaurantColors($mensaOrange, white);
 }

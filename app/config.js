@@ -26,7 +26,8 @@ module.exports = {
         unipizzeriaUrl: "http://www.uni-pizzeria.at/speisen/mittagsteller.html",
         lapastaUrl: "https://lapasta.at/wochenmenue.html",
         princsUrl: "http://www.princs.com/",
-        villaLidoUrl: "https://www.villa-lido.at/"
+        villaLidoUrl: "https://www.villa-lido.at/",
+        bitsAndBytesUrl: "https://www.lakeside-scitec.com/services/gastronomie/bits-bytes/"
     },
     userFriendlyUrls: {
         //Usually the same as the scraper ones
@@ -36,7 +37,8 @@ module.exports = {
         "uni-pizzeria": "http://www.uni-pizzeria.at/speisen/mittagsteller.html",
         "la-pasta": "https://lapasta.at/wochenmenue.html",
         princs: "http://www.princs.com/",
-        villaLido: "https://www.villa-lido.at/"
+        villaLido: "https://www.villa-lido.at/",
+        bitsAndBytesUrl: "https://www.lakeside-scitec.com/services/gastronomie/bits-bytes/"
     },
     cookie: {
         // 30 days in milliseconds

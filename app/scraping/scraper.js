@@ -502,6 +502,10 @@ function parseHotspot(html) {
     return result;
 }
 
+function getBitsAndBytesWeekPlan() {
+    return null;
+}
+
 async function getVillaLidoWeekPlan() {
     var result = new Array(7);
     let alacarte = new Menu();
@@ -666,5 +670,6 @@ module.exports = {
     getUniPizzeriaWeekPlan: getUniPizzeriaWeekPlan,
     getLapastaWeekPlan: laPastaScraper.getWeekPlan,
     getPrincsWeekPlan: getPrincsWeekPlan,
-    getVillaLidoWeekPlan: getVillaLidoWeekPlan
+    getVillaLidoWeekPlan: getVillaLidoWeekPlan,
+    getBitsAndBytesWeekPlan: getBitsAndBytesWeekPlan
 };

@@ -35,6 +35,9 @@ class MenuCache extends EventEmitter {
         scraper.getVillaLidoWeekPlan()
             .then(weekPlan => this._updateIfInvalid('villaLido', weekPlan));
 
+        scraper.getBitsAndBytes()
+            .then(weekPlan => this._updateIfInvalid('bitsAndBytes', weekPlan));
+
         //scraper.getPrincsWeekPlan()
         //    .then(weekPlan => this._updateIfInvalid('princs', weekPlan));
 

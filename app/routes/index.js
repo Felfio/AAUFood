@@ -12,9 +12,10 @@ router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
     var mensaPlan = menuCache.getMenu('mensa');
     var hotspotPlan = menuCache.getMenu('hotspot');
     var unipizzeriaPlan = menuCache.getMenu('uniPizzeria');
-    var villaLidoPlan = menuCache.getMenu('villaLido')
+    var villaLidoPlan = menuCache.getMenu('villaLido');
+    var bitsAndBytesPlan = menuCache.getMenu('bitsAndBytes');
 
-    Promise.all([uniwirtPlan, mensaPlan, hotspotPlan, unipizzeriaPlan, villaLidoPlan])
+    Promise.all([uniwirtPlan, mensaPlan, hotspotPlan, unipizzeriaPlan, villaLidoPlan, bitsAndBytesPlan])
         .then(results => {
             res.render('index', {
                 uniwirt: JSON.parse(results[0]) || [],
@@ -22,6 +23,7 @@ router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
                 hotspot: JSON.parse(results[2]) || [],
                 uniPizzeria: JSON.parse(results[3]) || [],
                 villaLido: JSON.parse(results[4] || []),
+                bitsAndBytes: JSON.parse(results[5] || []),
                 visitorStats: req.visitorStats,
             });
         });
@@ -64,16 +66,18 @@ router.get('/print', counter.countVisitors, function (req, res, next) {
     var mensaPlan = menuCache.getMenu('mensa');
     var hotspotPlan = menuCache.getMenu('hotspot');
     var unipizzeriaPlan = menuCache.getMenu('uniPizzeria');
-    var villaLidoPlan = menucache.getMenu('villaLido')
+    var villaLidoPlan = menucache.getMenu('villaLido');
+    var bitsAndBytesPlan = menuCache.getMenu('bitsAndBytes');
 
-    Promise.all([uniwirtPlan, mensaPlan, hotspotPlan, unipizzeriaPlan, villaLidoPlan])
+    Promise.all([uniwirtPlan, mensaPlan, hotspotPlan, unipizzeriaPlan, villaLidoPlan, bitsAndBytesPlan])
         .then(results => {
             res.render('print', {
                 uniwirt: JSON.parse(results[0]),
                 mensa: JSON.parse(results[1]),
                 hotspot: JSON.parse(results[2]),
                 uniPizzeria: JSON.parse(results[3]),
-                villaLido: JSON.parse(results[4])
+                villaLido: JSON.parse(results[4]),
+                bitsAndBytes: JSON.parse(results[5] || []),
             });
         });
 });

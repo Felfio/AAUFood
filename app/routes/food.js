@@ -58,6 +58,15 @@ router.get('/villalido/:day?', function (req, res) {
         .then(menu => res.send(menu));
 });
 
+router.get('/bitsandbytes/:day?', function (req, res) {
+    /* var day = +req.params.day;
+     scraper.getMensaPlan(day)
+     .then(result => res.json(result));*/
+    res.setHeader('Content-Type', 'application/json');
+    cache.getMenu('bitsAndBytes', timeHelper.sanitizeDay(req.params.day))
+        .then(menu => res.send(menu));
+});
+
 router.get('/logs', function (req, res) {
     res.download('logfile.log');
 });
