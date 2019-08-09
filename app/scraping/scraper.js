@@ -19,6 +19,7 @@ var UniwirtUrl = config.scraper.uniwirtUrl;
 var HotspotUrl = config.scraper.hotspotUrl;
 var PizzeriaUrl = config.scraper.unipizzeriaUrl;
 let PrincsUrl = config.scraper.princsUrl;
+var VillaLidoUrl = config.scraper.villaLidoUrl;
 
 function parseWeek(input, parseFunction) {
     var menus = [];
@@ -416,6 +417,10 @@ function parseUniPizzeria(html) {
 
 }
 
+function getVillaLidoWeekPlan() {
+    return null;
+}
+
 function getHotspotWeekPlan() {
     return request.getAsync(HotspotUrl)
         .then(res => res.body)
@@ -613,5 +618,6 @@ module.exports = {
     getUniPizzeriaPlan: getUniPizzeriaPlan,
     getUniPizzeriaWeekPlan: getUniPizzeriaWeekPlan,
     getLapastaWeekPlan: laPastaScraper.getWeekPlan,
-    getPrincsWeekPlan: getPrincsWeekPlan
+    getPrincsWeekPlan: getPrincsWeekPlan,
+    getVillaLidoWeekPlan: getVillaLidoWeekPlan
 };
