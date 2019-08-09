@@ -503,7 +503,97 @@ function parseHotspot(html) {
 }
 
 function getBitsAndBytesWeekPlan() {
-    return null;
+    return request.getAsync("https://www.lakeside-scitec.com/services/gastronomie/bits-bytes/")
+        .then(res => res.body)
+        .then(body => parseBitsnBytes(body));
+}
+
+function parseBitsnBytes(html){
+    var result = new Array(7);
+    let closedMenu = new Menu();
+    closedMenu.closed = true;
+    result[5] = result[6] = closedMenu;
+
+    var $ = cheerio.load(html);
+    
+    var mainContent = $("section > .content");
+    var dateText = mainContent.find("h1:contains(Heiße Theke)").eq(0).text() || "";
+    dateText = dateText.replace(".0","."); // workaround, 22.07 != 22.7
+    var weekIsOutdated = dateText.indexOf(timeHelper.getMondayDate()) == -1;
+
+    var menuForWeek = new Menu();
+    menuForWeek.outdated = weekIsOutdated;
+
+    var contentTable =  mainContent.find("> table > tbody");
+
+    // Hauptspeisen
+    var main = contentTable.find("> tr:contains(€)").eq(0);
+    while ($.text(main).replace(/\s/g, '').length) { // loop while name is not empty
+        let titlefield = main.find("> td").eq(0);
+        let description = $(titlefield).text();
+        titlefield = main.find("> td > strong");
+        let title = $(titlefield).text().trimRight();
+        description = description.trimRight();
+        description = description.replace(title,"");
+        description = description.trimLeft();
+        titlefield = main.find("> td:contains(€)");
+        let price = ($(titlefield).text()).trimLeft();
+        price = price.replace("€ ", "");
+        price = parseFloat(price.replace(",","."));
+        title = title.trim();
+        title = decapitalize(title);
+        // remove accidentally parsed allergens
+        if (title.charAt(title.length-1) === ",")
+            title = title.substr(0,title.length-1);
+        let mainCourse = new Food(title,parseFloat(price));
+        mainCourse.entries = [new Food(description)];
+        menuForWeek.mains.push(mainCourse);
+        console.log(mainCourse);
+        main = main.next();
+    }
+    setErrorOnEmpty(menuForWeek);
+
+    for (let dayInWeek = 0; dayInWeek < 5; dayInWeek++) {
+        result[dayInWeek] = menuForWeek;
+    }
+
+    return result;
+}
+
+//TODO move to helpers
+
+function decapitalize(string)
+{
+    const exceptionList = ["in", "an", "mit", "und"]; //words that should not be capitalized
+    const seperators = [" ", "\"", "-"]; //seperators, make sure to keep "-" at end (different semantics)
+    var regex = new RegExp("["+seperators.join("")+"]","g")
+    // split string and captialize words
+    let words = string.split(regex);
+    words.forEach(function callback(element,index,array) {
+        if (!exceptionList.includes(element))
+            array[index] = capitalizeFirstLetter(element);
+    })
+    let returnstring = words.join(" ");
+    
+    // interweave with old string to insert correct special characters
+    let i = string.length;
+    while (i--){
+        if(string.charAt(i).match(regex))
+            returnstring = returnstring.substr(0,i)+string.charAt(i)+returnstring.substr(i+1);
+    }
+    return returnstring;
+}
+
+function capitalizeFirstLetter(string, delim, exceptionList)
+{
+    if (string !== "" && string !== null)
+    {
+        let retstring = string.toLowerCase();
+        retstring = retstring[0].toUpperCase()+retstring.substr(1);
+        return retstring;
+    } else {
+        return "";
+    }
 }
 
 async function getVillaLidoWeekPlan() {
