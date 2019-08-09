@@ -23,5 +23,8 @@
         <div class="col-xl-3 col-lg-6 col-md-12">
             <%- include('restaurant', {restaurant: 'hotspot', restaurantName: 'Hotspot', menu: hotspot ? hotspot[day] : null, combinedMenuList: true}) %>
         </div>
+        <div class="col-xl-3 col-lg-6 col-md-12">
+            <%- include('restaurant', {restaurant: 'bits-and-bytes', restaurantName: 'Bites & Bytes', menu: bitsAndBytes ? bitsAndBytes[day] : null, combinedMenuList: true}) %>
+        </div>
     </div>
 </div>
