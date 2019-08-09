@@ -19,7 +19,6 @@ var UniwirtUrl = config.scraper.uniwirtUrl;
 var HotspotUrl = config.scraper.hotspotUrl;
 var PizzeriaUrl = config.scraper.unipizzeriaUrl;
 let PrincsUrl = config.scraper.princsUrl;
-var VillaLidoUrl = config.scraper.villaLidoUrl;
 
 function parseWeek(input, parseFunction) {
     var menus = [];
@@ -417,10 +416,6 @@ function parseUniPizzeria(html) {
 
 }
 
-function getVillaLidoWeekPlan() {
-    return null;
-}
-
 function getHotspotWeekPlan() {
     return request.getAsync(HotspotUrl)
         .then(res => res.body)
@@ -506,6 +501,58 @@ function parseHotspot(html) {
 
     return result;
 }
+
+async function getVillaLidoWeekPlan() {
+    var result = new Array(7);
+    let alacarte = new Menu();
+    alacarte.noMenu = true;
+    result[5] = result[6] = alacarte;
+    let weekdays = ["montag", "dienstag", "mittwoch", "donnerstag", "freitag"];
+    for (var i = 0; i < 5; i++){
+        result[i] = await request.getAsync("https://www.villa-lido.at/menu-item/"+weekdays[i]+"/")
+            .then(res => res.body)
+            .then(body => parseVillaLidoDay(body, i))
+    }
+    return Promise.resolve(result);
+}
+
+function parseVillaLidoDay(html, weekDay) {
+    var dayMenu = new Menu();
+    
+    var $ = cheerio.load(html);
+    var mainContent = $(".mkdf-smi-content-holder");
+
+    if ($("h2").eq(0).text().toLowerCase().includes("nicht gefunden")){
+        dayMenu.noMenu = true;
+        return dayMenu;
+    }
+
+    var currentField = $(mainContent).children().eq(0); // Date, check for validity
+    dayMenu.outdated = !timeHelper.checkInputForWeekday(currentField.text(),weekDay)
+
+    while ((currentField = $(currentField).next()) !== null && !currentField.text().includes("Lebensmittelinformationsverordnung")){
+        let titleRaw = currentField.text()
+        let isMainCourse = titleRaw.includes("€");
+        if (isMainCourse) {
+            let courseName = titleRaw.substring(0,titleRaw.indexOf("€"));
+            currentField = $(currentField).next();
+            let description = currentField.text();
+            let price = titleRaw.substring(titleRaw.indexOf("€")).replace("€ ", "");
+            price = parseFloat(price.replace(",",".").trim());
+            let mainCourse = new Food(courseName, price);
+            mainCourse.entries = [new Food(description)];
+            dayMenu.mains.push(mainCourse);
+        } else {
+            currentField = $(currentField).next();
+            let name = currentField.text();
+            let starter = new Food(name);
+            dayMenu.starters.push(starter)
+        }
+    }
+
+    setErrorOnEmpty(dayMenu);
+    return dayMenu;
+}   
 
 function getPrincsWeekPlan() {
     return request.getAsync(PrincsUrl)
