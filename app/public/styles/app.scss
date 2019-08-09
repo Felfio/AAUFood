@@ -107,7 +107,7 @@ body {
 }
 
 .bits-and-bytes{
-  @include restaurantColors($bitsAndBytes, white)
+  @include restaurantColors($bitsAndBytesBg, white)
 }
 
 .mensa {
