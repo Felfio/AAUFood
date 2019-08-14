@@ -33,8 +33,44 @@ function _sanitizeName(val) {
     }
 }
 
+function _decapitalize(string)
+{
+    const exceptionList = ["in", "an", "mit", "und"]; //words that should not be capitalized
+    const seperators = [" ", "\"", "-"]; //seperators, make sure to keep "-" at end (different semantics)
+    var regex = new RegExp("["+seperators.join("")+"]","g")
+    // split string and captialize words
+    let words = string.split(regex);
+    words.forEach(function callback(element,index,array) {
+        if (!exceptionList.includes(element))
+            array[index] = capitalizeFirstLetter(element);
+    })
+    let returnstring = words.join(" ");
+    
+    // interweave with old string to insert correct special characters
+    let i = string.length;
+    while (i--){
+        if(string.charAt(i).match(regex))
+            returnstring = returnstring.substr(0,i)+string.charAt(i)+returnstring.substr(i+1);
+    }
+    return returnstring;
+}
+
+function _capitalizeFirstLetter(string, delim, exceptionList)
+{
+    if (string !== "" && string !== null)
+    {
+        let retstring = string.toLowerCase();
+        retstring = retstring[0].toUpperCase()+retstring.substr(1);
+        return retstring;
+    } else {
+        return "";
+    }
+}
+
 module.exports = {
     setErrorOnEmpty: _setErrorOnEmpty,
     invalidateMenus: _invalidateMenus,
-    sanitizeName: _sanitizeName
+    sanitizeName: _sanitizeName,
+    capitalizeFirstLetter: _capitalizeFirstLetter,
+    decapitalize: _decapitalize
 };

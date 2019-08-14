@@ -456,18 +456,20 @@ function parseHotspot(html) {
     // MAINS
     // Wochenhit
     var main = contentTable.find("tr:contains(WOCHENHIT)").next();
-    var description = $(main).text();
+    var description = $(main).text().trim();
     var titlefield = main.next().find("> td:contains(€)");
     var price = ($(titlefield).text()).trimLeft();
     price = price.replace("€ ", "");
     price = price.replace(",",".");
     var mainCourse = new Food("Wochenhit",parseFloat(price));
-    mainCourse.entries = [new Food(description), new Food("inkl. Vöslauer oder Pepsi PET 0.5l")];
+    var note = main.next().text()
+    note = note.substr(0,note.indexOf('€')).trim();
+    mainCourse.entries = [new Food(description), new Food(note)];
     menuForDay.mains.push(mainCourse);
     menuForWeek.mains.push(mainCourse);
 
     // Hauptspeisen
-    main = contentTable.find("tr:contains(HAUPT)").next().next();
+    main = contentTable.find("tr:contains(HAUPT)").next().next().eq(0);
     while ($.text(main).replace(/\s/g, '').length) { // loop while name is not empty
         titlefield = main.find("> td > ul > li");
         description = $(titlefield).text();
@@ -541,14 +543,15 @@ function parseBitsnBytes(html){
         price = price.replace("€ ", "");
         price = parseFloat(price.replace(",","."));
         title = title.trim();
-        title = decapitalize(title);
+        if (title.toUpperCase() == title){
+            title = decapitalize(title);
+        }
         // remove accidentally parsed allergens
         if (title.charAt(title.length-1) === ",")
             title = title.substr(0,title.length-1);
         let mainCourse = new Food(title,parseFloat(price));
         mainCourse.entries = [new Food(description)];
         menuForWeek.mains.push(mainCourse);
-        console.log(mainCourse);
         main = main.next();
     }
     setErrorOnEmpty(menuForWeek);
@@ -558,42 +561,6 @@ function parseBitsnBytes(html){
     }
 
     return result;
-}
-
-//TODO move to helpers
-
-function decapitalize(string)
-{
-    const exceptionList = ["in", "an", "mit", "und"]; //words that should not be capitalized
-    const seperators = [" ", "\"", "-"]; //seperators, make sure to keep "-" at end (different semantics)
-    var regex = new RegExp("["+seperators.join("")+"]","g")
-    // split string and captialize words
-    let words = string.split(regex);
-    words.forEach(function callback(element,index,array) {
-        if (!exceptionList.includes(element))
-            array[index] = capitalizeFirstLetter(element);
-    })
-    let returnstring = words.join(" ");
-    
-    // interweave with old string to insert correct special characters
-    let i = string.length;
-    while (i--){
-        if(string.charAt(i).match(regex))
-            returnstring = returnstring.substr(0,i)+string.charAt(i)+returnstring.substr(i+1);
-    }
-    return returnstring;
-}
-
-function capitalizeFirstLetter(string, delim, exceptionList)
-{
-    if (string !== "" && string !== null)
-    {
-        let retstring = string.toLowerCase();
-        retstring = retstring[0].toUpperCase()+retstring.substr(1);
-        return retstring;
-    } else {
-        return "";
-    }
 }
 
 async function getVillaLidoWeekPlan() {
