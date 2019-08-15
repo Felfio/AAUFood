@@ -37,8 +37,8 @@ module.exports = {
         "uni-pizzeria": "http://www.uni-pizzeria.at/speisen/mittagsteller.html",
         "la-pasta": "https://lapasta.at/wochenmenue.html",
         princs: "http://www.princs.com/",
-        villaLido: "https://www.villa-lido.at/",
-        bitsAndBytesUrl: "https://www.lakeside-scitec.com/services/gastronomie/bits-bytes/"
+        "villa-lido": "https://www.villa-lido.at/",
+        "bits-and-bytes": "https://www.lakeside-scitec.com/services/gastronomie/bits-bytes/"
     },
     cookie: {
         // 30 days in milliseconds
