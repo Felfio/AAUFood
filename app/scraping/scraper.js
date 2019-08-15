@@ -18,6 +18,8 @@ var MensaUrl = config.scraper.mensaUrl;
 var UniwirtUrl = config.scraper.uniwirtUrl;
 var HotspotUrl = config.scraper.hotspotUrl;
 var PizzeriaUrl = config.scraper.unipizzeriaUrl;
+var BitsAndBytesUrl = config.scraper.bitsAndBytesUrl;
+var VillaLidoUrl = config.scraper.villaLidoUrl;
 let PrincsUrl = config.scraper.princsUrl;
 
 function parseWeek(input, parseFunction) {
@@ -504,7 +506,7 @@ function parseHotspot(html) {
 }
 
 function getBitsAndBytesWeekPlan() {
-    return request.getAsync("https://www.lakeside-scitec.com/services/gastronomie/bits-bytes/")
+    return request.getAsync(BitsAndBytesUrl)
         .then(res => res.body)
         .then(body => parseBitsnBytes(body));
 }
@@ -569,7 +571,7 @@ async function getVillaLidoWeekPlan() {
     result[5] = result[6] = alacarte;
     let weekdays = ["montag", "dienstag", "mittwoch", "donnerstag", "freitag"];
     for (var i = 0; i < 5; i++){
-        result[i] = await request.getAsync("https://www.villa-lido.at/menu-item/"+weekdays[i]+"/")
+        result[i] = await request.getAsync(VillaLidoUrl+weekdays[i]+"/")
             .then(res => res.body)
             .then(body => parseVillaLidoDay(body, i))
     }
