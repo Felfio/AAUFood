@@ -474,8 +474,7 @@ function parseHotspot(html) {
         titlefield = main.find("> td > ul > li");
         description = $(titlefield).text();
         titlefield = main.find("> td > ul > li > strong");
-        let title = $(titlefield).text();
-        title.trimRight();
+        let title = $(titlefield).text().trim();
         description = description.trimRight();
         description = description.replace(title,"");
         description = description.trimLeft();
