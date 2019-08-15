@@ -22,8 +22,8 @@ router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
                 mensa: JSON.parse(results[1]) || [],
                 hotspot: JSON.parse(results[2]) || [],
                 uniPizzeria: JSON.parse(results[3]) || [],
-                villaLido: JSON.parse(results[4] || []),
-                bitsAndBytes: JSON.parse(results[5] || []),
+                villaLido: JSON.parse(results[4]) || [],
+                bitsAndBytes: JSON.parse(results[5]) || [],
                 visitorStats: req.visitorStats,
             });
         });
@@ -66,7 +66,7 @@ router.get('/print', counter.countVisitors, function (req, res, next) {
     var mensaPlan = menuCache.getMenu('mensa');
     var hotspotPlan = menuCache.getMenu('hotspot');
     var unipizzeriaPlan = menuCache.getMenu('uniPizzeria');
-    var villaLidoPlan = menucache.getMenu('villaLido');
+    var villaLidoPlan = menuCache.getMenu('villaLido');
     var bitsAndBytesPlan = menuCache.getMenu('bitsAndBytes');
 
     Promise.all([uniwirtPlan, mensaPlan, hotspotPlan, unipizzeriaPlan, villaLidoPlan, bitsAndBytesPlan])
@@ -77,7 +77,7 @@ router.get('/print', counter.countVisitors, function (req, res, next) {
                 hotspot: JSON.parse(results[2]),
                 uniPizzeria: JSON.parse(results[3]),
                 villaLido: JSON.parse(results[4]),
-                bitsAndBytes: JSON.parse(results[5] || []),
+                bitsAndBytes: JSON.parse(results[5])
             });
         });
 });
