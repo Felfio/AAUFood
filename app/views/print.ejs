@@ -214,25 +214,6 @@
             </table>
         </td>
     </tr>
-    <tr class="villa-lido">
-        <td class="namecol"><span class="name">Villa Lido</span></td>
-
-        <% for(let i = 0; i < 5; i++) { %>
-        <td class="datacol">
-            <ul class="starters">
-                <% villaLido[i].starters.forEach(function (food) { if (food.name!="") { %>
-                <li><%= food.name %></li>
-                <% }}); %>
-            </ul>
-
-            <ul class="mains">
-                <% villaLido[i].mains.forEach(function (food) { if (food.name!="") { %>
-                <li><%= food.entries[0].name %></li>
-                <% }}); %>
-            </ul>
-        </td>
-        <% } %>
-    </tr>
     </tbody>
 </table>
 
