@@ -102,6 +102,14 @@ body {
   }
 }
 
+.villa-lido{
+  @include restaurantColors($villalidoBg, white)
+}
+
+.bits-and-bytes{
+  @include restaurantColors($bitsAndBytesBg, white)
+}
+
 .mensa {
   @include restaurantColors($mensaOrange, white);
 }
@@ -345,6 +353,29 @@ footer {
   // Small devices (landscape phones, less than 48em)
   @media (max-width: 61.9em) {
     display: none;
+  }
+}
+
+.card-columns {
+  @include media-breakpoint-only(xs) {
+    column-count: 1;
+    padding: 0 1em;
+  }
+  @include media-breakpoint-only(sm) {
+    column-count: 1;
+    padding: 0 1em;
+  }
+  @include media-breakpoint-only(md) {
+    column-count: 1;
+    padding: 0 1em;
+  }
+  @include media-breakpoint-only(lg) {
+    column-count: 2;
+    padding: 0 4em;
+  }
+  @include media-breakpoint-only(xl) {
+    column-count: 3;
+    padding: 0 4em;
   }
 }
 

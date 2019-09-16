@@ -42,9 +42,22 @@ function checkInputForCurrentWeek(str) {
     return false;
 }
 
+function checkInputForWeekday(str,weekDay){
+    var date = determineLastMonday();
+    date.setDate(date.getDate() + weekDay);
+    str = str.replace(".0","."); //handle leading zero
+    if (str.indexOf(dateStringShort(date)) !== -1)
+    {
+        return true;
+    } 
+    else 
+        return false;
+}
+
 module.exports = {
     sanitizeDay: sanitizeDay,
     weekDayName: weekDayName,
     getMondayDate: getMondayDate,
-    checkInputForCurrentWeek: checkInputForCurrentWeek
+    checkInputForCurrentWeek: checkInputForCurrentWeek,
+    checkInputForWeekday : checkInputForWeekday
 };

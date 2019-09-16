@@ -25,7 +25,9 @@ module.exports = {
         hotspotUrl: "https://www.lakeside-scitec.com/services/gastronomie/hotspot",
         unipizzeriaUrl: "http://www.uni-pizzeria.at/speisen/mittagsteller.html",
         lapastaUrl: "https://lapasta.at/wochenmenue.html",
-        princsUrl: "http://www.princs.com/"
+        princsUrl: "http://www.princs.com/",
+        villaLidoUrl: "https://www.villa-lido.at/",
+        bitsAndBytesUrl: "https://www.lakeside-scitec.com/services/gastronomie/bits-bytes/"
     },
     userFriendlyUrls: {
         //Usually the same as the scraper ones
@@ -34,7 +36,9 @@ module.exports = {
         hotspot: "https://www.lakeside-scitec.com/services/gastronomie/hotspot",
         "uni-pizzeria": "http://www.uni-pizzeria.at/speisen/mittagsteller.html",
         "la-pasta": "https://lapasta.at/wochenmenue.html",
-        princs: "http://www.princs.com/"
+        princs: "http://www.princs.com/",
+        "villa-lido": "https://www.villa-lido.at/",
+        "bits-and-bytes": "https://www.lakeside-scitec.com/services/gastronomie/bits-bytes/"
     },
     cookie: {
         // 30 days in milliseconds
