@@ -5,6 +5,7 @@ Eine Webseite zum Crawlen und Darstellen der Mittagsmenüs von Lokalen nahe der 
 * Mensa Klagenfurt
 * Uniwirt
 * Hotspot
+* Bits&Bytes
 * Uni-Pizzeria
 
 ## Info
