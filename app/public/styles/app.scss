@@ -188,6 +188,15 @@ ul.info-elements{
 .cc_banner.cc_container.cc_container--open {
   background-color: $footerColor !important;
   border-bottom: 1pt solid black;
+
+  position: static;
+}
+
+#cookieConsentHolder {
+  position: absolute;
+  bottom: $footerHeight;
+  width: 100%;
+  left: 0;
 }
 
 footer {
