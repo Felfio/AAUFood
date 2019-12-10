@@ -569,7 +569,7 @@ function parseBitsnBytes(html) {
         }
 
         let priceField = main.find("> td:contains(€)");
-        price = scraperHelper.parsePrice(priceField.text());
+        let price = scraperHelper.parsePrice(priceField.text());
 
         let mainCourse = new Food(title, parseFloat(price));
         mainCourse.entries = [new Food(description)];
