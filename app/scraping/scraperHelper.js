@@ -67,10 +67,24 @@ function _capitalizeFirstLetter(string, delim, exceptionList)
     }
 }
 
+const priceRegex = /(\d+[,\.]?\d*)/
+function _parsePrice(str) {
+    if (!str){
+        return null;
+    }
+
+    let match = priceRegex.exec(str);
+    if (match) {
+        return +match[0].replace(',', '.');
+    } else {
+        return null;
+    }
+}
 module.exports = {
     setErrorOnEmpty: _setErrorOnEmpty,
     invalidateMenus: _invalidateMenus,
     sanitizeName: _sanitizeName,
     capitalizeFirstLetter: _capitalizeFirstLetter,
-    decapitalize: _decapitalize
+    decapitalize: _decapitalize,
+    parsePrice: _parsePrice,
 };

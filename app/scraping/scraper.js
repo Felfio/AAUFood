@@ -11,6 +11,7 @@ const Menu = require("../models/menu");
 const config = require('../config');
 const timeHelper = require('../helpers/timeHelper');
 const mensaMenuNameHelper = require('../helpers/mensaMenuNameHelper');
+const scraperHelper = require('./scraperHelper')
 
 const laPastaScraper = require('./lapasta-scraper');
 
@@ -73,7 +74,7 @@ function parseUniwirt(html) {
             errorMenu.error = true;
             weekPlan[dayInWeek] = errorMenu;
         }
-        date.add(1,'days');
+        date.add(1, 'days');
     }
 
     // Saturday a la carte
@@ -425,17 +426,17 @@ function getHotspotWeekPlan() {
 }
 
 function parseHotspot(html) {
-    
+
     var result = new Array(7);
     let closedMenu = new Menu();
     closedMenu.closed = true;
     result[5] = result[6] = closedMenu;
 
     var $ = cheerio.load(html);
-    
+
     var mainContent = $("section > .content");
-    var dateText = mainContent.find("h1:contains(Mittagsmenüs vom)").eq(0).text() || "";
-    dateText = dateText.replace(".0","."); // workaround, 22.07 != 22.7
+    var dateText = mainContent.find("h1:contains(Mittagsmenüs)").eq(0).text() || "";
+    dateText = dateText.replace(".0", "."); // workaround, 22.07 != 22.7
     var weekIsOutdated = dateText.indexOf(timeHelper.getMondayDate()) == -1;
 
     var menuForWeek = new Menu();
@@ -443,16 +444,45 @@ function parseHotspot(html) {
     menuForWeek.outdated = weekIsOutdated;
 
     // SOUPS
-    var contentTable =  mainContent.find("> table > tbody");
+    var contentTable = mainContent.find("> table > tbody");
     var soup = contentTable.find("tr:contains(SUPPEN)");
+    var soupPriceFrom = scraperHelper.parsePrice(soup.text());
+    soup = soup.next();
+    var soupPriceTo = scraperHelper.parsePrice(soup.text());
+    var soupPrices = soupPriceFrom && soupPriceTo ? `${soupPriceFrom} € - ${soupPriceTo} €` : null;
+
+    var soupsForWeek = [];
+    var soupsForDay = [];
     while ($.text(soup).replace(/\s/g, '').length) { // loop while name is not empty
         soup = soup.next();
-        let titlefield = soup.find("> td > ul > li");
+        let titlefield = soup.find("strong").parent();   // find a strong element, take its parent (to also get allergens)     
+        if (!titlefield.length) {
+            // That's no soup
+            continue;
+        }
+
         let name = $(titlefield).text();
-        name = name.trimRight(); // remove space at end of text
+        name = name.replace(/Suppe des Tages([^:])/, "Suppe des Tages:$1").trim();
         let soupFood = new Food(name);
-        menuForWeek.starters.push(soupFood);
-        menuForDay.starters.push(soupFood);
+
+        if (!name.includes("Suppe des Tages")) {
+            soupsForWeek.push(soupFood);
+        }
+
+        soupsForDay.push(soupFood);
+    }
+
+    const soupCourseName = "Suppen vom Buffet";
+    if (soupsForDay.length > 0) {
+        let soupsCourse = new Food(soupCourseName, soupPrices);
+        soupsCourse.entries = soupsForDay;
+        menuForDay.mains.push(soupsCourse);
+    }
+
+    if (soupsForWeek.length > 0) {
+        let soupsCourse = new Food(soupCourseName, soupPrices);
+        soupsCourse.entries = soupsForWeek;
+        menuForWeek.mains.push(soupsCourse);
     }
 
     // MAINS
@@ -462,32 +492,28 @@ function parseHotspot(html) {
     var titlefield = main.next().find("> td:contains(€)");
     var price = ($(titlefield).text()).trimLeft();
     price = price.replace("€ ", "");
-    price = price.replace(",",".");
-    var mainCourse = new Food("Wochenhit",parseFloat(price));
+    price = price.replace(",", ".");
+    var mainCourse = new Food("Wochenhit", parseFloat(price));
     var note = main.next().text()
-    note = note.substr(0,note.indexOf('€')).trim();
+    note = note.substr(0, note.indexOf('€')).trim();
     mainCourse.entries = [new Food(description), new Food(note)];
     menuForDay.mains.push(mainCourse);
     menuForWeek.mains.push(mainCourse);
 
     // Hauptspeisen
-    main = contentTable.find("tr:contains(HAUPT)").next().next().eq(0);
+    main = contentTable.find("tr:contains(HAUPT)").next(":not(:empty)").eq(0);
     while ($.text(main).replace(/\s/g, '').length) { // loop while name is not empty
         titlefield = main.find("> td > ul > li");
         description = $(titlefield).text();
         titlefield = main.find("> td > ul > li > strong");
         let title = $(titlefield).text().trim();
-        description = description.trimRight();
-        description = description.replace(title,"");
-        description = description.trimLeft();
-        titlefield = main.find("> td:contains(€)");
-        price = ($(titlefield).text()).trimLeft();
-        price = price.replace("€ ", "");
-        price = price.replace(",",".");
-        mainCourse = new Food(title,parseFloat(price));
+        description = description.replace(title, "").trim();
+        let priceField = main.find("> td:contains(€)");
+        price = scraperHelper.parsePrice(priceField.text());
+        mainCourse = new Food(title, price);
         mainCourse.entries = [new Food(description)];
         menuForDay.mains.push(mainCourse);
-        if (!title.includes("des Tages")){
+        if (!title.includes("des Tages")) {
             menuForWeek.mains.push(mainCourse);
         }
         main = main.next();
@@ -496,7 +522,7 @@ function parseHotspot(html) {
     setErrorOnEmpty(menuForWeek);
     setErrorOnEmpty(menuForDay);
     for (let dayInWeek = 0; dayInWeek < 5; dayInWeek++) {
-        if (new Date().getDay()-1 == dayInWeek)
+        if (new Date().getDay() - 1 == dayInWeek)
             result[dayInWeek] = menuForDay;
         else
             result[dayInWeek] = menuForWeek;
@@ -511,23 +537,23 @@ function getBitsAndBytesWeekPlan() {
         .then(body => parseBitsnBytes(body));
 }
 
-function parseBitsnBytes(html){
+function parseBitsnBytes(html) {
     var result = new Array(7);
     let closedMenu = new Menu();
     closedMenu.closed = true;
     result[5] = result[6] = closedMenu;
 
     var $ = cheerio.load(html);
-    
+
     var mainContent = $("section > .content");
     var dateText = mainContent.find("h1:contains(Heiße Theke)").eq(0).text() || "";
-    dateText = dateText.replace(".0","."); // workaround, 22.07 != 22.7
+    dateText = dateText.replace(".0", "."); // workaround, 22.07 != 22.7
     var weekIsOutdated = dateText.indexOf(timeHelper.getMondayDate()) == -1;
 
     var menuForWeek = new Menu();
     menuForWeek.outdated = weekIsOutdated;
 
-    var contentTable =  mainContent.find("> table > tbody");
+    var contentTable = mainContent.find("> table > tbody");
 
     // Hauptspeisen
     var main = contentTable.find("> tr:contains(€)").eq(0);
@@ -535,22 +561,17 @@ function parseBitsnBytes(html){
         let titlefield = main.find("> td").eq(0);
         let description = $(titlefield).text();
         titlefield = main.find("> td > strong");
-        let title = $(titlefield).text().trimRight();
-        description = description.trimRight();
-        description = description.replace(title,"");
-        description = description.trimLeft();
-        titlefield = main.find("> td:contains(€)");
-        let price = ($(titlefield).text()).trimLeft();
-        price = price.replace("€ ", "");
-        price = parseFloat(price.replace(",","."));
-        title = title.trim();
-        if (title.toUpperCase() == title){
-            title = decapitalize(title);
+        let title = $(titlefield).text().trim();
+        description = description.replace(title, "").trim();
+
+        if (title.toUpperCase() == title) {
+            title = scraperHelper.decapitalize(title);
         }
-        // remove accidentally parsed allergens
-        if (title.charAt(title.length-1) === ",")
-            title = title.substr(0,title.length-1);
-        let mainCourse = new Food(title,parseFloat(price));
+
+        let priceField = main.find("> td:contains(€)");
+        price = scraperHelper.parsePrice(priceField.text());
+
+        let mainCourse = new Food(title, parseFloat(price));
         mainCourse.entries = [new Food(description)];
         menuForWeek.mains.push(mainCourse);
         main = main.next();
@@ -570,8 +591,8 @@ async function getVillaLidoWeekPlan() {
     alacarte.noMenu = true;
     result[5] = result[6] = alacarte;
     let weekdays = ["montag", "dienstag", "mittwoch", "donnerstag", "freitag"];
-    for (var i = 0; i < 5; i++){
-        result[i] = await request.getAsync(VillaLidoUrl+weekdays[i]+"/")
+    for (var i = 0; i < 5; i++) {
+        result[i] = await request.getAsync(VillaLidoUrl + weekdays[i] + "/")
             .then(res => res.body)
             .then(body => parseVillaLidoDay(body, i))
     }
@@ -580,27 +601,27 @@ async function getVillaLidoWeekPlan() {
 
 function parseVillaLidoDay(html, weekDay) {
     var dayMenu = new Menu();
-    
+
     var $ = cheerio.load(html);
     var mainContent = $(".mkdf-smi-content-holder");
 
-    if ($("h2").eq(0).text().toLowerCase().includes("nicht gefunden")){
+    if ($("h2").eq(0).text().toLowerCase().includes("nicht gefunden")) {
         dayMenu.noMenu = true;
         return dayMenu;
     }
 
     var currentField = $(mainContent).children().eq(0); // Date, check for validity
-    dayMenu.outdated = !timeHelper.checkInputForWeekday(currentField.text(),weekDay)
+    dayMenu.outdated = !timeHelper.checkInputForWeekday(currentField.text(), weekDay)
 
-    while ((currentField = $(currentField).next()) !== null && !currentField.text().includes("Lebensmittelinformationsverordnung")){
+    while ((currentField = $(currentField).next()) !== null && !currentField.text().includes("Lebensmittelinformationsverordnung")) {
         let titleRaw = currentField.text()
         let isMainCourse = titleRaw.includes("€");
         if (isMainCourse) {
-            let courseName = titleRaw.substring(0,titleRaw.indexOf("€"));
+            let courseName = titleRaw.substring(0, titleRaw.indexOf("€"));
             currentField = $(currentField).next();
             let description = currentField.text();
             let price = titleRaw.substring(titleRaw.indexOf("€")).replace("€ ", "");
-            price = parseFloat(price.replace(",",".").trim());
+            price = parseFloat(price.replace(",", ".").trim());
             let mainCourse = new Food(courseName, price);
             mainCourse.entries = [new Food(description)];
             dayMenu.mains.push(mainCourse);
@@ -614,7 +635,7 @@ function parseVillaLidoDay(html, weekDay) {
 
     setErrorOnEmpty(dayMenu);
     return dayMenu;
-}   
+}
 
 function getPrincsWeekPlan() {
     return request.getAsync(PrincsUrl)
