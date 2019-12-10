@@ -1,6 +1,6 @@
 "use strict";
 
-const allergenRegex = /(\(?\s*(\s*.\s*,|.\s*,\s*.)+,?\s*\)?)\s*$/i;
+const allergenRegex = /(\(?\s*(\s*.\s*,|.\s*,\s*.)+,?\s*\)?|\(.\))\s*$/i;
 const fullCapsAllergenRegex = /([A-Z]+)$/;
 
 class Food {

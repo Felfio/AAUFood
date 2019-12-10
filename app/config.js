@@ -20,7 +20,7 @@ module.exports = {
         dailyVisitorKey: "dailyVisitors"
     },
     scraper: {
-        mensaUrl: "http://menu.mensen.at/index/index/locid/45",
+        mensaUrl: "https://menu.mensen.at/index/index/locid/45",
         uniwirtUrl: "http://www.uniwirt.at",
         hotspotUrl: "https://www.lakeside-scitec.com/services/gastronomie/hotspot",
         unipizzeriaUrl: "http://www.uni-pizzeria.at/speisen/mittagsteller.html",

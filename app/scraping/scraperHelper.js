@@ -1,13 +1,13 @@
 "use strict";
 
-function _setErrorOnEmpty(menu) {
+function setErrorOnEmpty(menu) {
     if (!menu.closed && !menu.noMenu && (menu.starters.length + menu.mains.length + menu.alacarte.length === 0)) {
         menu.error = true;
     }
     return menu;
 }
 
-function _invalidateMenus (weekPlan) {
+function invalidateMenus (weekPlan) {
   for (let i = 0; i < 6; i++) {
       let outdatedMenu = new Menu();
       outdatedMenu.outdated = true;
@@ -16,7 +16,7 @@ function _invalidateMenus (weekPlan) {
   return weekPlan;
 }
 
-function _sanitizeName(val) {
+function sanitizeName(val) {
     if (typeof val === "string") {
         val = val.replace(/€?\s[0-9](,|.)[0-9]+/, ""); // Replace '€ 00.00'
         val = val.replace(/^[1-9].\s/, ""); // Replace '1. ', '2. '
@@ -33,7 +33,7 @@ function _sanitizeName(val) {
     }
 }
 
-function _decapitalize(string)
+function decapitalize(string)
 {
     const exceptionList = ["in", "an", "mit", "und"]; //words that should not be capitalized
     const seperators = [" ", "\"", "-"]; //seperators, make sure to keep "-" at end (different semantics)
@@ -55,7 +55,7 @@ function _decapitalize(string)
     return returnstring;
 }
 
-function _capitalizeFirstLetter(string, delim, exceptionList)
+function capitalizeFirstLetter(string, delim, exceptionList)
 {
     if (string !== "" && string !== null)
     {
@@ -68,7 +68,7 @@ function _capitalizeFirstLetter(string, delim, exceptionList)
 }
 
 const priceRegex = /(\d+[,\.]?\d*)/
-function _parsePrice(str) {
+function parsePrice(str) {
     if (!str){
         return null;
     }
@@ -80,11 +80,21 @@ function _parsePrice(str) {
         return null;
     }
 }
+
+function stripHtml(str){
+    if(!str){
+        return str;
+    }
+
+    return str.replace(/<\/?[^>]+(>|$)/g, "");
+}
+
 module.exports = {
-    setErrorOnEmpty: _setErrorOnEmpty,
-    invalidateMenus: _invalidateMenus,
-    sanitizeName: _sanitizeName,
-    capitalizeFirstLetter: _capitalizeFirstLetter,
-    decapitalize: _decapitalize,
-    parsePrice: _parsePrice,
+    setErrorOnEmpty,
+    invalidateMenus,
+    sanitizeName,
+    capitalizeFirstLetter,
+    decapitalize,
+    parsePrice,
+    stripHtml,
 };

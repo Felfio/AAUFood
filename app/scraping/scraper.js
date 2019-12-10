@@ -6,6 +6,8 @@ const cheerio = require('cheerio');
 const PDFJS = require("pdfjs-dist");
 global.XMLHttpRequest = require('xhr2');
 const moment = require('moment');
+const he = require('he');
+
 const Food = require("../models/food");
 const Menu = require("../models/menu");
 const config = require('../config');
@@ -134,7 +136,7 @@ function createUniwirtDayMenu(dayEntry) {
 }
 
 function getMensaWeekPlan() {
-    return request.getAsync(MensaUrl)
+    return request.getAsync({ url: MensaUrl, jar: true })
         .then(res => res.body)
         .then(body => parseMensa(body));
 }
@@ -148,9 +150,9 @@ function parseMensa(html) {
 
     var $ = cheerio.load(html);
 
-    let $weekDates = $('#days').find('.date');
-    let mondayDate = moment($weekDates.first().text(), "DD.MM.YY");
-    if (mondayDate.isValid() && mondayDate.format("D.M") !== timeHelper.getMondayDate()) {
+    let mondayDateString = $(".weekdays .date").first().text();
+    let mondayDate = moment(mondayDateString, "DD.MM.");
+    if (mondayDate.isValid() && mondayDate.week() !== moment().week()) {
         for (let i = 0; i < 5; i++) {
             let outdatedMenu = new Menu();
             outdatedMenu.outdated = true;
@@ -159,135 +161,95 @@ function parseMensa(html) {
         return result;
     }
 
+    var tagestellerAndClassic2Elements = $("#leftColumn .menu-left .menu-category > *");
+    var classic1AndSpecialElements = $("#middleColumn .menu-category > *");
 
-    //Get days
-    let days = $("#days").find(".day");
-    for (let dayInWeek = 0; dayInWeek < 5; dayInWeek++) {
+    var tagestellerElements = tagestellerAndClassic2Elements.filter(":contains(Tagesteller)");
+    var tagestellerFoods = createMensaFoodMenusFromElements($, tagestellerElements, "Tagesteller");
+    var classic2Elements = tagestellerAndClassic2Elements.filter(":contains(Classic)");
+    var classic2Foods = createMensaFoodMenusFromElements($, classic2Elements, "Menü Classic 2");
+
+    var classic1Elements = classic1AndSpecialElements.filter(":contains(Classic)");
+    var classic1Foods = createMensaFoodMenusFromElements($, classic1Elements, "Menü Classic 1");
+
+    var wochenspecialElements = classic1AndSpecialElements.filter(":not(:contains(Classic))");
+    var wochenspecialFoods = createWochenspecialFoodMenusFromElements($, wochenspecialElements);
+
+    for (let i = 0; i < 5; i++) {
         let menu = new Menu();
-        result[dayInWeek] = menu;
+        result[i] = menu;
 
-        let day = days.eq(dayInWeek);
-
-        //Check if closed
-        let firstContentText = day.find(".category-content").eq(0).text();
-        if (contains(firstContentText, true, ["geschlossen", "feiertag", "ruhetag"])) {
-            menu.closed = true;
-            continue;
+        let classic1 = classic1Foods[i];
+        if (classic1) {
+            menu.mains.push(classic1);
         }
 
-        let classic1Category = day.find('#category133');
-        let classic2Category = day.find('#category134');
-        let dailySpecialCategory = day.find('#category247');
-        let AAUSpecialCategory = day.find('#category132');
-
-        try {
-            let dailySpecialFood = createFoodFromMensaCategory(dailySpecialCategory, menu.mains.length);
-            menu.mains.push(dailySpecialFood);
-
-            let classic1Food = createFoodFromMensaCategory(classic1Category, menu.mains.length);
-            menu.mains.push(classic1Food);
-
-            let classic2Food = createFoodFromMensaCategory(classic2Category, menu.mains.length);
-            menu.mains.push(classic2Food);
-
-            let AAUSpecialFood = createFoodFromMensaAAUSpecialCategory(AAUSpecialCategory, dayInWeek, menu.mains.length);
-            if (AAUSpecialFood != null) {
-                menu.mains.push(AAUSpecialFood);
-            }
-        } catch (ex) {
-            //Do not log error, as it is most likely to be a parsing error, which we do not want to fill the log file
-            menu.error = true;
+        let classic2 = classic2Foods[i];
+        if (classic2) {
+            menu.mains.push(classic2);
         }
 
-        // COMMENT TEST CODE AFTER TESTING
-        // menu.mains[0].entries.push(new Food("Linsenrisotto mit Spinat (A,C,G,L)"));
-        // menu.mains[1].entries.push(new Food("Erbsensuppe"));
-        // menu.mains[1].entries.push(new Food("Kartoffelauflauf mit sehr viel Speck (B,,A,C,O,N"));
-        // menu.mains[2].entries.push(new Food("Erbsensuppe mit Nudeleinlage"));
-        // menu.mains[2].entries.push(new Food("Wiener Schnitzel (A,F,G)"));
+        let tagesteller = tagestellerFoods[i];
+        if (tagesteller) {
+            menu.mains.push(tagesteller);
+        }
 
-        //Just to be sure
+        let wochenspecial = wochenspecialFoods[i];
+        if (wochenspecial) {
+            menu.mains.push(wochenspecial);
+        }
+
         setErrorOnEmpty(menu);
     }
+
     return result;
 }
 
-function createFoodFromMensaCategory(category, index) {
-    let categoryContent = category.find(".category-content");
+function createMensaFoodMenusFromElements($, elements, name) {
+    return elements.map((i, e) => createMensaFoodMenuFromElement($, e, name)).toArray();
+}
 
-    let meals = categoryContent.find("p").eq(0);
-    meals.find("br").replaceWith(' ');
+function createMensaFoodMenuFromElement($, e, name) {
+    e = $(e);
 
-    //Names
-    let foodNames = [];
+    let ps = e.find("> p");
+    let contentElement = ps.eq(0);
+    let foodNames = contentElement
+        .html() // Get text with tags as separators
+        .split(/<\s*br\s*\/?\s*>/) // Split by <br>
+        .map(s => he.decode(s, { allowUnsafeSymbols: true })) // Needed for ', "", & (which may be used by restaurants). Sanitized in next step
+        .map(scraperHelper.stripHtml) // Remove tags
+        .filter(x => x.trim()); // Remove empty
 
-    // ugly bugfix, courtesy of behackl
-    if (categoryContent.find("p").length > 2) {
-        let allContent = categoryContent.find("p")
-        for (var i = 0; i < allContent.length - 1; i++) {
-            foodNames.push(sanitizeName(allContent.eq(i).text()));
-        }
-    }
-    else {
-        //Check Soup
-        let contents = meals.contents();
-        if (!contents.eq(0).is("strong")) {
-            //WE HAVE A SUPPE
-            foodNames.push(sanitizeName(contents.eq(0).text()));
-            contents = contents.slice(1);
-        }
+    let priceStr = ps.eq(1).text();
+    let price = scraperHelper.parsePrice(priceStr);
 
-        foodNames.push(sanitizeName(contents.text()));
-    }
-
-    foodNames = foodNames.filter(x => x);
-
-    //Price //more ugly bugfix
-    let priceTag = categoryContent.find("p").eq(categoryContent.find("p").length - 1);
-    let match = priceTag.text().match(/(€|e|E)[\s]+[0-9](,|\.)[0-9]+/);
-
-    let priceStr = null;
-    if (match != null && match.length > 0) {
-        priceStr = match[0].match(/[0-9]+(,|\.)[0-9]+/)[0].replace(',', '.');
-    }
-
-    let price = +priceStr;
-    //isInfo <=> price could not get parsed (or is empty --> 0) and there is only one line of text in .category-content
-    var isInfo = (price === 0 || isNaN(price)) && categoryContent.children().length === 1;
-
-    let foodName = mensaMenuNameHelper.getMenuName(index);
-    let food = new Food(foodName, price, isInfo);
+    let food = new Food(name, price);
     food.entries = foodNames.map(n => new Food(n));
     return food;
 }
 
-function createFoodFromMensaAAUSpecialCategory(category, currentDay) {
-    let dayNames = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
-    let currentDayName = dayNames[currentDay];
-    let categoryContent = category.find(".category-content");
+function createWochenspecialFoodMenusFromElements($, elements) {
+    return elements.map((i, e) => createWochenspecialFoodMenuFromElement($, e)).toArray();
+}
 
-    let meal = categoryContent.find(`p:contains(${currentDayName})`).text();
-    if (meal.length === 0) {
+function createWochenspecialFoodMenuFromElement($, e) {
+    e = $(e);
+    let contentElement = e.find("> p :contains(Wochenhit)").last();
+
+    if (!contentElement.length) {
         return null;
-    } else {
-        meal = meal.split(":")[1].trim();
-    }
-    let foodNames = [meal].filter(x => x);
-
-    //Price
-    let match = categoryContent.text().match(/(€|e|E)[\s]+[0-9](,|\.)[0-9]+/);
-
-    let priceStr = null;
-    if (match != null && match.length > 0) {
-        priceStr = match[0].match(/[0-9]+(,|\.)[0-9]+/)[0].replace(',', '.');
     }
 
-    let price = +priceStr;
-    //isInfo <=> price could not get parsed (or is empty --> 0) and there is only one line of text in .category-content
-    var isInfo = (price === 0 || isNaN(price)) && categoryContent.children().length === 1;
+    let nameWithPrice = contentElement.text();
+    let price = scraperHelper.parsePrice(nameWithPrice);
+    let foodNames = nameWithPrice
+        .replace(/Wochenhit:?/, "") //Remove title
+        .replace(/(\d+,\d+\s*)?€.*$/, "") // Remove leading prices (with leading or trailing €)
+        .split(")") //Split at end of allergens, don't worry about missing closing )
+        .map(s => s.trim());
 
-    let foodName = mensaMenuNameHelper.getMenuName(index, isInfo);
-    let food = new Food(foodName, price, isInfo);
+    let food = new Food("Wochenspecial", price);
     food.entries = foodNames.map(n => new Food(n));
     return food;
 }
