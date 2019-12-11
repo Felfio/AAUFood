@@ -7,17 +7,18 @@ function setErrorOnEmpty(menu) {
     return menu;
 }
 
-function invalidateMenus (weekPlan) {
-  for (let i = 0; i < 6; i++) {
-      let outdatedMenu = new Menu();
-      outdatedMenu.outdated = true;
-      weekPlan[i] = outdatedMenu;
-  }
-  return weekPlan;
+function invalidateMenus(weekPlan) {
+    for (let i = 0; i < 6; i++) {
+        let outdatedMenu = new Menu();
+        outdatedMenu.outdated = true;
+        weekPlan[i] = outdatedMenu;
+    }
+    return weekPlan;
 }
 
 function sanitizeName(val) {
     if (typeof val === "string") {
+        val = val.replace(/  +/g, " "); // multiple spaces to one
         val = val.replace(/€?\s[0-9](,|.)[0-9]+/, ""); // Replace '€ 00.00'
         val = val.replace(/^[1-9].\s/, ""); // Replace '1. ', '2. '
         val = val.replace(/^[,\.\-\\\? ]+/, "");
@@ -33,34 +34,31 @@ function sanitizeName(val) {
     }
 }
 
-function decapitalize(string)
-{
+function decapitalize(string) {
     const exceptionList = ["in", "an", "mit", "und"]; //words that should not be capitalized
     const seperators = [" ", "\"", "-"]; //seperators, make sure to keep "-" at end (different semantics)
-    var regex = new RegExp("["+seperators.join("")+"]","g")
+    var regex = new RegExp("[" + seperators.join("") + "]", "g")
     // split string and captialize words
     let words = string.split(regex);
-    words.forEach(function callback(element,index,array) {
+    words.forEach(function callback(element, index, array) {
         if (!exceptionList.includes(element))
             array[index] = capitalizeFirstLetter(element);
     })
     let returnstring = words.join(" ");
-    
+
     // interweave with old string to insert correct special characters
     let i = string.length;
-    while (i--){
-        if(string.charAt(i).match(regex))
-            returnstring = returnstring.substr(0,i)+string.charAt(i)+returnstring.substr(i+1);
+    while (i--) {
+        if (string.charAt(i).match(regex))
+            returnstring = returnstring.substr(0, i) + string.charAt(i) + returnstring.substr(i + 1);
     }
     return returnstring;
 }
 
-function capitalizeFirstLetter(string, delim, exceptionList)
-{
-    if (string !== "" && string !== null)
-    {
+function capitalizeFirstLetter(string, delim, exceptionList) {
+    if (string !== "" && string !== null) {
         let retstring = string.toLowerCase();
-        retstring = retstring[0].toUpperCase()+retstring.substr(1);
+        retstring = retstring[0].toUpperCase() + retstring.substr(1);
         return retstring;
     } else {
         return "";
@@ -69,7 +67,7 @@ function capitalizeFirstLetter(string, delim, exceptionList)
 
 const priceRegex = /(\d+[,\.]?\d*)/
 function parsePrice(str) {
-    if (!str){
+    if (!str) {
         return null;
     }
 
@@ -81,12 +79,28 @@ function parsePrice(str) {
     }
 }
 
-function stripHtml(str){
-    if(!str){
+function stripHtml(str) {
+    if (!str) {
         return str;
     }
 
     return str.replace(/<\/?[^>]+(>|$)/g, "");
+}
+
+function contains(str, ignoreCase, searches) {
+    if (!str)
+        return false;
+    if (ignoreCase) {
+        str = str.toLowerCase();
+    }
+
+    for (var i = 0; i < searches.length; i++) {
+        var search = ignoreCase ? searches[i].toLowerCase() : searches[i];
+        if (str.includes(search)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 module.exports = {
@@ -97,4 +111,5 @@ module.exports = {
     decapitalize,
     parsePrice,
     stripHtml,
+    contains,
 };

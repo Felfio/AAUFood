@@ -98,9 +98,9 @@ function createUniwirtDayMenu(dayEntry) {
         let pText = paragraphs.length === 0 ? dateParagraph.text() : paragraphs.text();
         pText = pText.replace(/\d\d\.\d\d\.\d+/, "").trim();
 
-        if (contains(pText, true, ["feiertag", "ruhetag", "wir machen pause", "wir haben geschlossen", "closed"])) {
+        if (scraperHelper.contains(pText, true, ["feiertag", "ruhetag", "wir machen pause", "wir haben geschlossen", "closed"])) {
             dayMenu.closed = true;
-        } else if (contains(pText, true, ["Empfehlung"])) {
+        } else if (scraperHelper.contains(pText, true, ["Empfehlung"])) {
             dayMenu.noMenu = true;
         } else {
             pText = pText.charAt(0).toUpperCase() + pText.slice(1);
@@ -112,7 +112,7 @@ function createUniwirtDayMenu(dayEntry) {
             let pEntry = paragraphs.eq(i);
 
             let text = pEntry.text().trim();
-            let name = sanitizeName(text);
+            let name = scraperHelper.sanitizeName(text);
 
             let price = text.match(/\d+[\.\,]\d+$/);
             price = price ? +(price[0].replace(',', '.')) : null;
@@ -132,7 +132,7 @@ function createUniwirtDayMenu(dayEntry) {
         }
     }
 
-    return setErrorOnEmpty(dayMenu);
+    return scraperHelper.setErrorOnEmpty(dayMenu);
 }
 
 function getMensaWeekPlan() {
@@ -199,7 +199,7 @@ function parseMensa(html) {
             menu.mains.push(wochenspecial);
         }
 
-        setErrorOnEmpty(menu);
+        scraperHelper.setErrorOnEmpty(menu);
     }
 
     return result;
@@ -290,7 +290,7 @@ function getUniPizzeriaDayPlan(weekMenu, day) {
         let combinedFood = weekMenu.mains[dayInWeek];
 
         //Handle holidays (no menu)
-        if (contains(combinedFood.name, true, ["feiertag"])) {
+        if (scraperHelper.contains(combinedFood.name, true, ["feiertag"])) {
             menu.noMenu = true;
         } else {
 
@@ -299,21 +299,21 @@ function getUniPizzeriaDayPlan(weekMenu, day) {
 
             if (starterExists) {
                 //There is a starter
-                let name = sanitizeName(splitted[0]);
+                let name = scraperHelper.sanitizeName(splitted[0]);
                 let starter = new Food(name);
                 menu.starters.push(starter);
             }
 
             let i = starterExists ? 1 : 0;
             for (; i < splitted.length; i++) {
-                let name = sanitizeName(splitted[i]);
+                let name = scraperHelper.sanitizeName(splitted[i]);
                 let main = new Food(name, combinedFood.price);
                 menu.mains.push(main);
             }
         }
     }
 
-    return setErrorOnEmpty(menu);
+    return scraperHelper.setErrorOnEmpty(menu);
 }
 
 function parseUniPizzeria(html) {
@@ -352,7 +352,7 @@ function parseUniPizzeria(html) {
     if (currentFood != null && currentFood.name.length > 0) {
         result.mains.push(currentFood);
     }
-    return setErrorOnEmpty(result);
+    return scraperHelper.setErrorOnEmpty(result);
 
     function _replaceWeekday(str) {
         for (var index in _days) {
@@ -481,8 +481,8 @@ function parseHotspot(html) {
         main = main.next();
     }
 
-    setErrorOnEmpty(menuForWeek);
-    setErrorOnEmpty(menuForDay);
+    scraperHelper.setErrorOnEmpty(menuForWeek);
+    scraperHelper.setErrorOnEmpty(menuForDay);
     for (let dayInWeek = 0; dayInWeek < 5; dayInWeek++) {
         if (new Date().getDay() - 1 == dayInWeek)
             result[dayInWeek] = menuForDay;
@@ -538,7 +538,7 @@ function parseBitsnBytes(html) {
         menuForWeek.mains.push(mainCourse);
         main = main.next();
     }
-    setErrorOnEmpty(menuForWeek);
+    scraperHelper.setErrorOnEmpty(menuForWeek);
 
     for (let dayInWeek = 0; dayInWeek < 5; dayInWeek++) {
         result[dayInWeek] = menuForWeek;
@@ -595,7 +595,7 @@ function parseVillaLidoDay(html, weekDay) {
         }
     }
 
-    setErrorOnEmpty(dayMenu);
+    scraperHelper.setErrorOnEmpty(dayMenu);
     return dayMenu;
 }
 
@@ -656,51 +656,6 @@ function parsePrinceDayMenu(menuString) {
     dayMenu.mains.push(main);
 
     return dayMenu;
-}
-
-function isNotBlank(index, element) {
-    return element.length !== 0 && element.trim();
-}
-
-function contains(str, ignoreCase, searches) {
-    if (!str)
-        return false;
-    if (ignoreCase) {
-        str = str.toLowerCase();
-    }
-
-    for (var i = 0; i < searches.length; i++) {
-        var search = ignoreCase ? searches[i].toLowerCase() : searches[i];
-        if (str.includes(search)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function setErrorOnEmpty(menu) {
-    if (!menu.closed && !menu.noMenu && (menu.starters.length + menu.mains.length + menu.alacarte.length === 0)) {
-        menu.error = true;
-    }
-    return menu;
-}
-
-function sanitizeName(val) {
-    if (typeof val === "string") {
-        val = val.replace(/  +/g, " "); // multiple spaces to one
-        val = val.replace(/€?\s[0-9](,|.)[0-9]+/, ""); // Replace '€ 00.00'
-        val = val.replace(/^[1-9].\s/, ""); // Replace '1. ', '2. '
-        val = val.replace(/^[,\.\-\\\? ]+/, "");
-        val = val.replace(/[,\.\-\\\? ]+$/, "");
-        return val.trim();
-    } else if (typeof val === "object" && val.length > 0) {
-        for (let i = 0; i < val.length; i++) {
-            val[i] = sanitizeName(val[i]);
-        }
-        return val;
-    } else {
-        return val;
-    }
 }
 
 module.exports = {
