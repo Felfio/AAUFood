@@ -85,6 +85,20 @@
   }
 }
 
+#banners {
+  display: flex;
+
+  > * + * {
+    margin-left: 20px;
+  }
+
+  img {
+    max-height: 150px;
+    max-width: 100%;
+    display: block;
+  }
+}
+
 
 /* Little stylings */
 @mixin name($color) {

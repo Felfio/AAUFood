@@ -7,7 +7,7 @@
         <div class="col text-center back-icon">
             <a href="/">
                 <i class="fa fa-utensils fa-4x" aria-hidden="true"></i>
-                
+
                 <h5>
                     Zurück zum Essen
                 </h5>
@@ -38,14 +38,14 @@
                         fest vermisst, schreibt einfach eine Nachricht an <span id="mail">uns</span> und wir tun
                         unser Bestes, eure Wünsche zu erfüllen. Also Mahlzeit und lasst es euch schmecken!</p>
                     <p class="card-text">
-                        Hinter dem Projekt stehen 
+                        Hinter dem Projekt stehen
                         <span id="name0"></span>, <span id="name1"></span> und <span id="name2"></span>.
-                        Auf Kristinas Jammern hin, dass es so umständlich ist, das beste Mittagessen zu finden, war die 
-                        Grundidee geboren. Fabian und Markus, die besagten Informatiker, haben nicht lange gebraucht 
+                        Auf Kristinas Jammern hin, dass es so umständlich ist, das beste Mittagessen zu finden, war die
+                        Grundidee geboren. Fabian und Markus, die besagten Informatiker, haben nicht lange gebraucht
                         und schon kommt die ganze AAU in den Genuss von
                         <a class="nowrap" href="/">
                             <i class="fa fa-utensils" aria-hidden="true"></i> AAU Food
-                        </a>.                             
+                        </a>.
                         Mit der Zeit haben auch
                         <span id="additionalName0"></span> und <span id="additionalName1"></span> Wind von der Sache
                         bekommen und fleißig mit angepackt.
@@ -63,12 +63,24 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-img-top cat-fact-header">
-                    <img src="<%= catFactHeaderUrl() %>" alt="Random Kitten Image"/>
+                    <img src="<%= catFactHeaderUrl() %>" alt="Random Kitten Image" />
                 </div>
                 <div class="card-body">
-                    <h4 class="card-title">Random Cat Fact</h4>
+                    <h4 class="card-title">
+                        <i class="fa fa-fw fa-cat" aria-hidden="true"></i> Random Cat Fact
+                    </h4>
                     <p class="card-text">
                         <%= catFact %>
+                    </p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <i class="fa fa-fw fa-clock" aria-hidden="true"></i>
+                        Besucher heute: <%= visitorStats.dailyVisitors %></h4>
+                    <p class="card-text">
+                        <%= dailyVisitorsFact %>
                     </p>
                 </div>
             </div>
@@ -91,11 +103,20 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">
-                        <i class="fa fa-fw fa-clock" aria-hidden="true"></i>
-                        Besucher heute: <%= visitorStats.dailyVisitors %></h4>
-                    <p class="card-text">
-                        <%= dailyVisitorsFact %>
-                    </p>
+                        <i class="fa fa-fw fa-image" aria-hidden="true"></i> Werbebanner
+                    </h4>
+                    <div id="banners">
+                        <div>
+                            <a href="images/food.felfio-banner1.png" target="_blank">
+                                <img src="images/food.felfio-banner1.png" alt="Banner 1">
+                            </a>
+                        </div>
+                        <div>
+                            <a href="images/food.felfio-banner2.png" target="_blank">
+                                <img src="images/food.felfio-banner2.png" alt="Banner 2">
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
