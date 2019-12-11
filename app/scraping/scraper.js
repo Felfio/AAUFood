@@ -475,7 +475,7 @@ function parseHotspot(html) {
         mainCourse = new Food(title, price);
         mainCourse.entries = [new Food(description)];
         menuForDay.mains.push(mainCourse);
-        if (!title.includes("des Tages")) {
+        if (!(title.includes("des Tages") || /^Vegetarisches\s+Gericht$/.test(title))) {
             menuForWeek.mains.push(mainCourse);
         }
         main = main.next();
