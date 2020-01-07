@@ -464,9 +464,9 @@ function parseHotspot(html) {
     // Hauptspeisen
     main = contentTable.find("tr:contains(HAUPT)").next(":not(:empty)").eq(0);
     while ($.text(main).replace(/\s/g, '').length) { // loop while name is not empty
-        titlefield = main.find("> td > ul > li");
+        titlefield = main.find("> td").eq(0);
         description = $(titlefield).text();
-        titlefield = main.find("> td > ul > li > strong");
+        titlefield = main.find("> td strong");
         let title = $(titlefield).text().trim();
         description = description.replace(title, "").trim();
         let priceField = main.find("> td:contains(€)");
@@ -521,7 +521,7 @@ function parseBitsnBytes(html) {
     while ($.text(main).replace(/\s/g, '').length) { // loop while name is not empty
         let titlefield = main.find("> td").eq(0);
         let description = $(titlefield).text();
-        titlefield = main.find("> td > strong");
+        titlefield = main.find("> td strong");
         let title = $(titlefield).text().trim();
         description = description.replace(title, "").trim();
 
