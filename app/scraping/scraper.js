@@ -575,7 +575,7 @@ function parseVillaLidoDay(html, weekDay) {
     var currentField = $(mainContent).children().eq(0); // Date, check for validity
     dayMenu.outdated = !timeHelper.checkInputForWeekday(currentField.text(), weekDay)
 
-    while ((currentField = $(currentField).next()) !== null && !currentField.text().includes("Lebensmittelinformationsverordnung")) {
+    while ((currentField = $(currentField).next()).length > 0 && !currentField.text().includes("Lebensmittelinformationsverordnung")) {
         let titleRaw = currentField.text()
         let isMainCourse = titleRaw.includes("€");
         if (isMainCourse) {
