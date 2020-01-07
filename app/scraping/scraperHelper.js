@@ -1,4 +1,5 @@
 "use strict";
+const moment = require('moment');
 
 function setErrorOnEmpty(menu) {
     if (!menu.closed && !menu.noMenu && (menu.starters.length + menu.mains.length + menu.alacarte.length === 0)) {
@@ -103,6 +104,20 @@ function contains(str, ignoreCase, searches) {
     return false;
 }
 
+function isInCurrentWeek(date) {
+    return date != null ? moment().isSame(date, "isoweek") : false;
+}
+
+function findDate(str) {
+    let match = str.match(/(\d{1,2}\.\d{1,2})/);
+    if (!match){
+        return null;
+    }
+    
+    let dateStr = match[1].replace(/(^|[^\d])0(\d)/g, "$1$2");
+    return moment(dateStr, "D.M.YYYY")
+}
+
 module.exports = {
     setErrorOnEmpty,
     invalidateMenus,
@@ -112,4 +127,6 @@ module.exports = {
     parsePrice,
     stripHtml,
     contains,
+    isInCurrentWeek,
+    findDate,
 };

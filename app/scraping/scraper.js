@@ -12,7 +12,6 @@ const Food = require("../models/food");
 const Menu = require("../models/menu");
 const config = require('../config');
 const timeHelper = require('../helpers/timeHelper');
-const mensaMenuNameHelper = require('../helpers/mensaMenuNameHelper');
 const scraperHelper = require('./scraperHelper')
 
 const laPastaScraper = require('./lapasta-scraper');
@@ -509,8 +508,8 @@ function parseBitsnBytes(html) {
 
     var mainContent = $("section > .content");
     var dateText = mainContent.find("h1:contains(Heiße Theke)").eq(0).text() || "";
-    dateText = dateText.replace(".0", "."); // workaround, 22.07 != 22.7
-    var weekIsOutdated = dateText.indexOf(timeHelper.getMondayDate()) == -1;
+    var date = scraperHelper.findDate(dateText);
+    var weekIsOutdated = !scraperHelper.isInCurrentWeek(date);
 
     var menuForWeek = new Menu();
     menuForWeek.outdated = weekIsOutdated;
