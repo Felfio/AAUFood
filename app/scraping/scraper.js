@@ -7,6 +7,7 @@ const PDFJS = require("pdfjs-dist");
 global.XMLHttpRequest = require('xhr2');
 const moment = require('moment');
 const he = require('he');
+const _ = require('lodash');
 
 const Food = require("../models/food");
 const Menu = require("../models/menu");
@@ -160,42 +161,27 @@ function parseMensa(html) {
         return result;
     }
 
-    var tagestellerAndClassic2Elements = $("#leftColumn .menu-left .menu-category > *");
-    var classic1AndSpecialElements = $("#middleColumn .menu-category > *");
+    var leftMenuElements = $("#leftColumn .menu-left .menu-category > *");
+    var rightMenuElements = $("#middleColumn .menu-category > *");
+    rightMenuElements = rightMenuElements.filter((i, x) => !/grillcorner/i.test($(x).text())); // Filter Grillcorner
 
-    var tagestellerElements = tagestellerAndClassic2Elements.filter(":contains(Tagesteller)");
-    var tagestellerFoods = createMensaFoodMenusFromElements($, tagestellerElements, "Tagesteller");
-    var classic2Elements = tagestellerAndClassic2Elements.filter(":contains(Classic)");
-    var classic2Foods = createMensaFoodMenusFromElements($, classic2Elements, "Menü Classic 2");
+    var menuElements = $.merge(leftMenuElements, rightMenuElements);
+    var menuElementsGroupedByName = _.groupBy(menuElements, e => $(e).find("> :header").text());
 
-    var classic1Elements = classic1AndSpecialElements.filter(":contains(Classic)");
-    var classic1Foods = createMensaFoodMenusFromElements($, classic1Elements, "Menü Classic 1");
-
-    var wochenspecialElements = classic1AndSpecialElements.filter(":not(:contains(Classic))");
-    var wochenspecialFoods = createWochenspecialFoodMenusFromElements($, wochenspecialElements);
+    var foodsPerWeekday = [[], [], [], [], []]; //.fill only works with primitive values
+    _.forOwn(menuElementsGroupedByName, (menusForWeek, name) => {
+        var foodsForWeek = menusForWeek.map(m => createMensaFoodMenuFromElement($, m, name));
+        for (let i = 0; i < foodsForWeek.length; i++) {
+            foodsPerWeekday[i].push(foodsForWeek[i]);
+        }
+    });
 
     for (let i = 0; i < 5; i++) {
         let menu = new Menu();
         result[i] = menu;
 
-        let classic1 = classic1Foods[i];
-        if (classic1) {
-            menu.mains.push(classic1);
-        }
-
-        let classic2 = classic2Foods[i];
-        if (classic2) {
-            menu.mains.push(classic2);
-        }
-
-        let tagesteller = tagestellerFoods[i];
-        if (tagesteller) {
-            menu.mains.push(tagesteller);
-        }
-
-        let wochenspecial = wochenspecialFoods[i];
-        if (wochenspecial) {
-            menu.mains.push(wochenspecial);
+        for (let food of foodsPerWeekday[i]) {
+            menu.mains.push(food);
         }
 
         scraperHelper.setErrorOnEmpty(menu);
@@ -232,7 +218,7 @@ function createWochenspecialFoodMenusFromElements($, elements) {
     return elements.map((i, e) => createWochenspecialFoodMenuFromElement($, e)).toArray();
 }
 
-function createWochenspecialFoodMenuFromElement($, e) {
+function createWochenspecialFoodMenuFromElement($, e) { // Kept here in case mensa changes its page once again
     e = $(e);
     let contentElement = e.find("> p :contains(Wochenhit)").last();
 
