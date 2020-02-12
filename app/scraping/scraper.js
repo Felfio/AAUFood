@@ -197,16 +197,11 @@ function createMensaFoodMenusFromElements($, elements, name) {
 function createMensaFoodMenuFromElement($, e, name) {
     e = $(e);
 
-    let ps = e.find("> p");
-    let contentElement = ps.eq(0);
-    let foodNames = contentElement
-        .html() // Get text with tags as separators
-        .split(/<\s*br\s*\/?\s*>/) // Split by <br>
-        .map(s => he.decode(s, { allowUnsafeSymbols: true })) // Needed for ', "", & (which may be used by restaurants). Sanitized in next step
-        .map(scraperHelper.stripHtml) // Remove tags
-        .filter(x => x.trim()); // Remove empty
+    let foodNames = e.find("> p:not(:contains(€))").toArray()
+        .map(x => $(x).text().trim().replace("&nbsp;", " "));
 
-    let priceStr = ps.eq(1).text();
+    // If Mensa changes to splitting foods by <br> again, look in git history for this section how to handle this 
+    let priceStr = e.find("> p:contains(€)").text();
     let price = scraperHelper.parsePrice(priceStr);
 
     let food = new Food(name, price);
