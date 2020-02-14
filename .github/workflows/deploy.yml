@@ -1,0 +1,23 @@
+name: deployment
+
+on:
+  push:
+    branches: 
+      - master
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Upload the deploy key, connect, and trigger deployment
+      run: |
+        eval $(ssh-agent -s)
+        ssh-add <(echo "$SSH_DEPLOY_KEY")
+        $SSH_DEPLOY_CMD
+        
+      env:
+        SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+        SSH_DEPLOY_CMD: ${{ secrets.SSH_DEPLOY_CMD }}
