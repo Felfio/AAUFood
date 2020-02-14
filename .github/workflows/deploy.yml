@@ -19,4 +19,4 @@ jobs:
         key: ${{ secrets.SSH_DEPLOY_KEY }}
         port: 9073
         script: "echo test"
-        timeout: 100
+        timeout: "100s"
