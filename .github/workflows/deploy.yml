@@ -24,3 +24,13 @@ jobs:
         SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
         SSH_DEPLOY_CMD: ${{ secrets.SSH_DEPLOY_CMD }}
         SSH_HOST_FINGERPRINT: ${{ secrets.SSH_HOST_FINGERPRINT }}
+        
+        
+    - name: executing remote ssh commands using ssh key
+      uses: appleboy/ssh-action@master
+      with:
+        host: benjamin-hackl.at
+        username: www-data
+        key: ${{ secrets.SSH_DEPLOY_KEY }}
+        port: 9073
+        script: "echo test"
