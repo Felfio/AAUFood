@@ -2,7 +2,7 @@ name: deployment
 
 on:
   push:
-    branches: 
+    branches:
       - master
 
 jobs:
@@ -11,12 +11,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: executing remote ssh commands using ssh key
-      uses: appleboy/ssh-action@master
-      with:
-        host: benjamin-hackl.at
-        username: www-data
-        key: ${{ secrets.SSH_DEPLOY_KEY }}
-        port: 9073
-        script: "echo test"
-        timeout: "100s"
+    - uses: actions/checkout@v2
+    - name: Upload the deploy key, connect, and trigger deployment
+      run: |
+        mkdir -p ~/.ssh
+        echo $SSH_HOST_FINGERPRINT >> ~/.ssh/known_hosts
+        eval $(ssh-agent -s)
+        ssh-add <(echo "$SSH_DEPLOY_KEY")
+        ssh -tt -vvv $SSH_DEPLOY_TARGET
+
+      env:
+        SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+        SSH_DEPLOY_TARGET: ${{ secrets.SSH_DEPLOY_TARGET }}
+        SSH_HOST_FINGERPRINT: ${{ secrets.SSH_HOST_FINGERPRINT }}
