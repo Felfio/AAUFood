@@ -11,16 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Upload the deploy key, connect, and trigger deployment
-      run: |
-        mkdir -p ~/.ssh
-        echo $SSH_HOST_FINGERPRINT >> ~/.ssh/known_hosts
-        eval $(ssh-agent -s)
-        ssh-add <(echo "$SSH_DEPLOY_KEY")
-        ssh -tt -vvv $SSH_DEPLOY_TARGET
-
-      env:
-        SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
-        SSH_DEPLOY_TARGET: ${{ secrets.SSH_DEPLOY_TARGET }}
-        SSH_HOST_FINGERPRINT: ${{ secrets.SSH_HOST_FINGERPRINT }}
+    - name: ls -a via ssh
+      uses: fifsky/ssh-action@master
+      with:
+        command: echo test
+        host: ${{ secrets.SSH_DEPLOY_TARGET }}
+        user: ${{ secrets.SSH_DEPLOY_USER }}
+        key: ${{ secrets.SSH_DEPLOY_KEY }}
+        args: ${{ secrets.SSH_EXTRA_ARGS }}
