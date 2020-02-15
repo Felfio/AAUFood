@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: ls -a via ssh
+    - name: deploy via ssh
       uses: fifsky/ssh-action@master
       with:
         command: echo test
