@@ -5,12 +5,12 @@ module.exports = {
     settings: {
         useRandomFooterPuns: true,
         defaultFooterPun: "heart",
-        winterTheme: true,
+        winterTheme: false,
         nodePort: 3000,
     },
     onBreak: {
         //The dates are only rendered, never used for checking if closed!
-        // mensa: new BreakInfo("Wir befinden uns für den Zeitraum", "28.7", "2.9", "in Sommerpause.", "fa fa-sun"),
+        mensa: new BreakInfo("Wir werden im Zeitraum", "1.6", "27.9", "renoviert und sind in Sommerpause.", "fa fa-sun"),
         // mensa: new BreakInfo("Wir befinden uns für den Zeitraum", "28.7", "2.9", "in Sommerpause."),
     },
     cache: {
