@@ -1,6 +1,6 @@
 const path = require('path');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     entry: ["./app/public/scripts.js"],
@@ -8,12 +8,16 @@ module.exports = {
         path: path.join(__dirname, 'public/dist'),
         filename: "bundle.js"
     },
+    optimization: {
+        minimize: true
+    },
+    mode: "production",
     module: {
         rules: [
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                exclude: /(node_modules|bower_components)/,
+                exclude: /node_modules/,
                 query: {
                     presets: [
                         ["es2015", {"modules": false}]
@@ -22,17 +26,20 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: ["css-loader?minimize=true", "postcss-loader", "sass-loader"]
-                })
+                use: [
+                    process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
+                    { loader: 'css-loader', options: { importLoaders: 1 } },
+                    'postcss-loader',
+                    'sass-loader'
+                ],
             },
             {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: ["css-loader?minimize=true"]
-                })
+                use: [
+                    process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
+                    { loader: 'css-loader', options: { importLoaders: 1 } },
+                    'postcss-loader'
+                ],
             },
             {
                 test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -44,8 +51,10 @@ module.exports = {
         ]
     },
     plugins: [
-        new ExtractTextPlugin({filename: "bundle.css", allChunks: true}),
-        new webpack.optimize.UglifyJsPlugin(),
+        new MiniCssExtractPlugin({
+            filename: "bundle.css",
+            allChunks: true
+        }),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
