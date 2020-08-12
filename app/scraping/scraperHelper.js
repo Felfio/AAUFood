@@ -108,6 +108,16 @@ function isInCurrentWeek(date) {
     return date != null ? moment().isSame(date, "isoweek") : false;
 }
 
+function findKW(str) {
+    let match = str.match(/KW\s*(\d{1,2})$/);
+    if (!match) { return null; }
+    return match[1];
+}
+
+function isCurrentKW(kw) {
+    return kw != null ? moment().week() == kw : false;
+}
+
 function findDate(str) {
     let match = str.match(/(\d{1,2}\.\d{1,2})/);
     if (!match){
@@ -128,5 +138,7 @@ module.exports = {
     stripHtml,
     contains,
     isInCurrentWeek,
+    isCurrentKW,
+    findKW,
     findDate,
 };
