@@ -460,14 +460,16 @@ function parseHotspot(html) {
     for (let dayInWeek = 0; dayInWeek < 4; dayInWeek++) { // Hotspot currently only MON-THU
         var menuForDay = new Menu();
         var menuct = 0;
-        for (let entry of contentTableDict[days[dayInWeek]]) {
-            let description = $(entry).find("> td").eq(0).text().trim();
-            let title = `Menü ${++menuct}`;
-            let priceField = $(entry).find("> td:contains(€)");
-            let price = scraperHelper.parsePrice(priceField.text());
-            let mainCourse = new Food(title, price);
-            mainCourse.entries = [new Food(description)];
-            menuForDay.mains.push(mainCourse);
+        if (Object.keys(contentTableDict).length) {
+            for (let entry of contentTableDict[days[dayInWeek]]) {
+                let description = $(entry).find("> td").eq(0).text().trim();
+                let title = `Menü ${++menuct}`;
+                let priceField = $(entry).find("> td:contains(€)");
+                let price = scraperHelper.parsePrice(priceField.text());
+                let mainCourse = new Food(title, price);
+                mainCourse.entries = [new Food(description)];
+                menuForDay.mains.push(mainCourse);
+            }
         }
         result[dayInWeek] = menuForDay;
 
@@ -504,7 +506,7 @@ function parseBitsnBytes(html) {
 
     // Hauptspeisen
     var main = contentTable.find("> tr:contains(€)").eq(0);
-    while ($.text(main).replace(/\s/g, '') != "STREETFOOD") {
+    while (main.length && $.text(main).replace(/\s/g, '') != "STREETFOOD") {
         main = main.next();
     } // Currently, the menu dishes start after the caption "STREETFOOD", skip over Pizzas.
     main = main.next();
