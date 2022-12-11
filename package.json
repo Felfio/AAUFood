@@ -20,7 +20,7 @@
     "cookieconsent": "^2.0.0",
     "cssnano": "^4.1.10",
     "ejs": "^2.4.1",
-    "express": "^4.14.0",
+    "express": "^4.17.3",
     "express-session": "^1.13.0",
     "font-awesome": "^4.7.0",
     "he": "^1.2.0",
