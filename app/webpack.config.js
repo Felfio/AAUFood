@@ -18,10 +18,8 @@ module.exports = {
                 test: /\.js$/,
                 loader: 'babel-loader',
                 exclude: /node_modules/,
-                query: {
-                    presets: [
-                        ["es2015", {"modules": false}]
-                    ]
+                options: {
+                    presets: ['@babel/preset-env']
                 }
             },
             {
@@ -51,17 +49,32 @@ module.exports = {
             },
             {
                 test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                loader: "url-loader?limit=10000&mimetype=application/font-woff"
+                loader: 'url-loader',
+                options: {
+                    limit: 1000,
+                    mimetype: 'application/font-woff'
+                }
             },
             {test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader"},
-            {test: /\.png$/, loader: "url-loader?limit=10000"},
-            {test: /\.jpg$/, loader: "url-loader?limit=10000"}
+            {
+                test: /\.png$/,
+                loader: 'url-loader',
+                options: {
+                    limit: 1000
+                }
+            },
+            {
+                test: /\.jpg$/,
+                loader: 'url-loader',
+                options: {
+                    limit: 1000
+                }
+            }
         ]
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: "bundle.css",
-            allChunks: true
+            filename: "bundle.css"
         }),
         new webpack.ProvidePlugin({
             $: "jquery",

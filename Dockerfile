@@ -1,4 +1,4 @@
-FROM node:8.16-alpine
+FROM node:16.19.0-alpine
 ENV TZ="/usr/share/zoneinfo/Europe/Vienna"
 
 RUN mkdir -p /usr/src/aaufood
