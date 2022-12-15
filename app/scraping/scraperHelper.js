@@ -20,8 +20,9 @@ function invalidateMenus(weekPlan) {
 function sanitizeName(val) {
     if (typeof val === "string") {
         val = val.replace(/  +/g, " "); // multiple spaces to one
-        val = val.replace(/€?\s[0-9](,|.)[0-9]+/, ""); // Replace '€ 00.00'
+        val = val.replace(/€?\s[0-9]+(,|.)[0-9]+/, ""); // Replace '€ 00.00'
         val = val.replace(/^[1-9].\s/, ""); // Replace '1. ', '2. '
+        val = val.replace(/^[1-9]./, ""); // Replace '1.', '2.'
         val = val.replace(/^[,\.\-\\\? ]+/, "");
         val = val.replace(/[,\.\-\\\? ]+$/, "");
         return val.trim();

@@ -21,24 +21,24 @@ module.exports = {
     },
     scraper: {
         mensaUrl: "https://menu.mensen.at/index/index/locid/45",
-        uniwirtUrl: "http://www.uniwirt.at",
+        uniwirtUrl: "https://www.uniwirt.at/wp/",
         hotspotUrl: "https://www.lakeside-scitec.com/services/gastronomie/hotspot",
-        unipizzeriaUrl: "http://www.uni-pizzeria.at/speisen/mittagsteller.html",
+        unipizzeriaUrl: "https://uni-pizzeria.at/essen/mittagsteller-2/",
         lapastaUrl: "https://lapasta.at/wochenmenue.html",
         princsUrl: "http://www.princs.com/",
         villaLidoUrl: "https://www.villa-lido.at/",
-        bitsAndBytesUrl: "https://www.lakeside-scitec.com/services/gastronomie/bits-bytes/"
+        bitsAndBytesUrl: "https://www.lakeside-scitec.com/services/gastronomie/bits-bytes"
     },
     userFriendlyUrls: {
         //Usually the same as the scraper ones
         mensa: "http://menu.mensen.at/index/index/locid/45",
-        uniwirt: "http://www.uniwirt.at/wp/home/mittag/",
+        uniwirt: "https://www.uniwirt.at/wp/home/mittagsmenues/",
         hotspot: "https://www.lakeside-scitec.com/services/gastronomie/hotspot",
-        "uni-pizzeria": "http://www.uni-pizzeria.at/speisen/mittagsteller.html",
+        "uni-pizzeria": "https://uni-pizzeria.at/essen/mittagsteller-2/",
         "la-pasta": "https://lapasta.at/wochenmenue.html",
         princs: "http://www.princs.com/",
         "villa-lido": "https://www.villa-lido.at/",
-        "bits-and-bytes": "https://www.lakeside-scitec.com/services/gastronomie/bits-bytes/"
+        "bits-and-bytes": "https://www.lakeside-scitec.com/services/gastronomie/bits-bytes"
     },
     cookie: {
         // 30 days in milliseconds
