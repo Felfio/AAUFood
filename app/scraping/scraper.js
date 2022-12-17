@@ -407,8 +407,9 @@ function parseHotspot(html) {
     var heading = mainContent.find("h1:contains(Restaurant Hotspot)").eq(0).text() || "";
     var weekIsOutdated = heading.indexOf(timeHelper.getMondayDate()) === -1;
 
-    var menuForWeek = new Menu();
-    menuForWeek.outdated = weekIsOutdated;
+    if (weekIsOutdated) {
+        return scraperHelper.invalidateMenus(result);
+    }
 
     var contentTable = mainContent.find("> table > tbody");
 
@@ -470,8 +471,9 @@ function parseBitsnBytes(html) {
     var heading = mainContent.find("h1:contains(Bits & Bytes Marketplace)").eq(0).text() || "";
     var weekIsOutdated = heading.indexOf(timeHelper.getMondayDate()) === -1;
 
-    var menuForWeek = new Menu();
-    menuForWeek.outdated = weekIsOutdated;
+    if (weekIsOutdated) {
+        return scraperHelper.invalidateMenus(result);
+    }
 
     var contentTable = mainContent.find("> table > tbody");
 

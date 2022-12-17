@@ -1,5 +1,6 @@
 "use strict";
 const moment = require('moment');
+const Menu = require("../models/menu");
 
 function setErrorOnEmpty(menu) {
     if (!menu.closed && !menu.noMenu && (menu.starters.length + menu.mains.length + menu.alacarte.length === 0)) {
