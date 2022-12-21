@@ -10,8 +10,8 @@ const scraper = require('../scraping/scraper');
 const winston = require('winston');
 
 class MenuCache extends EventEmitter {
-    init(redisClient) {
-        this.client = redisClient;
+    init(cacheClient) {
+        this.client = cacheClient;
         this.update();
         winston.info('Initialized Logger.');
     }
@@ -57,21 +57,20 @@ class MenuCache extends EventEmitter {
     }
 
     _cacheMenu(restaurantName, weekPlan, weekPlanJson) {
-        var promises = [];
-        promises.push(this.client.setAsync(`menu:${restaurantName}`, weekPlanJson)); //Store whole weekPlan
+        this.client.set(`menu:${restaurantName}`, weekPlanJson); //Store whole weekPlan
 
         for (let day = 0; day < weekPlan.length; day++) {
             let key = `menu:${restaurantName}:${day}`;
             let menuJson = JSON.stringify(weekPlan[day]);
-            promises.push(this.client.setAsync(key, menuJson));
+            this.client.set(key, menuJson);
         }
 
-        return Promise.all(promises);
+        return Promise.resolve();
     }
 
     getMenu(menuName, day) {
         var key = day != null ? `menu:${menuName}:${day}` : `menu:${menuName}`;
-        return this.client.getAsync(key);
+        return Promise.resolve(this.client.get(key));
     }
 }
 

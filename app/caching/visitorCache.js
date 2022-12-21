@@ -10,23 +10,23 @@ const overallVisitorKey = config.cache.overallVisitorKey;
 const dailyVisitorKey = config.cache.dailyVisitorKey;
 
 class VisitorCache extends EventEmitter {
-    init(redisClient, io) {
-        this.client = redisClient;
-        this.client.setnxAsync(dailyVisitorKey, 0);
+    init(cacheClient, io) {
+        this.client = cacheClient;
         this.io = io;
+
+        if (!this.client.get(dailyVisitorKey)) {
+            this.client.set(dailyVisitorKey, 0);
+        }
     }
 
     getCounters() {
-        var dailyVisitors = this.client.getAsync(config.cache.dailyVisitorKey);
-        var overallVisitors = this.client.getAsync(config.cache.overallVisitorKey);
+        var dailyVisitors = this.client.get(config.cache.dailyVisitorKey);
+        var overallVisitors = this.client.get(config.cache.overallVisitorKey);
 
-        return Promise.all([dailyVisitors, overallVisitors])
-            .then(results => {
-                return {
-                    dailyVisitors: results[0],
-                    overallVisitors: results[1]
-                };
-            });
+        return Promise.resolve({
+            dailyVisitors,
+            overallVisitors
+        });
     }
 
     increment(session) {
@@ -68,22 +68,26 @@ class VisitorCache extends EventEmitter {
     }
 
     _incrementDailyVisitors() {
-        return this.client.incrAsync(dailyVisitorKey).then(newValue => {
-            if (newValue === 1) {
-                this._setExpireAtMidnight(dailyVisitorKey);
-            }
+        let val = this.client.get(dailyVisitorKey) || 0;
+        this.client.set(dailyVisitorKey, ++val);
 
-            return newValue;
-        });
+        if (val === 1) {
+            this._setExpireAtMidnight(dailyVisitorKey);
+        }
+
+        return Promise.resolve(val);
     }
 
     _incrementOverallVisitors() {
-        return this.client.incrAsync(overallVisitorKey);
+        let val = this.client.get(overallVisitorKey) || 0;
+        this.client.set(overallVisitorKey, ++val);
+        return Promise.resolve(val);
     }
 
     _setExpireAtMidnight(keyName) {
-        var unixTime = this._getUnixTimeMidnight();
-        return this.client.pexpireatAsync(keyName, unixTime);
+        // TODO
+        //var unixTime = this._getUnixTimeMidnight();
+        //return this.client.pexpireatAsync(keyName, unixTime);
     }
 
     _getUnixTimeMidnight() {

@@ -1,7 +1,8 @@
 const express = require('express');
 const bluebird = require('bluebird');
 const path = require('path');
-const redis = require('redis');
+// const redis = require('redis');
+const NodeCache = require("node-cache");
 const moment = require('moment');
 const bodyParser = require('body-parser');
 const compression = require('compression');
@@ -18,22 +19,23 @@ const breakHelper = require('./helpers/breakHelper');
 const placeKittenHelper = require('./helpers/placeKittenHelper');
 const menuStateHelper = require('./helpers/menuStateHelper');
 
-bluebird.promisifyAll(redis.RedisClient.prototype);
-bluebird.promisifyAll(redis.Multi.prototype);
+// bluebird.promisifyAll(redis.RedisClient.prototype);
+// bluebird.promisifyAll(redis.Multi.prototype);
 
 const session = require('express-session');
-const RedisStore = require('connect-redis')(session);
-const redisClient = redis.createClient({host: 'redis'});
+//const RedisStore = require('connect-redis')(session);
+//const redisClient = redis.createClient({host: 'redis'});
+const cacheClient = new NodeCache({ checkperiod: 30 });
 const app = express();
 
-winston.add(winston.transports.File, {filename: 'logfile.log'});
+winston.add(winston.transports.File, { filename: 'logfile.log' });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(session({
-    store: new RedisStore({client: redisClient}),
+    //store: new RedisStore({client: redisClient}),
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
@@ -45,7 +47,7 @@ app.use(express.static(__dirname + '/public'));
 app.use("/modules", express.static(__dirname + "/node_modules"));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/', indexRoutes);
 app.use('/food', foodRoutes);
@@ -53,7 +55,7 @@ app.use('/food', foodRoutes);
 app.use(function (err, req, res, next) {
     console.log("Im finalen Error Handler!");
     res.status(500);
-    res.json({error: err.message});
+    res.json({ error: err.message });
 });
 
 //Locals for usage in views
@@ -73,7 +75,7 @@ var server = app.listen(config.settings.nodePort, function () {
 
 const io = require('socket.io')(server);
 
-menuCache.init(redisClient);
-visitorCache.init(redisClient, io);
+menuCache.init(cacheClient);
+visitorCache.init(cacheClient, io);
 
 setInterval(() => menuCache.update(), config.cache.intervall);
