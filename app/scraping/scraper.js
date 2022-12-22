@@ -3,7 +3,7 @@
 const Promise = require('bluebird');
 const request = Promise.promisifyAll(require("request"));
 const cheerio = require('cheerio');
-const PDFJS = require("pdfjs-dist");
+//const PDFJS = require("pdfjs-dist");
 const moment = require('moment');
 const _ = require('lodash');
 
@@ -571,15 +571,16 @@ function getPrincsWeekPlan() {
     return request.getAsync(PrincsUrl)
         .then(res => res.body)
         .then(function (body) {
-            let $ = cheerio.load(body);
-            let pdfurl = PrincsUrl + $("a:contains('WOCHENKARTE')").attr('href');
-            return PDFJS.getDocument(pdfurl).then(
-                pdf => pdf.getPage(1).then(
-                    page => page.getTextContent().then(
-                        textContent => parsePrincsPDFContent(textContent)
-                    )
-                )
-            );
+            // let $ = cheerio.load(body);
+            // let pdfurl = PrincsUrl + $("a:contains('WOCHENKARTE')").attr('href');
+            // return PDFJS.getDocument(pdfurl).then(
+            //     pdf => pdf.getPage(1).then(
+            //         page => page.getTextContent().then(
+            //             textContent => parsePrincsPDFContent(textContent)
+            //         )
+            //     )
+            // );
+            return Promise.resolve(new Array(7).fill(1).map(() => new Menu()));
         });
 }
 
