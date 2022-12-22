@@ -10,7 +10,6 @@ const visitorCache = require('./caching/visitorCache');
 const config = require('./config');
 const indexRoutes = require('./routes/index');
 const foodRoutes = require('./routes/food');
-//const winston = require('winston');
 const timeHelper = require('./helpers/timeHelper');
 const footerPunHelper = require('./helpers/footerPunHelper');
 const breakHelper = require('./helpers/breakHelper');
@@ -21,8 +20,6 @@ const menuStateHelper = require('./helpers/menuStateHelper');
 const session = require('express-session');
 const cacheClient = new NodeCache({ checkperiod: 30 });
 const app = express();
-
-//winston.add(winston.transports.File, { filename: 'logfile.log' });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

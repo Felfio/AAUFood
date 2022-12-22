@@ -4,7 +4,6 @@ const Promise = require('bluebird');
 const request = Promise.promisifyAll(require("request"));
 const cheerio = require('cheerio');
 const PDFJS = require("pdfjs-dist");
-global.XMLHttpRequest = require('xhr2');
 const moment = require('moment');
 const _ = require('lodash');
 

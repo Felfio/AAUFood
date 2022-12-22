@@ -2,7 +2,6 @@
  * Created by Markus on 23.06.2016.
  */
 const visitorCache = require('../caching/visitorCache');
-const winston = require('winston');
 
 function countVisitors(req, res, next) {
     visitorCache.increment(req.session)
@@ -11,7 +10,7 @@ function countVisitors(req, res, next) {
             next()
         })
         .catch(() => {
-            winston.info('Visits could not be updated.');
+            console.log('Visits could not be updated.');
         });
 }
 

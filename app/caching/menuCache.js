@@ -7,13 +7,11 @@
 const EventEmitter = require('events');
 const config = require('../config');
 const scraper = require('../scraping/scraper');
-const winston = require('winston');
 
 class MenuCache extends EventEmitter {
     init(cacheClient) {
         this.client = cacheClient;
         this.update();
-        winston.info('Initialized Logger.');
     }
 
     update() {
@@ -41,7 +39,7 @@ class MenuCache extends EventEmitter {
         //scraper.getPrincsWeekPlan()
         //    .then(weekPlan => this._updateIfInvalid('princs', weekPlan));
 
-        winston.info('Updating caches.');
+        console.log('Updating caches.');
     }
 
     _updateIfInvalid(restaurantName, newWeekPlan) {
@@ -51,7 +49,7 @@ class MenuCache extends EventEmitter {
             if (cachedMenu !== newWeekPlanJson) {
                 this._cacheMenu(restaurantName, newWeekPlan, newWeekPlanJson);
                 this.emit(`menu:${restaurantName}`, newWeekPlanJson); //Should we emit all single menus?
-                winston.info(`${restaurantName} has changed the menu. -> Cache updated.`)
+                console.log(`${restaurantName} has changed the menu. -> Cache updated.`)
             }
         });
     }
