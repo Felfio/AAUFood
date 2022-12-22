@@ -15,13 +15,21 @@ router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
 
     Promise.all([uniwirtPlan, mensaPlan, hotspotPlan, unipizzeriaPlan, villaLidoPlan, bitsAndBytesPlan])
         .then(results => {
+            let [uniwirt, mensa, hotspot, uniPizzeria, villaLido, bitsAndBytes] = results.map(res => {
+                try {
+                    return JSON.parse(res);
+                } catch (e) {
+                    return [];
+                }
+            });
+
             res.render('index', {
-                uniwirt: JSON.parse(results[0]) || [],
-                mensa: JSON.parse(results[1]) || [],
-                hotspot: JSON.parse(results[2]) || [],
-                uniPizzeria: JSON.parse(results[3]) || [],
-                villaLido: JSON.parse(results[4]) || [],
-                bitsAndBytes: JSON.parse(results[5]) || [],
+                uniwirt,
+                mensa,
+                hotspot,
+                uniPizzeria,
+                villaLido,
+                bitsAndBytes,
                 visitorStats: req.visitorStats,
             });
         });
