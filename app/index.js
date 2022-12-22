@@ -88,3 +88,5 @@ setTimeout(() => {
     visitorCache.clearDaily();
     setInterval(() => visitorCache.clearDaily(), 24 * 60 * 60 * 1000);
 }, timeHelper.getMsUntilMidnight());
+
+module.exports = app;
