@@ -4,398 +4,401 @@
 
 /*General definitions*/
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-  background-image: url("/images/woodnew_double.jpg");
-  background-position-y: bottom;
+    background-image: url("/images/woodnew_double.jpg");
+    background-position-y: bottom;
 }
 
 html,
 body {
-  height: calc(100vh - #{$footerHeight});
+    height: calc(100vh - #{$footerHeight});
 }
 
 .container-fluid.menu-container {
-  max-width: 100vw;
-  min-height: 100%;
-  padding-left: 0;
-  padding-right: 0;
-  margin-left: 0;
-  margin-right: 0;
+    max-width: 100vw;
+    min-height: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .container {
-  min-height: calc(100vh - 32px);
+    min-height: calc(100vh - 32px);
 }
 
 .break-text {
-  &:empty {
-    display: none;
-  }
+    &:empty {
+        display: none;
+    }
 }
 
 .card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25), 0 6px 20px 0 rgba(0, 0, 0, 0.24);
-  border: none;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25), 0 6px 20px 0 rgba(0, 0, 0, 0.24);
+    border: none;
 }
 
 /*Restaurant cards*/
 .restaurant {
-  margin-bottom: $outerPadding + 4px;
-  .card-header {
-    border-bottom: 0;
-    line-height: 1;
+    margin-bottom: $outerPadding + 4px;
+    .card-header {
+        border-bottom: 0;
+        line-height: 1;
 
-    > span {
-      font-family: $headingFont;
-      font-weight: lighter;
+        > span {
+            font-family: $headingFont;
+            font-weight: lighter;
+        }
+
+        i {
+            float: right;
+        }
     }
 
-    i {
-      float: right;
+    .menu-title,
+    .price-tag {
+        list-style: none;
+        font-family: $headingFont;
+        font-size: 14px;
+        font-weight: 600;
     }
-  }
 
-  .menu-title, .price-tag {
-    list-style: none;
-    font-family: $headingFont;
-    font-size: 14px;
-    font-weight: 600;
-  }
+    .allergens {
+        color: $allergensColor;
+        font-size: 12px;
+    }
 
-  .allergens {
-    color: $allergensColor;
-    font-size: 12px;
-  }
-
-  .price-tag {
-    float: right;
-    font-style: normal;
-  }
+    .price-tag {
+        float: right;
+        font-style: normal;
+    }
 }
 
-@mixin mainsItem(){
-  ul.combined-menu-list-group li.list-group-item, ul.mains li.list-group-item {
-    @content
-  }
+@mixin mainsItem() {
+    ul.combined-menu-list-group li.list-group-item,
+    ul.mains li.list-group-item {
+        @content;
+    }
 }
 
 @mixin restaurantColors($bgColor, $fontColor) {
-  .card-header {
-    background: $bgColor;
-    color: $fontColor;
-  }
-
-  .link-icon {
-    color: transparentize($fontColor, 0.25);
-
-    &:hover {
-      color: $fontColor;
+    .card-header {
+        background: $bgColor;
+        color: $fontColor;
     }
-  }
 
-  .menu-title {
-    color: $bgColor;
-  }
+    .link-icon {
+        color: transparentize($fontColor, 0.25);
+
+        &:hover {
+            color: $fontColor;
+        }
+    }
+
+    .menu-title {
+        color: $bgColor;
+    }
 }
 
 .hotspot {
-  @include restaurantColors($hotspotGreen, white);
-  @include mainsItem {
-    margin-top: $menuItemSpacing * 1.5;
-  }
+    @include restaurantColors($hotspotGreen, white);
+    @include mainsItem {
+        margin-top: $menuItemSpacing * 1.5;
+    }
 }
 
-.villa-lido{
-  @include restaurantColors($villalidoBg, white)
+.villa-lido {
+    @include restaurantColors($villalidoBg, white);
 }
 
-.bits-and-bytes{
-  @include restaurantColors($bitsAndBytesBg, white)
+.bits-and-bytes {
+    @include restaurantColors($bitsAndBytesBg, white);
 }
 
 .mensa {
-  @include restaurantColors($mensaOrange, white);
+    @include restaurantColors($mensaOrange, white);
 }
 
 .uniwirt {
-  @include restaurantColors($uniwirtPurple, white);
+    @include restaurantColors($uniwirtPurple, white);
 }
 
 .uni-pizzeria {
-  @include restaurantColors($uniPizzeriaBg, white);
+    @include restaurantColors($uniPizzeriaBg, white);
 }
 
 .la-pasta {
-  @include restaurantColors($laPastaBg, white);
+    @include restaurantColors($laPastaBg, white);
 }
 
 .princs {
-  @include restaurantColors($princsBg, white);
+    @include restaurantColors($princsBg, white);
 }
 
 /* Menu Lists */
 .restaurant ul li {
-  padding: 0;
-  border: none;
+    padding: 0;
+    border: none;
 }
 
 ul.starters {
-  margin-bottom: $menuSpacing;
+    margin-bottom: $menuSpacing;
 
-  li:not(:last-child) {
-    margin-bottom: $menuItemSpacing;
-  }
+    li:not(:last-child) {
+        margin-bottom: $menuItemSpacing;
+    }
 }
 
 ul.mains,
 ul.combined-menu-list-group {
-  li.menu-title:not(:first-child) {
-    margin-top: $menuSpacing;
-  }
+    li.menu-title:not(:first-child) {
+        margin-top: $menuSpacing;
+    }
 
-  li.list-group-item {
-    margin-top: $menuItemSpacing;
-  }
-  li.menu-title + li.list-group-item {
-    margin-top: 0;
-  }
+    li.list-group-item {
+        margin-top: $menuItemSpacing;
+    }
+    li.menu-title + li.list-group-item {
+        margin-top: 0;
+    }
 }
 
 /* Infos */
-ul.info-elements{
-  margin-top: $menuSpacing * 1.2;
-  font-style: italic;
+ul.info-elements {
+    margin-top: $menuSpacing * 1.2;
+    font-style: italic;
 }
 
 .info {
-  text-align: center;
+    text-align: center;
 
-  .info-icon {
-    color: $infoIconColor;
-    margin-bottom: 12px;
-  }
+    .info-icon {
+        color: $infoIconColor;
+        margin-bottom: 12px;
+    }
 
-  p {
-    margin-bottom: $menuItemSpacing;
-  }
-  p:last-child {
-    margin-bottom: 0;
-  }
+    p {
+        margin-bottom: $menuItemSpacing;
+    }
+    p:last-child {
+        margin-bottom: 0;
+    }
 
-  .break-date {
-    font-weight: bold;
-  }
+    .break-date {
+        font-weight: bold;
+    }
 }
 
 /* Footer */
 .cc_banner.cc_container.cc_container--open {
-  background-color: $footerColor !important;
-  border-bottom: 1pt solid black;
+    background-color: $footerColor !important;
+    border-bottom: 1pt solid black;
 
-  position: static;
+    position: static;
 }
 
 #cookieConsentHolder {
-  position: absolute;
-  bottom: $footerHeight;
-  width: 100%;
-  left: 0;
+    position: absolute;
+    bottom: $footerHeight;
+    width: 100%;
+    left: 0;
 }
 
 footer {
-  z-index: 9500;
-  position: relative;
-  bottom: 0;
-  width: 100%;
-  height: $footerHeight;
-  padding: 0 $outerPadding;
+    z-index: 9500;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    height: $footerHeight;
+    padding: 0 $outerPadding;
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-  background-color: $footerColor;
-  color: $footerFontColor;
-
-  .btn {
+    background-color: $footerColor;
     color: $footerFontColor;
-    border: none;
-    transition: all 0.2s ease-in-out;
-    cursor: pointer;
 
-    &:hover {
-      background: $footerFontColor;
-      color: #222;
-    }
-  }
+    .btn {
+        color: $footerFontColor;
+        border: none;
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
 
-  // Easy fix for real centering
-  > * {
-    min-width: 50px;
-    @media (min-width: 62em) {
-      min-width: 100px;
+        &:hover {
+            background: $footerFontColor;
+            color: #222;
+        }
     }
 
-    &:last-child {
-      text-align: right;
+    // Easy fix for real centering
+    > * {
+        min-width: 50px;
+        @media (min-width: 62em) {
+            min-width: 100px;
+        }
+
+        &:last-child {
+            text-align: right;
+        }
     }
-  }
 
-  .footer-pun {
-    white-space: nowrap;
+    .footer-pun {
+        white-space: nowrap;
 
-    a {
-      color: $footerFontColor;
+        a {
+            color: $footerFontColor;
 
-      &:hover {
-        text-decoration: none;
-      }
+            &:hover {
+                text-decoration: none;
+            }
+        }
+        i {
+            vertical-align: middle;
+            font-size: 1.25em;
+
+            &.fa-heart {
+                color: #df0101;
+            }
+
+            &.fa-empire {
+                color: #a00000;
+            }
+
+            &.fa-rebel {
+                color: #f1592a;
+            }
+
+            &.fa-star {
+                color: gold;
+            }
+            &.fa-space-shuttle {
+                color: #0093ff;
+            }
+
+            &.fa-hand-lizard {
+                color: #377f31;
+            }
+            &.fa-hand-paper {
+                color: #ffe4c4;
+            }
+            &.fa-snowflake {
+                color: #0093ff;
+            }
+        }
     }
-    i {
-      vertical-align: middle;
-      font-size: 1.25em;
-
-      &.fa-heart {
-        color: #df0101;
-      }
-
-      &.fa-empire {
-        color: #a00000;
-      }
-
-      &.fa-rebel {
-        color: #f1592a;
-      }
-
-      &.fa-star {
-        color: gold;
-      }
-      &.fa-space-shuttle {
-        color: #0093ff;
-      }
-
-      &.fa-hand-lizard {
-        color: #377f31;
-      }
-      &.fa-hand-paper {
-        color: #ffe4c4;
-      }
-      &.fa-snowflake {
-        color: #0093ff;
-      }
-    }
-  }
 }
 
 /* Swipe */
 .swipe {
-  overflow: hidden;
-  visibility: hidden;
-  position: relative;
+    overflow: hidden;
+    visibility: hidden;
+    position: relative;
 }
 
 .swipe-wrap {
-  overflow: hidden;
-  position: relative;
+    overflow: hidden;
+    position: relative;
 }
 
 .swipe-wrap > div {
-  float: left;
-  width: 100%;
-  position: relative;
+    float: left;
+    width: 100%;
+    position: relative;
 }
 
 /* Weekday and Navigation*/
 .weekday-container {
-  padding: 0 4px;
+    padding: 0 4px;
 
-  > .restaurants-row {
-    @media (max-width: 61.9em) {
-      margin: 0;
+    > .restaurants-row {
+        @media (max-width: 61.9em) {
+            margin: 0;
+        }
+        @media (min-width: 62em) {
+            margin: 0 calc(48px);
+        }
     }
-    @media (min-width: 62em) {
-      margin: 0 calc(48px);
-    }
-  }
 
-  .weekday-header {
-    text-align: center;
-    padding: 4px 0;
+    .weekday-header {
+        text-align: center;
+        padding: 4px 0;
 
-    .weekday {
-      font-weight: 500;
-      font-size: 2.8rem;
-      color: white;
-      text-shadow: $darkEmboss;
+        .weekday {
+            font-weight: 500;
+            font-size: 2.8rem;
+            color: white;
+            text-shadow: $darkEmboss;
+        }
     }
-  }
 }
 
 .nav-icon {
-  z-index: 5000;
-  position: fixed;
-  top: 40vh;
-  font-size: 4rem;
-  color: white;
-  text-shadow: $darkEmboss;
-  opacity: 0.4;
-  transition: opacity 0.2s ease-in-out;
+    z-index: 5000;
+    position: fixed;
+    top: 40vh;
+    font-size: 4rem;
+    color: white;
+    text-shadow: $darkEmboss;
+    opacity: 0.4;
+    transition: opacity 0.2s ease-in-out;
 
-  &:hover:not(.disabled) {
-    opacity: 1;
-    cursor: pointer;
-  }
+    &:hover:not(.disabled) {
+        opacity: 1;
+        cursor: pointer;
+    }
 
-  &.right {
-    right: $navIconMargin;
-    margin-right: -$navIconMargin;
-    padding-right: $navIconMargin;
-    margin-left: -$navIconMarginInwards;
-    padding-left: $navIconMarginInwards;
-  }
+    &.right {
+        right: $navIconMargin;
+        margin-right: -$navIconMargin;
+        padding-right: $navIconMargin;
+        margin-left: -$navIconMarginInwards;
+        padding-left: $navIconMarginInwards;
+    }
 
-  &.left {
-    left: $navIconMargin;
-    margin-left: -$navIconMargin;
-    padding-left: $navIconMargin;
-    margin-right: -$navIconMarginInwards;
-    padding-right: $navIconMarginInwards;
-  }
+    &.left {
+        left: $navIconMargin;
+        margin-left: -$navIconMargin;
+        padding-left: $navIconMargin;
+        margin-right: -$navIconMarginInwards;
+        padding-right: $navIconMarginInwards;
+    }
 
-  // Small devices (landscape phones, less than 48em)
-  @media (max-width: 61.9em) {
-    display: none;
-  }
+    // Small devices (landscape phones, less than 48em)
+    @media (max-width: 61.9em) {
+        display: none;
+    }
 }
 
 .card-columns {
-  @include media-breakpoint-only(xs) {
-    column-count: 1;
-    padding: 0 1em;
-  }
-  @include media-breakpoint-only(sm) {
-    column-count: 1;
-    padding: 0 1em;
-  }
-  @include media-breakpoint-only(md) {
-    column-count: 1;
-    padding: 0 1em;
-  }
-  @include media-breakpoint-only(lg) {
-    column-count: 2;
-    padding: 0 4em;
-  }
-  @include media-breakpoint-only(xl) {
-    column-count: 4;
-    padding: 0 4em;
-  }
+    @include media-breakpoint-only(xs) {
+        column-count: 1;
+        padding: 0 1em;
+    }
+    @include media-breakpoint-only(sm) {
+        column-count: 1;
+        padding: 0 1em;
+    }
+    @include media-breakpoint-only(md) {
+        column-count: 1;
+        padding: 0 1em;
+    }
+    @include media-breakpoint-only(lg) {
+        column-count: 2;
+        padding: 0 4em;
+    }
+    @include media-breakpoint-only(xl) {
+        column-count: 4;
+        padding: 0 4em;
+    }
 }
 
 #snowCanvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  min-height: 100vh;
-  max-width: 100vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 100vh;
+    max-width: 100vw;
+    z-index: -10;
 }

@@ -1,5 +1,5 @@
 import './styles/app.scss';
-import * as bootstrap from 'bootstrap'
+import 'bootstrap'
 import $ from 'jquery';
 import Swipe from 'swipejs';
 import { io } from "socket.io-client";
