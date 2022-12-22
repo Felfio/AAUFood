@@ -29,9 +29,6 @@ $(function () {
     initNameShuffling();
 });
 
-var mailPre = "contact", mailDomain = "felf.io";
-$("#mail").text(mailPre + "@" + mailDomain);
-
 function initSlider() {
     var swipe = new Swipe(document.getElementById('slider'), {
         startSlide: sanitizeDay(day),

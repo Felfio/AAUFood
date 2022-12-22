@@ -6,6 +6,10 @@
     border: none;
   }
 
+  a {
+    color: initial;
+  }
+
   /* About us card */
   .about-us {
     background: none;
@@ -108,29 +112,4 @@
 
   color: $color;
   font-weight: bold;
-}
-
-#kristina {
-  @include name(darkorange);
-}
-
-#fabian {
-  @include name(#09b22e);
-}
-
-#markus {
-  @include name(#4b09b2);
-}
-
-#benjamin {
-  @include name(#d61800);
-}
-
-#philipp {
-  @include name(#3f77d8);
-}
-
-#mail {
-  font-weight: bold;
-
 }
