@@ -5,7 +5,7 @@ module.exports = {
     settings: {
         useRandomFooterPuns: true,
         defaultFooterPun: "heart",
-        winterTheme: false,
+        winterTheme: ['01.12.', '01.03.'],
         nodePort: 3000,
     },
     onBreak: {
@@ -63,8 +63,5 @@ module.exports = {
          new FooterPun("star", "Hey look!", "fa-star fa-spin", null, " It's spinning!"),
          new FooterPun("keyboard", "Use your ", "fa-keyboard-o", null, " arrows on desktop!"),
          new FooterPun("infinity", "To infinity ", "fa-space-shuttle", null, " and beyond!")*/
-    ],
-    snowFall: {
-        particles: 150,
-    }
+    ]
 };

@@ -60,7 +60,10 @@ app.locals.isOnBreak = breakHelper.isOnBreak;
 app.locals.getBreakInfo = breakHelper.getBreakInfo;
 app.locals.menuStateHelper = menuStateHelper;
 app.locals.catFactHeaderUrl = placeKittenHelper.catFactHeaderUrl;
-app.locals.isWinterThemeEnabled = () => config.settings.winterTheme;
+app.locals.isWinterThemeEnabled = () => {
+    const [from, to] = config.settings.winterTheme.map(d => moment(d, "DD.MM"));
+    return !moment().isBetween(to, from);
+};
 
 var server = app.listen(config.settings.nodePort, function () {
     console.log('AAU Food listening on port ' + config.settings.nodePort + '!');

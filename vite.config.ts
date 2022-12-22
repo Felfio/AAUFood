@@ -1,5 +1,7 @@
 import { defineConfig } from 'vite';
 import replace from '@rollup/plugin-replace';
+import inject from "@rollup/plugin-inject";
+
 import * as ChildProcess from 'child_process';
 import * as path from 'path';
 
@@ -10,6 +12,11 @@ const version = `${dateStr} ${gitHash}`;
 console.log(`Building version: ${version}`);
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
+    }
+  },
   build: {
     chunkSizeWarningLimit: 3000,
     rollupOptions: {
@@ -23,7 +30,10 @@ export default defineConfig({
         },
       },
       plugins: [
-        //  Toggle the booleans here to enable / disable Phaser 3 features:
+        inject({
+          $: 'jquery',
+          jQuery: 'jquery',
+        }),
         replace({
           preventAssignment: true,
           __VERSION__: `${version}`,

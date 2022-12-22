@@ -1,24 +1,12 @@
 import './styles/app.scss';
-import 'bootstrap';
-
-import * as $ from 'jquery';
-
-
-window.cookieconsent_options = {
-    container: "#cookieConsentHolder",
-    message: "Wir verwenden Cookies, um die Anzahl der Besucher zu ermitteln. Es werden natürlich keine Daten an Dritte weitergegeben.",
-    dismiss: "OK",
-    learnMore: "",
-    link: null,
-    theme: "dark-bottom"
-};
-
-import 'cookieconsent';
-
-//import snowFall from "./snowFall";
-
-import io from 'socket.io-client';
+import * as bootstrap from 'bootstrap'
+import $ from 'jquery';
 import Swipe from 'swipejs';
+import { io } from "socket.io-client";
+
+import { initSnowFall } from "./snowFall";
+
+window.$ = $;
 
 var dayStr = location.href.substring(location.href.lastIndexOf("/") + 1)
 var day = dayStr.length ? +dayStr : null;
@@ -31,12 +19,12 @@ socket.on('newVisitor', function (data) {
     overallVisitors.text(data.overallVisitors);
 });
 
-$(document).ready(function () {
+$(function () {
     // Both slider and snowfall depend on window size
     // This messy setup was the only way to get both working correctly
     requestAnimationFrame(function () {
         initSlider();
-        snowFall.initSnowFall();
+        initSnowFall();
     });
     initNameShuffling();
 });

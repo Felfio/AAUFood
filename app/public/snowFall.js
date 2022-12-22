@@ -1,9 +1,9 @@
-var particles = require("../config").snowFall.particles;
+const particles = 150;
 
 // A courtesy of https://codepen.io/loktar00/pen/CHpGo
 // Modified a bit to fit our needs;
 
-function initSnowFall() {
+export function initSnowFall() {
   var canvas = document.getElementById("snowCanvas");
   if (canvas == null) {
     return;
@@ -25,12 +25,12 @@ function initSnowFall() {
   canvas.width = window.innerWidth;
   canvas.height = getBottomOffset(footer);
 
-  $(window).resize(function() {
-    requestAnimationFrame(function() {
+  $(window).on('resize', (function () {
+    requestAnimationFrame(function () {
       canvas.width = window.innerWidth;
       canvas.height = getBottomOffset(footer);
     });
-  });
+  }));
 
   function snow() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -116,17 +116,13 @@ function initSnowFall() {
     snow();
   }
 
-  canvas.addEventListener("mousemove", function(e) {
+  canvas.addEventListener("mousemove", function (e) {
     (mX = e.clientX), (mY = e.clientY);
   });
 
-  canvas.addEventListener("touchmove", function(e) {
+  canvas.addEventListener("touchmove", function (e) {
     (mX = e.clientX), (mY = e.clientY);
   });
 
   init();
 }
-
-module.exports = {
-  initSnowFall: initSnowFall
-};
