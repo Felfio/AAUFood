@@ -3,8 +3,6 @@ const router = express.Router();
 const Promise = require("bluebird");
 const menuCache = require('../caching/menuCache');
 const externalApis = require('../externals/externalApis');
-const visitorCache = require('../caching/visitorCache');
-const timeHelper = require('../helpers/timeHelper');
 const counter = require('../middleware/visitorCounter');
 
 router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {

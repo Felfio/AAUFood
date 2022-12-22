@@ -6,6 +6,7 @@
 
 const EventEmitter = require('events');
 const config = require('../config');
+const { getMidnight } = require('../helpers/timeHelper');
 const overallVisitorKey = config.cache.overallVisitorKey;
 const dailyVisitorKey = config.cache.dailyVisitorKey;
 
@@ -31,7 +32,7 @@ class VisitorCache extends EventEmitter {
 
     increment(session) {
         var lastCountedVisit = session.lastCountedVisit;
-        var currentDayMidnight = this._getCurrentDayMidnight();
+        var currentDayMidnight = getMidnight();
 
         // If no visit is registered, or user has not visited today.
         if (!lastCountedVisit || (lastCountedVisit && (new Date(lastCountedVisit) < currentDayMidnight))) {
@@ -57,23 +58,9 @@ class VisitorCache extends EventEmitter {
             });
     }
 
-    _getCurrentDayMidnight() {
-        var date = new Date();
-        date.setHours(0);
-        date.setMinutes(0);
-        date.setSeconds(0);
-        date.setMilliseconds(0);
-
-        return date;
-    }
-
     _incrementDailyVisitors() {
         let val = this.client.get(dailyVisitorKey) || 0;
         this.client.set(dailyVisitorKey, ++val);
-
-        if (val === 1) {
-            this._setExpireAtMidnight(dailyVisitorKey);
-        }
 
         return Promise.resolve(val);
     }
@@ -84,21 +71,8 @@ class VisitorCache extends EventEmitter {
         return Promise.resolve(val);
     }
 
-    _setExpireAtMidnight(keyName) {
-        // TODO
-        //var unixTime = this._getUnixTimeMidnight();
-        //return this.client.pexpireatAsync(keyName, unixTime);
-    }
-
-    _getUnixTimeMidnight() {
-        var newDate = new Date();
-        newDate.setDate(newDate.getDate() + 1);
-        newDate.setHours(0);
-        newDate.setMinutes(0);
-        newDate.setSeconds(0);
-        newDate.setMilliseconds(0);
-
-        return newDate.getTime();
+    clearDaily() {
+        this.client.set(dailyVisitorKey, 0);
     }
 }
 

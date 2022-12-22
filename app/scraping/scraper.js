@@ -6,7 +6,6 @@ const cheerio = require('cheerio');
 const PDFJS = require("pdfjs-dist");
 global.XMLHttpRequest = require('xhr2');
 const moment = require('moment');
-const he = require('he');
 const _ = require('lodash');
 
 const Food = require("../models/food");

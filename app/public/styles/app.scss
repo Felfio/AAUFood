@@ -1,4 +1,4 @@
-@import "~bootstrap/scss/bootstrap.scss";
+@import "/node_modules/bootstrap/scss/bootstrap.scss";
 @import "_variables.scss";
 @import "about.scss";
 
@@ -6,7 +6,7 @@
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-  background-image: url("../images/woodnew_double.jpg");
+  background-image: url("/images/woodnew_double.jpg");
   background-position-y: bottom;
 }
 

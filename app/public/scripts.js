@@ -1,5 +1,8 @@
-require('./styles/app.scss');
-require('bootstrap');
+import './styles/app.scss';
+import 'bootstrap';
+
+import * as $ from 'jquery';
+
 
 window.cookieconsent_options = {
     container: "#cookieConsentHolder",
@@ -10,12 +13,12 @@ window.cookieconsent_options = {
     theme: "dark-bottom"
 };
 
-require('cookieconsent');
+import 'cookieconsent';
 
-var snowFall = require("./snowFall");
+//import snowFall from "./snowFall";
 
-var io = require('socket.io-client');
-var Swipe = require('swipejs');
+import io from 'socket.io-client';
+import Swipe from 'swipejs';
 
 var dayStr = location.href.substring(location.href.lastIndexOf("/") + 1)
 var day = dayStr.length ? +dayStr : null;
@@ -28,10 +31,10 @@ socket.on('newVisitor', function (data) {
     overallVisitors.text(data.overallVisitors);
 });
 
-$(document).ready(function() {
+$(document).ready(function () {
     // Both slider and snowfall depend on window size
     // This messy setup was the only way to get both working correctly
-    requestAnimationFrame(function() {
+    requestAnimationFrame(function () {
         initSlider();
         snowFall.initSnowFall();
     });

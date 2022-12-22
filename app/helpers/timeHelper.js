@@ -42,22 +42,39 @@ function checkInputForCurrentWeek(str) {
     return false;
 }
 
-function checkInputForWeekday(str,weekDay){
+function checkInputForWeekday(str, weekDay) {
     var date = determineLastMonday();
     date.setDate(date.getDate() + weekDay);
-    str = str.replace(".0","."); //handle leading zero
-    if (str.indexOf(dateStringShort(date)) !== -1)
-    {
+    str = str.replace(".0", "."); //handle leading zero
+    if (str.indexOf(dateStringShort(date)) !== -1) {
         return true;
-    } 
-    else 
+    }
+    else
         return false;
 }
 
+function getMidnight() {
+    var newDate = new Date();
+    newDate.setDate(newDate.getDate() + 1);
+    newDate.setHours(0);
+    newDate.setMinutes(0);
+    newDate.setSeconds(0);
+    newDate.setMilliseconds(0);
+
+    return newDate;
+}
+
+function getMsUntilMidnight() {
+    var midnightTime = getMidnight();
+    return midnightTime - new Date();
+}
+
 module.exports = {
-    sanitizeDay: sanitizeDay,
-    weekDayName: weekDayName,
-    getMondayDate: getMondayDate,
-    checkInputForCurrentWeek: checkInputForCurrentWeek,
-    checkInputForWeekday : checkInputForWeekday
+    sanitizeDay,
+    weekDayName,
+    getMondayDate,
+    checkInputForCurrentWeek,
+    checkInputForWeekday,
+    getMidnight,
+    getMsUntilMidnight
 };

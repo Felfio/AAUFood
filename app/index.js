@@ -1,7 +1,5 @@
 const express = require('express');
-const bluebird = require('bluebird');
 const path = require('path');
-// const redis = require('redis');
 const NodeCache = require("node-cache");
 const moment = require('moment');
 const bodyParser = require('body-parser');
@@ -19,12 +17,8 @@ const breakHelper = require('./helpers/breakHelper');
 const placeKittenHelper = require('./helpers/placeKittenHelper');
 const menuStateHelper = require('./helpers/menuStateHelper');
 
-// bluebird.promisifyAll(redis.RedisClient.prototype);
-// bluebird.promisifyAll(redis.Multi.prototype);
 
 const session = require('express-session');
-//const RedisStore = require('connect-redis')(session);
-//const redisClient = redis.createClient({host: 'redis'});
 const cacheClient = new NodeCache({ checkperiod: 30 });
 const app = express();
 
@@ -35,7 +29,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(session({
-    //store: new RedisStore({client: redisClient}),
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
@@ -79,3 +72,7 @@ menuCache.init(cacheClient);
 visitorCache.init(cacheClient, io);
 
 setInterval(() => menuCache.update(), config.cache.intervall);
+setTimeout(() => {
+    visitorCache.clearDaily();
+    setInterval(() => visitorCache.clearDaily(), 24 * 60 * 60 * 1000);
+}, timeHelper.getMsUntilMidnight());
