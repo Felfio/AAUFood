@@ -10,7 +10,7 @@ const visitorCache = require('./caching/visitorCache');
 const config = require('./config');
 const indexRoutes = require('./routes/index');
 const foodRoutes = require('./routes/food');
-const winston = require('winston');
+//const winston = require('winston');
 const timeHelper = require('./helpers/timeHelper');
 const footerPunHelper = require('./helpers/footerPunHelper');
 const breakHelper = require('./helpers/breakHelper');
@@ -22,7 +22,7 @@ const session = require('express-session');
 const cacheClient = new NodeCache({ checkperiod: 30 });
 const app = express();
 
-winston.add(winston.transports.File, { filename: 'logfile.log' });
+//winston.add(winston.transports.File, { filename: 'logfile.log' });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -45,11 +45,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/', indexRoutes);
 app.use('/food', foodRoutes);
 
+app.use('/app/test', function (req, res, next) {
+    const randomId = `${Math.random()}`.slice(2);
+    const path = `/api/item/${randomId}`;
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
+    res.end(`Hello! Fetch one item: <a href="${path}">${path}</a>`);
+});
+
 app.use(function (err, req, res, next) {
     console.log("Im finalen Error Handler!");
     res.status(500);
     res.json({ error: err.message });
 });
+
 
 //Locals for usage in views
 app.locals.moment = moment;
