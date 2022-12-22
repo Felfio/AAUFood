@@ -4,5 +4,11 @@
             "source": "/api/(.*)",
             "destination": "/app"
         }
+    ],
+    "builds": [
+        {
+            "src": "app/index.js",
+            "use": "@vercel/node"
+        }
     ]
 }
