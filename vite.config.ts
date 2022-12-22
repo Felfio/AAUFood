@@ -6,7 +6,7 @@ import * as ChildProcess from 'child_process';
 import * as path from 'path';
 
 const gitHash = ChildProcess.execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
-const dateStr = new Date().toISOString().substring(0, 16).replace('T', ' ');
+const dateStr = new Date().toISOString().substring(0, 11).replace('T', ' ');
 const version = `${dateStr} ${gitHash}`;
 
 console.log(`Building version: ${version}`);

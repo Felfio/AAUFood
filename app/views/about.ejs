@@ -1,114 +1,122 @@
-<% var title = 'AAU Food: About'; %>
-<% include partials/common/header.ejs %>
+<% var title='AAU Food: About' ; %>
+    <% include partials/common/header.ejs %>
 
 
-<div class="container" id="about">
-    <div class="row">
-        <div class="col text-center back-icon">
-            <a href="/">
-                <i class="fa fa-utensils fa-4x" aria-hidden="true"></i>
+        <div class="container" id="about">
+            <div class="row">
+                <div class="col text-center back-icon">
+                    <a href="/">
+                        <i class="fa fa-utensils fa-4x" aria-hidden="true"></i>
 
-                <h5>
-                    Zurück zum Essen
-                </h5>
-            </a>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-            <div class="card about-us">
-                <h3 class="card-header">Über uns</h3>
-                <div class="card-body">
-                    <p class="card-text">Diese Homepage ist ein Hobbyprojekt und steht in keinerlei Verbindung mit
-                        den angeführten Restaurants. Damit sind die Formalitäten erledigt.</p>
-                    <p class="card-text">So ein Mittagessen kann schon was und man sollte nie auf eine anständige
-                        Mahlzeit verzichten. Die Studenten an der Alpen-Adria-Universität Klagenfurt haben es aber
-                        auch ziemlich gut mit dem Angebot rund um den Campus erwischt. Zahlreiche Mittagsmenüs
-                        werden tagtäglich angeboten, doch fehlt einem oft der Überblick. Wann gibt es wo was? Da
-                        muss man dann schon jede Website abklappern und sich dann auch noch irgendwie das Angebot
-                        merken und wie viel es kostet. Zum Glück war ein paar Informatikern recht langweilig und sie
-                        haben dieses Problem ganz einfach, still und leise gelöst. Auf
-                        <a class="nowrap" href="/">
-                            <i class="fa fa-utensils" aria-hidden="true"></i> AAU Food
-                        </a>
-                        findet man die aktuellen Mittagsmenüs von Lokalen am Campus und das Vergleichen fällt ganz
-                        leicht. So kommt man noch schneller und leichter zu einem wohlverdienten Mittagessen. Wenn 
-                        ihr allerdings etwas ganz fest vermisst oder mal wieder was nicht funktioniert, schreibt 
-                        uns am Besten auf unserer <a class="nowrap" href="https://github.com/Felfio/AAUFood">
-                            <i aria-hidden="true" class="fab fa-github"></i> GitHub Projektseite</a> und wir tun
-                        unser Bestes, eure Wünsche zu erfüllen. Also Mahlzeit und lasst es euch schmecken!</p>
-                   
+                        <h5>
+                            Zurück zum Essen
+                        </h5>
+                    </a>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div id="extra-infos" class="row">
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-img-top cat-fact-header">
-                    <img src="<%= catFactHeaderUrl() %>" alt="Random Kitten Image" />
-                </div>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <i class="fa fa-fw fa-cat" aria-hidden="true"></i> Random Cat Fact
-                    </h4>
-                    <p class="card-text">
-                        <%= catFact %>
-                    </p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <i class="fa fa-fw fa-clock" aria-hidden="true"></i>
-                        Besucher heute: <%= visitorStats.dailyVisitors %></h4>
-                    <p class="card-text">
-                        <%= dailyVisitorsFact %>
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <i class="fa fa-fw fa-smile" aria-hidden="true"></i> Danke!
-                    </h4>
-                    <p class="card-text">Wir danken für die Unterstützung durch</p>
-                    <div class="sponsor-images">
-                        <a href="https://www.oeh-klagenfurt.at/" target="_blank">
-                            <img src="images/sponsors/oehklagenfurt.png" alt="Die ÖH Klagenfurt">
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <i class="fa fa-fw fa-image" aria-hidden="true"></i> Werbebanner
-                    </h4>
-                    <div id="banners">
-                        <div>
-                            <a href="images/food.felfio-banner1.png" target="_blank">
-                                <img src="images/food.felfio-banner1.png" alt="Banner 1">
-                            </a>
-                        </div>
-                        <div>
-                            <a href="images/food.felfio-banner2.png" target="_blank">
-                                <img src="images/food.felfio-banner2.png" alt="Banner 2">
-                            </a>
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="card about-us">
+                        <h3 class="card-header">Über uns</h3>
+                        <div class="card-body">
+                            <p class="card-text">Diese Homepage ist ein Hobbyprojekt und steht in keinerlei Verbindung
+                                mit
+                                den angeführten Restaurants. Damit sind die Formalitäten erledigt.</p>
+                            <p class="card-text">So ein Mittagessen kann schon was und man sollte nie auf eine
+                                anständige
+                                Mahlzeit verzichten. Die Studenten an der Alpen-Adria-Universität Klagenfurt haben es
+                                aber
+                                auch ziemlich gut mit dem Angebot rund um den Campus erwischt. Zahlreiche Mittagsmenüs
+                                werden tagtäglich angeboten, doch fehlt einem oft der Überblick. Wann gibt es wo was? Da
+                                muss man dann schon jede Website abklappern und sich dann auch noch irgendwie das
+                                Angebot
+                                merken und wie viel es kostet. Zum Glück war ein paar Informatikern recht langweilig und
+                                sie
+                                haben dieses Problem ganz einfach, still und leise gelöst. Auf
+                                <a class="nowrap" href="/">
+                                    <i class="fa fa-utensils" aria-hidden="true"></i> AAU Food
+                                </a>
+                                findet man die aktuellen Mittagsmenüs von Lokalen am Campus und das Vergleichen fällt
+                                ganz
+                                leicht. So kommt man noch schneller und leichter zu einem wohlverdienten Mittagessen.
+                                Wenn
+                                ihr allerdings etwas ganz fest vermisst oder mal wieder was nicht funktioniert, schreibt
+                                uns am Besten auf unserer <a class="nowrap" href="https://github.com/Felfio/AAUFood">
+                                    <i aria-hidden="true" class="fab fa-github"></i> GitHub Projektseite</a> und wir tun
+                                unser Bestes, eure Wünsche zu erfüllen. Also Mahlzeit und lasst es euch schmecken!
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div id="extra-infos" class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-img-top cat-fact-header">
+                            <img src="<%= catFactHeaderUrl() %>" alt="Random Kitten Image" />
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <i class="fa fa-fw fa-cat" aria-hidden="true"></i> Random Cat Fact
+                            </h4>
+                            <p class="card-text">
+                                <%= catFact %>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <i class="fa fa-fw fa-clock" aria-hidden="true"></i>
+                                Besucher heute: <%= visitorStats.dailyVisitors %>
+                            </h4>
+                            <p class="card-text">
+                                <%= dailyVisitorsFact %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <i class="fa fa-fw fa-smile" aria-hidden="true"></i> Danke!
+                            </h4>
+                            <p class="card-text">Wir danken für die Unterstützung durch</p>
+                            <div class="sponsor-images">
+                                <a href="https://www.oeh-klagenfurt.at/" target="_blank">
+                                    <img src="images/sponsors/oehklagenfurt.png" alt="Die ÖH Klagenfurt">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <i class="fa fa-fw fa-image" aria-hidden="true"></i> Werbebanner
+                            </h4>
+                            <div id="banners">
+                                <div>
+                                    <a href="images/food.felfio-banner1.png" target="_blank">
+                                        <img src="images/food.felfio-banner1.png" alt="Banner 1">
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="images/food.felfio-banner2.png" target="_blank">
+                                        <img src="images/food.felfio-banner2.png" alt="Banner 2">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
-<script>
-</script>
+        <script>
+        </script>
 
-<% include partials/common/footer.ejs %>
+        <% include partials/common/footer.ejs %>

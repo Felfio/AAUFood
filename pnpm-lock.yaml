@@ -13,7 +13,6 @@ specifiers:
   ejs: ^2.7.4
   express: ^4.18.2
   express-session: ^1.17.3
-  font-awesome: ^4.7.0
   jquery: ^3.6.3
   lodash: ^4.17.21
   moment: ^2.29.4
@@ -44,7 +43,6 @@ dependencies:
   ejs: 2.7.4
   express: 4.18.2
   express-session: 1.17.3
-  font-awesome: 4.7.0
   jquery: 3.6.3
   lodash: 4.17.21
   moment: 2.29.4
@@ -1260,11 +1258,6 @@ packages:
       unpipe: 1.0.0
     transitivePeerDependencies:
       - supports-color
-    dev: false
-
-  /font-awesome/4.7.0:
-    resolution: {integrity: sha512-U6kGnykA/6bFmg1M/oT9EkFeIYv7JlX3bozwQJWiiLz6L0w3F5vBVPxHlwyX/vtNq1ckcpRKOB9f2Qal/VtFpg==}
-    engines: {node: '>=0.10.3'}
     dev: false
 
   /forever-agent/0.6.1:

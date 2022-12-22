@@ -1,5 +1,4 @@
 const FooterPun = require("./models/footerPun");
-const BreakInfo = require("./models/breakInfo");
 
 module.exports = {
     settings: {

@@ -13,6 +13,12 @@ var day = dayStr.length ? +dayStr : null;
 var overallVisitors = $('#overallVisitors');
 var dailyVisitors = $('#dailyVisitors');
 
+var version = '__VERSION__'.startsWith('__') ? '?' : '__VERSION__'; // __VERSION__ is replaced by rollup
+var versionElement = document.getElementById('version');
+if (versionElement) {
+    versionElement.innerHTML = version;
+}
+
 var socket = io();
 socket.on('newVisitor', function (data) {
     dailyVisitors.text(data.dailyVisitors);
