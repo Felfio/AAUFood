@@ -6,13 +6,16 @@
   "scripts": {
     "test": "mocha",
     "build": "vite build",
-    "start": "nodemon app/index.js"
+    "start": "node app/index.js"
   },
   "author": "",
   "license": "ISC",
   "browserslist": [
     "> 0.25%, not dead"
   ],
+  "engines": {
+    "node": "14.x"
+  },
   "dependencies": {
     "@popperjs/core": "^2.11.6",
     "@rollup/plugin-inject": "^5.0.3",
