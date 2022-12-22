@@ -9,6 +9,10 @@
         {
             "src": "app/index.js",
             "use": "@vercel/node"
+        },
+        {
+            "src": "/",
+            "use": "@vercel/static"
         }
     ]
 }
