@@ -20,9 +20,9 @@ export default defineConfig({
   build: {
     chunkSizeWarningLimit: 3000,
     rollupOptions: {
-      input: '/public/scripts.js',
+      input: '/app/public/scripts.js',
       output: {
-        dir: path.join(__dirname, 'public/dist'),
+        dir: path.join(__dirname, 'app/public/dist'),
         assetFileNames: '[name][extname]',
         entryFileNames: 'bundle.js',
         sanitizeFileName(fileName) {
