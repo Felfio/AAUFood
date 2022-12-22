@@ -33,8 +33,11 @@ app.use(session({
 }));
 
 app.use(compression());
-app.use(express.static(__dirname + '/public'));
-app.use("/modules", express.static(__dirname + "/node_modules"));
+if (!process.env.NO_STATIC_FILES) {
+    console.log("Serving static files from /public")
+    app.use(express.static(__dirname + '/../public'));
+}
+// app.use("/modules", express.static(__dirname + "/node_modules"));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

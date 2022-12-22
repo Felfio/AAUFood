@@ -1,0 +1,115 @@
+/*about.scss*/
+#about {
+
+  /* All cards */
+  .card {
+    border: none;
+  }
+
+  a {
+    color: initial;
+  }
+
+  /* About us card */
+  .about-us {
+    background: none;
+    margin-bottom: 15px;
+
+    .card-header {
+      border-bottom: 0;
+      line-height: 1;
+      font-family: $font-family-sans-serif;
+      font-weight: lighter;
+      color: white;
+      background: $footerColor;
+    }
+
+    .card-body {
+      background: white;
+    }
+  }
+
+  /* Back icon */
+  .back-icon {
+    text-align: center;
+    padding: 16px 0;
+    color: white;
+    font-weight: 500;
+    text-shadow: $darkEmboss;
+
+    &,
+    > a {
+      color: white;
+    }
+
+    h5 {
+      margin-bottom: 0;
+    }
+  }
+}
+
+#extra-infos {
+  > * {
+    margin-bottom: 15px;
+
+    > .card + .card {
+      margin-top: 15px;
+    }
+  }
+
+  .cat-fact-header {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+  }
+  
+  .cat-fact-header img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 100%;
+    width: auto;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  
+  .cat-fact-header img.portrait {
+    width: 100%;
+    height: auto;
+  }
+  
+  .sponsor-images {
+    text-align: center;
+  
+    img {
+      max-height: 6em;
+    }
+  }
+}
+
+#banners {
+  display: flex;
+
+  > * + * {
+    margin-left: 20px;
+  }
+
+  img {
+    max-height: 150px;
+    max-width: 100%;
+    display: block;
+  }
+}
+
+
+/* Little stylings */
+@mixin name($color) {
+  &.a {
+    color: inherit;
+  }
+
+  color: $color;
+  font-weight: bold;
+}
