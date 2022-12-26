@@ -1,5 +1,4 @@
 {
-    "buildCommand" : "pnpm build",
     "rewrites": [
         {
             "source": "/(.*)",
@@ -9,10 +8,6 @@
     "builds": [
         {
             "src": "app/index.js",
-            "use": "@vercel/node"
-        },
-        {
-            "src": "/",
             "use": "@vercel/node"
         }
     ]
