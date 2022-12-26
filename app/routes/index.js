@@ -3,9 +3,8 @@ const router = express.Router();
 const Promise = require("bluebird");
 const menuCache = require('../caching/menuCache');
 const externalApis = require('../externals/externalApis');
-const counter = require('../middleware/visitorCounter');
 
-router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
+router.get('/:day(-?\\d*)?', function (req, res, next) {
     var uniwirtPlan = menuCache.getMenu('uniwirt');
     var mensaPlan = menuCache.getMenu('mensa');
     var hotspotPlan = menuCache.getMenu('hotspot');
@@ -30,12 +29,11 @@ router.get('/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
                 uniPizzeria,
                 villaLido,
                 bitsAndBytes,
-                visitorStats: req.visitorStats,
             });
         });
 });
 
-router.get('/city/:day(-?\\d*)?', counter.countVisitors, function (req, res, next) {
+router.get('/city/:day(-?\\d*)?', function (req, res, next) {
     var lapastaPlan = menuCache.getMenu('lapasta');
     var princsPlan = menuCache.getMenu('princs');
 
@@ -44,30 +42,20 @@ router.get('/city/:day(-?\\d*)?', counter.countVisitors, function (req, res, nex
             res.render('cityfood', {
                 lapasta: JSON.parse(results[0]) || [],
                 princs: JSON.parse(results[1]) || [],
-                visitorStats: req.visitorStats,
             });
         });
 });
 
-router.get('/about', counter.countVisitors, function (req, res, next) {
-    var dailyVisitors = req.visitorStats.dailyVisitors;
-    var overallVisitors = req.visitorStats.overallVisitors;
-
-    var dailyVisitorsFact = externalApis.getNumberFact(dailyVisitors);
-    var overallVisitiorsFact = externalApis.getNumberFact(overallVisitors);
+router.get('/about', function (req, res, next) {
     var catFact = externalApis.getCatFact();
 
-    Promise.all([dailyVisitorsFact, overallVisitiorsFact, catFact])
-        .then(facts => {
-            res.render('about', {
-                dailyVisitorsFact: facts[0],
-                overallVisitiorsFact: facts[1],
-                catFact: facts[2],
-                visitorStats: req.visitorStats,
-            });
+    return catFact.then(catFact => {
+        res.render('about', {
+            catFact,
         });
+    });
 });
-router.get('/print', counter.countVisitors, function (req, res, next) {
+router.get('/print', function (req, res, next) {
     var uniwirtPlan = menuCache.getMenu('uniwirt');
     var mensaPlan = menuCache.getMenu('mensa');
     var hotspotPlan = menuCache.getMenu('hotspot');

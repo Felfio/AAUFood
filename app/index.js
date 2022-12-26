@@ -6,7 +6,6 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 const logger = require('morgan');
 const menuCache = require('./caching/menuCache');
-const visitorCache = require('./caching/visitorCache');
 const config = require('./config');
 const indexRoutes = require('./routes/index');
 const foodRoutes = require('./routes/food');
@@ -16,21 +15,12 @@ const breakHelper = require('./helpers/breakHelper');
 const placeKittenHelper = require('./helpers/placeKittenHelper');
 const menuStateHelper = require('./helpers/menuStateHelper');
 
-
-const session = require('express-session');
 const cacheClient = new NodeCache({ checkperiod: 30 });
 const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
-app.use(session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-    cookie: config.cookie
-}));
 
 app.use(compression());
 if (!process.env.NO_STATIC_FILES) {
@@ -44,20 +34,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/', indexRoutes);
 app.use('/food', foodRoutes);
 
-app.use('/app/test', function (req, res, next) {
-    const randomId = `${Math.random()}`.slice(2);
-    const path = `/api/item/${randomId}`;
-    res.setHeader('Content-Type', 'text/html');
-    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
-    res.end(`Hello! Fetch one item: <a href="${path}">${path}</a>`);
-});
-
 app.use(function (err, req, res, next) {
-    console.log("Im finalen Error Handler!");
     res.status(500);
     res.json({ error: err.message });
 });
-
 
 //Locals for usage in views
 app.locals.moment = moment;
@@ -77,15 +57,7 @@ var server = app.listen(config.settings.nodePort, function () {
     console.log('AAU Food listening on port ' + config.settings.nodePort + '!');
 });
 
-const io = require('socket.io')(server);
-
 menuCache.init(cacheClient);
-visitorCache.init(cacheClient, io);
-
 setInterval(() => menuCache.update(), config.cache.intervall);
-setTimeout(() => {
-    visitorCache.clearDaily();
-    setInterval(() => visitorCache.clearDaily(), 24 * 60 * 60 * 1000);
-}, timeHelper.getMsUntilMidnight());
 
 module.exports = app;

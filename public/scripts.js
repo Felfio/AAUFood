@@ -2,7 +2,6 @@ import './styles/app.scss';
 import 'bootstrap'
 import $ from 'jquery';
 import Swipe from 'swipejs';
-import { io } from "socket.io-client";
 
 import { initSnowFall } from "./snowFall";
 
@@ -10,20 +9,12 @@ window.$ = $;
 
 var dayStr = location.href.substring(location.href.lastIndexOf("/") + 1)
 var day = dayStr.length ? +dayStr : null;
-var overallVisitors = $('#overallVisitors');
-var dailyVisitors = $('#dailyVisitors');
 
 var version = '__VERSION__'.startsWith('__') ? '?' : '__VERSION__'; // __VERSION__ is replaced by rollup
 var versionElement = document.getElementById('version');
 if (versionElement) {
     versionElement.innerHTML = version;
 }
-
-var socket = io();
-socket.on('newVisitor', function (data) {
-    dailyVisitors.text(data.dailyVisitors);
-    overallVisitors.text(data.overallVisitors);
-});
 
 $(function () {
     // Both slider and snowfall depend on window size
