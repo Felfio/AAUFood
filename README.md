@@ -20,22 +20,22 @@ AAU Food bietet eine JSON-API zur Abfrage von Menüs:
 Aktuell:
 
 -   `/food/hotspot`
+-   `/food/bitsandbytes`
 -   `/food/uniwirt`
 -   `/food/mensa`
 -   `/food/unipizzeria`
 
 ## Technologien
 
+-   pnpm als Package Manager
+-   ExpressJS + EJS im Backend
+-   Vite, Sass, Bootstrap im Frontend
 -   ~~Frontend: EmberJS~~ (Wechsel zu Server-Side Rendering aufgrund von Performanceproblemen auf mobilen Geräten)
--   NodeJS
--   ExpressJS
--   EJS
--   Bootstrap 4 Alpha
--   Sass
--   Socket.IO für Live-Updates der Besucherzahlen
+-   ~~Socket.IO für Live-Updates der Besucherzahlen~~ (entfernt aufgrund lästigen Cookiebanners sowie falschen Zählens bei Infoscreens mit deaktivierten Cookies)
+-   ~~Redis~~ (entfernt bei Migration zu Vercel)
 
 ## Externe Dienste
 
 -   [placekitten](http://placekitten.com) für zufällige Katzenbilder
 -   [CatFacts API](http://catfacts-api.appspot.com/) für zufällige Fakten über Katzen
--   [NumbersAPI](http://numbersapi.com/#42) für zufällige Fakten zu den Besucherzahlen
+-   ~~[NumbersAPI](http://numbersapi.com/#42) für zufällige Fakten zu den Besucherzahlen~~
