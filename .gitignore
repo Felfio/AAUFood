@@ -37,5 +37,6 @@ node_modules
 
 #Folder for bundled scripts and styles
 app/public/dist
+public/dist
 
 .vscode
