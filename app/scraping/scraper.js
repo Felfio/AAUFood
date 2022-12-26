@@ -23,6 +23,11 @@ var BitsAndBytesUrl = config.scraper.bitsAndBytesUrl;
 var VillaLidoUrl = config.scraper.villaLidoUrl;
 let PrincsUrl = config.scraper.princsUrl;
 
+function onParseError(err) {
+    console.error(err);
+    return scraperHelper.getWeekErrorModel();
+}
+
 function parseWeek(input, parseFunction) {
     var menus = [];
     for (let day = 0; day < 7; day++) {
@@ -35,7 +40,8 @@ function parseWeek(input, parseFunction) {
 function getUniwirtWeekPlan() {
     return request.getAsync(UniwirtUrl)
         .then(res => res.body)
-        .then(body => parseUniwirt(body));
+        .then(body => parseUniwirt(body))
+        .catch(onParseError);
 }
 
 function parseUniwirt(html) {
@@ -79,7 +85,7 @@ function parseUniwirt(html) {
     // Saturday a la carte
     weekPlan[5].noMenu = true;
 
-    return weekPlan
+    return weekPlan;
 }
 
 function createUniwirtDayMenu(dayEntry) {
@@ -135,7 +141,8 @@ function createUniwirtDayMenu(dayEntry) {
 function getMensaWeekPlan() {
     return request.getAsync({ url: MensaUrl, jar: true })
         .then(res => res.body)
-        .then(body => parseMensa(body));
+        .then(body => parseMensa(body))
+        .catch(onParseError);
 }
 
 function parseMensa(html) {
@@ -184,7 +191,12 @@ function parseMensa(html) {
             menu.mains.push(food);
         }
 
+
         orderMensaMenusOfDay(menu, i);
+
+        menu.starters = menu.starters.filter(m => m && m.name);
+        menu.mains = menu.mains.filter(m => m && m.name);
+        menu.alacarte = menu.alacarte.filter(m => m && m.name);
 
         scraperHelper.setErrorOnEmpty(menu);
     }
@@ -267,7 +279,8 @@ function createWochenspecialFoodMenuFromElement($, e) { // Kept here in case men
 function getUniPizzeriaWeekPlan() {
     return request.getAsync(PizzeriaUrl)
         .then(res => res.body)
-        .then(body => parseWeek(parseUniPizzeria(body), getUniPizzeriaDayPlan));
+        .then(body => parseWeek(parseUniPizzeria(body), getUniPizzeriaDayPlan))
+        .catch(onParseError);
 }
 
 function getUniPizzeriaPlan(day) {
@@ -394,7 +407,8 @@ function parseUniPizzeria(html) {
 function getHotspotWeekPlan() {
     return request.getAsync(HotspotUrl)
         .then(res => res.body)
-        .then(body => parseHotspot(body));
+        .then(body => parseHotspot(body))
+        .catch(onParseError);
 }
 
 function parseHotspot(html) {
@@ -458,7 +472,8 @@ function parseHotspot(html) {
 function getBitsAndBytesWeekPlan() {
     return request.getAsync(BitsAndBytesUrl)
         .then(res => res.body)
-        .then(body => parseBitsnBytes(body));
+        .then(body => parseBitsnBytes(body))
+        .catch(onParseError);
 }
 
 function parseBitsnBytes(html) {
@@ -585,7 +600,8 @@ function getPrincsWeekPlan() {
             //     )
             // );
             return Promise.resolve(new Array(7).fill(1).map(() => new Menu()));
-        });
+        })
+        .catch(onParseError);
 }
 
 function parsePrincsPDFContent(content) {

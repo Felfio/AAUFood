@@ -3,6 +3,7 @@ const router = express.Router();
 const Promise = require("bluebird");
 const menuCache = require('../caching/menuCache');
 const externalApis = require('../externals/externalApis');
+const { getWeekErrorModel } = require('../scraping/scraperHelper');
 
 const uniRestaurants = ['uniwirt', 'mensa', 'hotspot', 'uniPizzeria', 'villaLido', 'bitsAndBytes'];
 const cityRestaurants = ['lapasta', 'princs'];
@@ -36,8 +37,11 @@ function getMenus(restaurants) {
     const cacheCalls = {};
     for (let restaurantName of restaurants) {
         cacheCalls[restaurantName] = menuCache.getMenu(restaurantName)
-            .then(menu => menu ? JSON.parse(menu) : [])
-            .catch(err => []);
+            .then(menu => menu ? JSON.parse(menu) : getWeekErrorModel())
+            .catch(err => {
+                console.error(err);
+                return getWeekErrorModel();
+            });
     }
 
     return Promise.props(cacheCalls);

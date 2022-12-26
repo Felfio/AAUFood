@@ -122,12 +122,20 @@ function isCurrentKW(kw) {
 
 function findDate(str) {
     let match = str.match(/(\d{1,2}\.\d{1,2})/);
-    if (!match){
+    if (!match) {
         return null;
     }
-    
+
     let dateStr = match[1].replace(/(^|[^\d])0(\d)/g, "$1$2");
     return moment(dateStr, "D.M.YYYY")
+}
+
+function getWeekErrorModel() {
+    return new Array(7).fill(1).map(() => {
+        let m = new Menu();
+        m.error = true;
+        return m;
+    });
 }
 
 module.exports = {
@@ -143,4 +151,5 @@ module.exports = {
     isCurrentKW,
     findKW,
     findDate,
+    getWeekErrorModel,
 };
