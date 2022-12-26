@@ -4,46 +4,17 @@ const Promise = require("bluebird");
 const menuCache = require('../caching/menuCache');
 const externalApis = require('../externals/externalApis');
 
+const uniRestaurants = ['uniwirt', 'mensa', 'hotspot', 'uniPizzeria', 'villaLido', 'bitsAndBytes'];
+const cityRestaurants = ['lapasta', 'princs'];
+
 router.get('/:day(-?\\d*)?', function (req, res, next) {
-    var uniwirtPlan = menuCache.getMenu('uniwirt');
-    var mensaPlan = menuCache.getMenu('mensa');
-    var hotspotPlan = menuCache.getMenu('hotspot');
-    var unipizzeriaPlan = menuCache.getMenu('uniPizzeria');
-    var villaLidoPlan = menuCache.getMenu('villaLido');
-    var bitsAndBytesPlan = menuCache.getMenu('bitsAndBytes');
-
-    Promise.all([uniwirtPlan, mensaPlan, hotspotPlan, unipizzeriaPlan, villaLidoPlan, bitsAndBytesPlan])
-        .then(results => {
-            let [uniwirt, mensa, hotspot, uniPizzeria, villaLido, bitsAndBytes] = results.map(res => {
-                try {
-                    return JSON.parse(res);
-                } catch (e) {
-                    return [];
-                }
-            });
-
-            res.render('index', {
-                uniwirt,
-                mensa,
-                hotspot,
-                uniPizzeria,
-                villaLido,
-                bitsAndBytes,
-            });
-        });
+    var restaurantCalls = getMenus(uniRestaurants);
+    return restaurantCalls.then(results => res.render('index', results));
 });
 
 router.get('/city/:day(-?\\d*)?', function (req, res, next) {
-    var lapastaPlan = menuCache.getMenu('lapasta');
-    var princsPlan = menuCache.getMenu('princs');
-
-    Promise.all([lapastaPlan, princsPlan])
-        .then(results => {
-            res.render('cityfood', {
-                lapasta: JSON.parse(results[0]) || [],
-                princs: JSON.parse(results[1]) || [],
-            });
-        });
+    var restaurantCalls = getMenus(cityRestaurants);
+    return restaurantCalls.then(results => res.render('cityfood', results));
 });
 
 router.get('/about', function (req, res, next) {
@@ -56,25 +27,21 @@ router.get('/about', function (req, res, next) {
     });
 });
 router.get('/print', function (req, res, next) {
-    var uniwirtPlan = menuCache.getMenu('uniwirt');
-    var mensaPlan = menuCache.getMenu('mensa');
-    var hotspotPlan = menuCache.getMenu('hotspot');
-    var unipizzeriaPlan = menuCache.getMenu('uniPizzeria');
-    var villaLidoPlan = menuCache.getMenu('villaLido');
-    var bitsAndBytesPlan = menuCache.getMenu('bitsAndBytes');
-
-    Promise.all([uniwirtPlan, mensaPlan, hotspotPlan, unipizzeriaPlan, villaLidoPlan, bitsAndBytesPlan])
-        .then(results => {
-            res.render('print', {
-                uniwirt: JSON.parse(results[0]),
-                mensa: JSON.parse(results[1]),
-                hotspot: JSON.parse(results[2]),
-                uniPizzeria: JSON.parse(results[3]),
-                villaLido: JSON.parse(results[4]),
-                bitsAndBytes: JSON.parse(results[5])
-            });
-        });
+    var restaurantCalls = getMenus(uniRestaurants);
+    return restaurantCalls.then(results => res.render('print', results));
 });
+
+
+function getMenus(restaurants) {
+    const cacheCalls = {};
+    for (let restaurantName of restaurants) {
+        cacheCalls[restaurantName] = menuCache.getMenu(restaurantName)
+            .then(menu => menu ? JSON.parse(menu) : [])
+            .catch(err => []);
+    }
+
+    return Promise.props(cacheCalls);
+}
 
 
 module.exports = router;
