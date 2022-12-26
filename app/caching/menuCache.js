@@ -4,42 +4,48 @@
 
 'use strict';
 
+const { Promise } = require('bluebird');
 const EventEmitter = require('events');
-const config = require('../config');
 const scraper = require('../scraping/scraper');
 
 class MenuCache extends EventEmitter {
+    initialization = Promise.resolve();
+
     init(cacheClient) {
         this.client = cacheClient;
-        this.update();
+        return this.initialization = this.update();
     }
 
     update() {
-        scraper.getMensaWeekPlan()
+        const updates = {};
+
+        updates.mensa = scraper.getMensaWeekPlan()
             .then(weekPlan => this._updateIfInvalid('mensa', weekPlan));
 
-        scraper.getHotspotWeekPlan()
+        updates.hotspot = scraper.getHotspotWeekPlan()
             .then(weekPlan => this._updateIfInvalid('hotspot', weekPlan));
 
-        scraper.getUniwirtWeekPlan()
+        updates.uniwirt = scraper.getUniwirtWeekPlan()
             .then(weekPlan => this._updateIfInvalid('uniwirt', weekPlan));
 
-        scraper.getUniPizzeriaWeekPlan()
+        updates.uniPizzeria = scraper.getUniPizzeriaWeekPlan()
             .then(weekPlan => this._updateIfInvalid('uniPizzeria', weekPlan));
 
-        scraper.getLapastaWeekPlan()
+        updates.lapasta = scraper.getLapastaWeekPlan()
             .then(weekPlan => this._updateIfInvalid('lapasta', weekPlan));
 
-        scraper.getVillaLidoWeekPlan()
+        updates.villaLido = scraper.getVillaLidoWeekPlan()
             .then(weekPlan => this._updateIfInvalid('villaLido', weekPlan));
 
-        scraper.getBitsAndBytesWeekPlan()
+        updates.bitsAndBytes = scraper.getBitsAndBytesWeekPlan()
             .then(weekPlan => this._updateIfInvalid('bitsAndBytes', weekPlan));
 
-        //scraper.getPrincsWeekPlan()
+        //updates.princs = scraper.getPrincsWeekPlan()
         //    .then(weekPlan => this._updateIfInvalid('princs', weekPlan));
 
         console.log('Updating caches.');
+
+        return Promise.props(updates);
     }
 
     _updateIfInvalid(restaurantName, newWeekPlan) {

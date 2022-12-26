@@ -1,6 +1,14 @@
 const FooterPun = require("./models/footerPun");
 
+const uniRestaurants = ['uniwirt', 'mensa', 'hotspot', 'uniPizzeria', 'villaLido', 'bitsAndBytes'];
+const cityRestaurants = ['lapasta', 'princs'];
+
 module.exports = {
+    restaurants: {
+        city: cityRestaurants,
+        uni: uniRestaurants,
+        all: [...uniRestaurants, ...cityRestaurants],
+    },
     settings: {
         useRandomFooterPuns: true,
         defaultFooterPun: "heart",

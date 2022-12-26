@@ -4,17 +4,16 @@ const Promise = require("bluebird");
 const menuCache = require('../caching/menuCache');
 const externalApis = require('../externals/externalApis');
 const { getWeekErrorModel } = require('../scraping/scraperHelper');
+const config = require('../config');
+const { waitUntilMenuCacheIsInitialized } = require('../middleware/waitUntilMenuCacheIsInitialized');
 
-const uniRestaurants = ['uniwirt', 'mensa', 'hotspot', 'uniPizzeria', 'villaLido', 'bitsAndBytes'];
-const cityRestaurants = ['lapasta', 'princs'];
-
-router.get('/:day(-?\\d*)?', function (req, res, next) {
-    var restaurantCalls = getMenus(uniRestaurants);
+router.get('/:day(-?\\d*)?', waitUntilMenuCacheIsInitialized, function (req, res, next) {
+    var restaurantCalls = getMenus(config.restaurants.uni);
     return restaurantCalls.then(results => res.render('index', results));
 });
 
-router.get('/city/:day(-?\\d*)?', function (req, res, next) {
-    var restaurantCalls = getMenus(cityRestaurants);
+router.get('/city/:day(-?\\d*)?', waitUntilMenuCacheIsInitialized, function (req, res, next) {
+    var restaurantCalls = getMenus(config.restaurants.city);
     return restaurantCalls.then(results => res.render('cityfood', results));
 });
 
@@ -27,8 +26,8 @@ router.get('/about', function (req, res, next) {
         });
     });
 });
-router.get('/print', function (req, res, next) {
-    var restaurantCalls = getMenus(uniRestaurants);
+router.get('/print', waitUntilMenuCacheIsInitialized, function (req, res, next) {
+    var restaurantCalls = getMenus(config.restaurants.uni);
     return restaurantCalls.then(results => res.render('print', results));
 });
 
