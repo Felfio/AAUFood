@@ -4,6 +4,11 @@ const allergenRegex = /(\(?\s*(\s*.\s*,|.\s*,\s*.)+,?\s*\)?|\(.\))\s*$/i;
 const fullCapsAllergenRegex = /([A-Z]+)$/;
 
 class Food {
+    name = "";
+    price = null;
+    isInfo = false;
+    allergens = [];
+
     constructor(name, price, isInfo) {
         this.name = name;
         if (price != null) {

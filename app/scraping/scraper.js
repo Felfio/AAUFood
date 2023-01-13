@@ -14,6 +14,7 @@ const timeHelper = require('../helpers/timeHelper');
 const scraperHelper = require('./scraperHelper')
 
 const laPastaScraper = require('./lapasta-scraper');
+const { scraper } = require('../config');
 
 var MensaUrl = config.scraper.mensaUrl;
 var UniwirtUrl = config.scraper.uniwirtUrl;
@@ -68,12 +69,45 @@ function parseUniwirt(html) {
         return weekPlan;
     }
 
+    // Week specials
+    // Get last entry including "wochen"
+    var weekHeading = $($("#mittagsmenues .wpb_row").toArray().filter(x => $(x).find("h2").text().toLowerCase().includes("wochen")));
+
+    // Get all names (first <p> in each column)
+    var allWeekSpecialNodes = weekHeading.nextAll().find("p:first-of-type");
+
+    // Filter out drinks
+    var weekSpecialNodes = allWeekSpecialNodes
+        .toArray()
+        .map(x => $(x))
+        .filter(x => !x.parent().text().toLowerCase().includes("drink"));
+
+    const weekSpecials = [];
+    for (let specialNameElement of weekSpecialNodes) {
+        let name = specialNameElement.text().trim();
+        let infoText = specialNameElement.parent().text().trim();
+        let price = scraperHelper.parsePrice(infoText);
+
+        let special = new Food(name, price);
+        if (!special.allergens || special.allergens.length === 0) {
+            special.extractAllergens(infoText);
+        }
+
+        weekSpecials.push(special);
+    }
+
+    const weekSpecialMenu = new Food("Wochenangebote");
+    weekSpecialMenu.entries = weekSpecials;
+
+    // Daily menus
     var date = mondayDate;
     for (let dayInWeek = 0; dayInWeek < 6; dayInWeek++) {
         var dateString = date.format("DD.MM.YY");
         var dayEntry = $(`h3:contains(${dateString})`).parent();
         try {
-            weekPlan[dayInWeek] = createUniwirtDayMenu(dayEntry);
+            let dayPlan = createUniwirtDayMenu(dayEntry);
+            dayPlan.mains.push(weekSpecialMenu);
+            weekPlan[dayInWeek] = dayPlan;
         } catch (ex) {
             let errorMenu = new Menu();
             errorMenu.error = true;
@@ -93,7 +127,6 @@ function createUniwirtDayMenu(dayEntry) {
     var paragraphs = dayEntry.find("p");
     //Omit first <p> as it is the date
     var dateParagraph = paragraphs.eq(0);
-    paragraphs = paragraphs.slice(1, paragraphs.length);
     paragraphs = paragraphs.filter(":not(:empty)");
 
     if (paragraphs.length < 2) {
@@ -111,6 +144,8 @@ function createUniwirtDayMenu(dayEntry) {
             dayMenu.mains.push(info);
         }
     } else {
+        const foodEntries = []; // [name, price, isMainCourse]
+
         for (let i = 0; i < paragraphs.length; i++) {
             let pEntry = paragraphs.eq(i);
 
@@ -120,19 +155,23 @@ function createUniwirtDayMenu(dayEntry) {
             let price = text.match(/\d+[\.\,]\d+$/);
             price = price ? +(price[0].replace(',', '.')) : null;
 
-            let food = new Food(name, price);
-
             //If it has a price, it is a main course, otherwise a starter
             let hasName = !!name.trim();
             if (hasName) {
-                if (price) {
-                    dayMenu.mains.push(food);
-                } else {
-                    dayMenu.starters.push(food);
-                }
+                foodEntries.push([name, price, !!price]);
             }
-
         }
+
+        const starters = foodEntries.filter(x => !x[2]).map(([name]) => new Food(name));
+        const mainCourses = foodEntries.filter(x => x[2]);
+
+        const menus = mainCourses.map(([name, price], i) => {
+            let main = new Food(`Menü ${i + 1}`, price);
+            main.entries = [...starters, new Food(name)]
+            return main;
+        })
+
+        dayMenu.mains = menus;
     }
 
     return scraperHelper.setErrorOnEmpty(dayMenu);
