@@ -421,7 +421,7 @@ function parseHotspot(html) {
 
     var mainContent = $("section > .content");
     var heading = mainContent.find("h1:contains(Restaurant Hotspot)").eq(0).text() || "";
-    var weekIsOutdated = heading.indexOf(timeHelper.getMondayDate()) === -1;
+    var weekIsOutdated = !timeHelper.getMondayRegex().test(heading);
 
     if (weekIsOutdated) {
         return scraperHelper.invalidateMenus(result);
@@ -485,8 +485,8 @@ function parseBitsnBytes(html) {
     var $ = cheerio.load(html);
 
     var mainContent = $("section > .content");
-    var heading = mainContent.find("h1:contains(Bits & Bytes Marketplace)").eq(0).text() || "";
-    var weekIsOutdated = heading.indexOf(timeHelper.getMondayDate()) === -1;
+    var heading = mainContent.find("h1:contains(Marketplace)").eq(0).text() || "";
+    var weekIsOutdated = !timeHelper.getMondayRegex().test(heading);
 
     if (weekIsOutdated) {
         return scraperHelper.invalidateMenus(result);

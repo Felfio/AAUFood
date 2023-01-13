@@ -32,6 +32,14 @@ function getMondayDate() {
     return dateStringShort(determineLastMonday());
 }
 
+function getMondayRegex() {
+    var mon = determineLastMonday();
+    var day = mon.getDate().toString();
+    var month = (mon.getMonth() + 1).toString();
+    // Get regex for a given date with optional leading zero
+    return new RegExp(`${day.padStart(2, 'X')}\\.${month.padStart(2, 'X')}`.replace(/X/g, '0?'));
+}
+
 function checkInputForCurrentWeek(str) {
     var mon = determineLastMonday();
     for (var i = 0; i <= 6; i++) {
@@ -73,6 +81,7 @@ module.exports = {
     sanitizeDay,
     weekDayName,
     getMondayDate,
+    getMondayRegex,
     checkInputForCurrentWeek,
     checkInputForWeekday,
     getMidnight,
