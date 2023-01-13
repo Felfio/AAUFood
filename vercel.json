@@ -10,5 +10,6 @@
             "src": "app/index.js",
             "use": "@vercel/node"
         }
-    ]
+    ],
+    "buildCommand": "npm run build"
 }
