@@ -11,5 +11,8 @@
             "use": "@vercel/node"
         }
     ],
-    "buildCommand": "npm run build"
+    "buildCommand": "npm run build",
+    "github": {
+        "silent": true
+    }
 }
