@@ -6,6 +6,10 @@
         <li class="menu-title">
             <%= singleMenu.name %>
 
+            <% if(singleMenu.allergens && singleMenu.allergens.length) { %> 
+                <span class="allergens"><%= singleMenu.allergens %></span>
+            <% } %>
+
             <% if(singleMenu.price && !singleMenu.isInfo) { %>
                 <div class="price-tag">
                         <%= singleMenu.price + " €" %>

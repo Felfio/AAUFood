@@ -221,15 +221,26 @@ function createMensaFoodMenuFromElement($, e, name) {
         foodNames.splice(removeStartingFromIndex, foodNames.length - removeStartingFromIndex);
     }
 
+    let foodInfos = foodNameElements.map(x => $(x).next().text());
     let hasMultiplePrices = e.find("> p:contains(€)").length > 1;
 
     let price = hasMultiplePrices ? null : scraperHelper.parsePrice(e.find("> p:contains(€)").text());
-    let foodPrices = hasMultiplePrices ? foodNameElements.map(x => scraperHelper.parsePrice($(x).next().text())) : [];
 
     let food = new Food(name, price);
+    if (!hasMultiplePrices && (!food.allergens || !food.allergens.length)) {
+        let allergenText = foodInfos.join(' ').split('€')[0].trim();
+        food.extractAllergens(allergenText);
+    }
+
     food.entries = foodNames.map((foodName, i) => {
-        let individualPrice = hasMultiplePrices ? foodPrices[i] : null;
-        return new Food(foodName, individualPrice)
+        let individualPrice = hasMultiplePrices ? scraperHelper.parsePrice(foodInfos[i]) : null;
+
+        let foodEntry = new Food(foodName, individualPrice)
+        if (hasMultiplePrices && (!foodEntry.allergens || !foodEntry.allergens.length)) {
+            let allergenText = foodInfos[i].split('€')[0].trim();
+            foodEntry.extractAllergens(allergenText);
+        }
+        return foodEntry;
     });
 
     return food;
