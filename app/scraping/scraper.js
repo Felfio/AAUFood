@@ -204,28 +204,34 @@ function parseMensa(html) {
     return result;
 }
 
-function createMensaFoodMenusFromElements($, elements, name) {
-    return elements.map((i, e) => createMensaFoodMenuFromElement($, e, name)).toArray();
-}
-
 function createMensaFoodMenuFromElement($, e, name) {
     e = $(e);
 
-    let foodNames = e.find("> p:not(:contains(€))").toArray()
-        .map(x => $(x).text().trim().replace("&nbsp;", " "));
+    // If Mensa changes to splitting foods by <br> again, look in git history for this section how to handle this 
+
+    let foodNameElements = e.find("> p:not(:contains(€))").toArray();
+    // Filter short delimiter lines
+    foodNameElements = foodNameElements.filter(x => $(x).text().trim().length > 4);
+    let foodNames = foodNameElements.map(x => $(x).text().trim().replace("&nbsp;", " "));
 
     // remove additional entries that does not contain dishes (= everything from "ohne Suppe und Salat" on)
-    let start = foodNames.indexOf('ohne Suppe und Salat');
-    if (start >= 0) {
-        foodNames.splice(start, foodNames.length - start);
+    let removeStartingFromIndex = foodNames.findIndex(n => n.toLowerCase().includes("ohne suppe und salat") || n.includes('(*) ='));
+    if (removeStartingFromIndex >= 0) {
+        foodNameElements.splice(removeStartingFromIndex, foodNameElements.length - removeStartingFromIndex);
+        foodNames.splice(removeStartingFromIndex, foodNames.length - removeStartingFromIndex);
     }
 
-    // If Mensa changes to splitting foods by <br> again, look in git history for this section how to handle this 
-    let priceStr = e.find("> p:contains(€)").text();
-    let price = scraperHelper.parsePrice(priceStr);
+    let hasMultiplePrices = e.find("> p:contains(€)").length > 1;
+
+    let price = hasMultiplePrices ? null : scraperHelper.parsePrice(e.find("> p:contains(€)").text());
+    let foodPrices = hasMultiplePrices ? foodNameElements.map(x => scraperHelper.parsePrice($(x).next().text())) : [];
 
     let food = new Food(name, price);
-    food.entries = foodNames.map(n => new Food(n));
+    food.entries = foodNames.map((foodName, i) => {
+        let individualPrice = hasMultiplePrices ? foodPrices[i] : null;
+        return new Food(foodName, individualPrice)
+    });
+
     return food;
 }
 
