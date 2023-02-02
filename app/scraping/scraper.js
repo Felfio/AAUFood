@@ -156,8 +156,7 @@ function createUniwirtDayMenu(dayEntry) {
             let text = pEntry.text().trim();
             let name = scraperHelper.sanitizeName(text);
 
-            let price = text.match(/\d+[\.\,]\d+$/);
-            price = price ? +(price[0].replace(',', '.')) : null;
+            let price = scraperHelper.parsePrice(text);
 
             //If it has a price, it is a main course, otherwise a starter
             let hasName = !!name.trim();

@@ -1,4 +1,5 @@
 "use strict";
+const { stubArray } = require('lodash');
 const moment = require('moment');
 const Menu = require("../models/menu");
 
@@ -68,15 +69,15 @@ function capitalizeFirstLetter(string, delim, exceptionList) {
     }
 }
 
-const priceRegex = /(\d+[,\.]?\d*)/
+const priceRegex = /(\d+[,\.]?\d*)/ig;
 function parsePrice(str) {
     if (!str) {
         return null;
     }
 
-    let match = priceRegex.exec(str);
+    let match = str.match(priceRegex);
     if (match) {
-        return +match[0].replace(',', '.');
+        return +match[match.length - 1].replace(',', '.');
     } else {
         return null;
     }
