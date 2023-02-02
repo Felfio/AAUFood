@@ -23,7 +23,7 @@ Aktuell:
 -   `/food/bitsandbytes`
 -   `/food/uniwirt`
 -   `/food/mensa`
--   `/food/unipizzeria`
+-   ~~`/food/unipizzeria`~~
 
 ## Technologien
 
