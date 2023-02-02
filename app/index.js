@@ -1,10 +1,14 @@
 const express = require('express');
 const path = require('path');
 const NodeCache = require("node-cache");
-const moment = require('moment');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const logger = require('morgan');
+
+const moment = require('moment');
+require('moment/locale/de');
+moment.locale('de');
+
 const menuCache = require('./caching/menuCache');
 const config = require('./config');
 const indexRoutes = require('./routes/index');

@@ -14,7 +14,6 @@ const timeHelper = require('../helpers/timeHelper');
 const scraperHelper = require('./scraperHelper')
 
 const laPastaScraper = require('./lapasta-scraper');
-const { scraper } = require('../config');
 
 var MensaUrl = config.scraper.mensaUrl;
 var UniwirtUrl = config.scraper.uniwirtUrl;
@@ -103,9 +102,14 @@ function parseUniwirt(html) {
     var date = mondayDate;
     for (let dayInWeek = 0; dayInWeek < 6; dayInWeek++) {
         var dateString = date.format("DD.MM.YY");
-        var dayEntry = $(`h3:contains(${dateString})`).parent();
+        var dayEntry = $(`h3:contains(${dateString})`);
+        if (!dayEntry || dayEntry.length === 0) {
+            dateString = date.format('dddd').toLowerCase();
+            dayEntry = $(`h3:icontains(${dateString})`);
+        }
+
         try {
-            let dayPlan = createUniwirtDayMenu(dayEntry);
+            let dayPlan = createUniwirtDayMenu(dayEntry.parent());
             dayPlan.mains.push(weekSpecialMenu);
             weekPlan[dayInWeek] = dayPlan;
         } catch (ex) {
