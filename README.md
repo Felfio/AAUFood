@@ -8,7 +8,7 @@ Eine Webseite zum Crawlen und Darstellen der Mittagsmenüs von Lokalen nahe der 
 -   Uniwirt
 -   Hotspot
 -   Bits&Bytes
--   Uni-Pizzeria
+-   ~~Uni-Pizzeria~~
 
 ## Info
 
