@@ -83,7 +83,7 @@ function parseUniwirt(html) {
 
     const weekSpecials = [];
     for (let specialNameElement of weekSpecialNodes) {
-        let name = specialNameElement.text().trim();
+        let name = scraperHelper.sanitizeName(specialNameElement.text());
         let infoText = specialNameElement.parent().text().trim();
         let price = scraperHelper.parsePrice(infoText);
 
