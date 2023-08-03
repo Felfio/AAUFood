@@ -40,6 +40,6 @@
     "@rollup/plugin-replace": "^5.0.2",
     "nodemon": "^2.0.20",
     "sass": "^1.57.1",
-    "vite": "^4.0.3"
+    "vite": "^4.0.5"
   }
 }
